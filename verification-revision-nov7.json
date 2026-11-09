@@ -1,0 +1,56 @@
+[
+  {
+    "width": 1280,
+    "id": "6",
+    "gallery_decode": "controls checked",
+    "count_reset": 10,
+    "max": 16,
+    "parking_ratio": 1.791044776119403,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "id": "8",
+    "gallery_decode": "controls checked",
+    "count_reset": 10,
+    "max": 16,
+    "parking_ratio": 1.791044776119403,
+    "errors": []
+  },
+  {
+    "width": 1280,
+    "id": "40",
+    "gallery_decode": 30,
+    "count_reset": 10,
+    "max": 16,
+    "parking_ratio": 1.791044776119403,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "id": "6",
+    "gallery_decode": "controls checked",
+    "count_reset": 10,
+    "max": 16,
+    "parking_ratio": 1.7911402526787141,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "id": "8",
+    "gallery_decode": "controls checked",
+    "count_reset": 10,
+    "max": 16,
+    "parking_ratio": 1.7911402526787141,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "id": "40",
+    "gallery_decode": 30,
+    "count_reset": 10,
+    "max": 16,
+    "parking_ratio": 1.7911402526787141,
+    "errors": []
+  }
+]

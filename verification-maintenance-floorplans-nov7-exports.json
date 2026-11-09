@@ -1,0 +1,140 @@
+{
+  "test_target": "http://localhost:8080",
+  "revision": "Craig Nov7 milestone 1+2: flat $150 maintenance/security fee, PadSplit removed, neutral Needs input labels, plan overlay pins removed, room-by-room access audits, Elmira basement no-change label",
+  "export_note": "Post-revision actual screenshots. Immutable asset URLs verified; no deployment or permission changes. Local desktop/mobile only; parent handles hosted review. Prior 29 exports in verification-exports.json retained.",
+  "files": [
+    {
+      "file_name": "40-fee-editor.png",
+      "mime": "image/png",
+      "byte_size": 188399,
+      "sha256": "deb5de56b0ad08d63f57587066236a61fce6f88f1311df818faf0fb093e1afa3",
+      "asset_pointer": "src/assets/verification-exports/40-fee-editor-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/1668e2fc-5db4-4394-842c-e6f96b93a2b0/40-fee-editor.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/1668e2fc-5db4-4394-842c-e6f96b93a2b0/40-fee-editor.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "40-mobile-16-negative.png",
+      "mime": "image/png",
+      "byte_size": 294104,
+      "sha256": "2bb1042f33ebd18192b2414c198472fe6998457c01991991d71fe387ffa3c055",
+      "asset_pointer": "src/assets/verification-exports/40-mobile-16-negative-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/414c9090-1298-4561-a765-bcbd854d8ffe/40-mobile-16-negative.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/414c9090-1298-4561-a765-bcbd854d8ffe/40-mobile-16-negative.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "40-plan-0.png",
+      "mime": "image/png",
+      "byte_size": 240334,
+      "sha256": "c483cca74999be67b288322cf46ad6d1b7109db983bf4279b21b004ac3d4e464",
+      "asset_pointer": "src/assets/verification-exports/40-plan-0-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/932c96b6-f560-4369-8c99-772c1cee6268/40-plan-0.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/932c96b6-f560-4369-8c99-772c1cee6268/40-plan-0.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "40-plan-1.png",
+      "mime": "image/png",
+      "byte_size": 102140,
+      "sha256": "37d636d38aa5b8843071c0eccff1d8411638ca096e5435707c8e6fe0eba0b2c8",
+      "asset_pointer": "src/assets/verification-exports/40-plan-1-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/826e84b5-a67e-4752-8233-d367db67489c/40-plan-1.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/826e84b5-a67e-4752-8233-d367db67489c/40-plan-1.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "6-fee-editor.png",
+      "mime": "image/png",
+      "byte_size": 164795,
+      "sha256": "2850dc403afefec603f712b77ab8127d683d3d639fd1926c5e131071de61e039",
+      "asset_pointer": "src/assets/verification-exports/6-fee-editor-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/73a58a62-380a-4125-8b8e-f02aeba4d148/6-fee-editor.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/73a58a62-380a-4125-8b8e-f02aeba4d148/6-fee-editor.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "6-plan-0.png",
+      "mime": "image/png",
+      "byte_size": 286401,
+      "sha256": "07e909862798e52e96ac935b597cf30faecf6226b73032fd051fb3ddb1dd9988",
+      "asset_pointer": "src/assets/verification-exports/6-plan-0-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/7d8c855d-de9b-4930-ad99-42b814b158e3/6-plan-0.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/7d8c855d-de9b-4930-ad99-42b814b158e3/6-plan-0.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "6-plan-1.png",
+      "mime": "image/png",
+      "byte_size": 169498,
+      "sha256": "79030bd60613f22415bd7aee5a2fd0c4f69c2798c79316526f936a9966dd678b",
+      "asset_pointer": "src/assets/verification-exports/6-plan-1-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/18e57aca-5747-4db6-bf7d-5f9c53cf91b4/6-plan-1.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/18e57aca-5747-4db6-bf7d-5f9c53cf91b4/6-plan-1.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "8-fee-editor.png",
+      "mime": "image/png",
+      "byte_size": 167217,
+      "sha256": "38c8edadfe044a0d75ba882f4215aad7d949530233557cf363d47359afee5855",
+      "asset_pointer": "src/assets/verification-exports/8-fee-editor-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/30783ac9-ac00-483c-9988-cfa2e617abef/8-fee-editor.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/30783ac9-ac00-483c-9988-cfa2e617abef/8-fee-editor.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "8-plan-0.png",
+      "mime": "image/png",
+      "byte_size": 181512,
+      "sha256": "0bd3a43ff3453f426900be2169c437946a95417f3278e11debd1441e23f1ed37",
+      "asset_pointer": "src/assets/verification-exports/8-plan-0-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/cd6ef9bd-c87c-497c-a657-2ef77f51bf96/8-plan-0.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/cd6ef9bd-c87c-497c-a657-2ef77f51bf96/8-plan-0.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "8-plan-1.png",
+      "mime": "image/png",
+      "byte_size": 141200,
+      "sha256": "40f47a87d208b8d99f91186136d30773c01c35fa3cf3a3d4840bdbeb452498a8",
+      "asset_pointer": "src/assets/verification-exports/8-plan-1-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/0973828e-f2c1-4a10-84dd-00d7432f38b7/8-plan-1.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/0973828e-f2c1-4a10-84dd-00d7432f38b7/8-plan-1.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    },
+    {
+      "file_name": "home-desktop.png",
+      "mime": "image/png",
+      "byte_size": 670403,
+      "sha256": "c6f9bc62a3452f748b6aa34e111ed68491751f3e7f4ad83d7058806dfdfefc03",
+      "asset_pointer": "src/assets/verification-exports/home-desktop-maintenance-floorplans.png.asset.json",
+      "asset_url": "/__l5e/assets-v1/6c3ed409-1c94-4738-8d26-3cd2f61d700f/home-desktop.png",
+      "download_url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/6c3ed409-1c94-4738-8d26-3cd2f61d700f/home-desktop.png",
+      "verified_status": 200,
+      "verified_mime": "image/png",
+      "verified_sha256_match": true
+    }
+  ],
+  "verification_note": "URLs verified 200/image/png with byte-for-byte SHA256 match using a standard browser User-Agent; plain script requests without UA are 403-filtered at the edge."
+}

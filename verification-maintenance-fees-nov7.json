@@ -1,0 +1,118 @@
+{
+  "target": "http://localhost:8080",
+  "deals": {
+    "6": {
+      "url": "http://localhost:8080/deal/6",
+      "monthly_cash_flow": null,
+      "annual_cash_flow": null,
+      "coc": null,
+      "noi_yr": null,
+      "missing_fields": [
+        "Other income",
+        "HOA",
+        "Private money",
+        "Pest",
+        "Holding costs",
+        "Invoice authorization credit"
+      ],
+      "padsplit_visible": false,
+      "maint_fee": true,
+      "modeled_rooms": null,
+      "fee_value": "150",
+      "rooms_at_16": true,
+      "fee_value_at_16": "150",
+      "fee_value_after_reset": "150",
+      "rooms_after_reset": true,
+      "negative_rent_error": true
+    },
+    "8": {
+      "url": "http://localhost:8080/deal/8",
+      "monthly_cash_flow": null,
+      "annual_cash_flow": null,
+      "coc": null,
+      "noi_yr": null,
+      "missing_fields": [
+        "Other income",
+        "Private money",
+        "Pest",
+        "Holding costs",
+        "Invoice authorization credit"
+      ],
+      "padsplit_visible": false,
+      "maint_fee": true,
+      "modeled_rooms": null,
+      "fee_value": "150",
+      "rooms_at_16": true,
+      "fee_value_at_16": "150",
+      "fee_value_after_reset": "150",
+      "rooms_after_reset": true,
+      "negative_rent_error": true
+    },
+    "40": {
+      "url": "http://localhost:8080/deal/40",
+      "monthly_cash_flow": null,
+      "annual_cash_flow": null,
+      "coc": null,
+      "noi_yr": null,
+      "missing_fields": [],
+      "padsplit_visible": false,
+      "maint_fee": true,
+      "modeled_rooms": null,
+      "fee_value": "150",
+      "rooms_at_16": true,
+      "fee_value_at_16": "150",
+      "fee_value_after_reset": "150",
+      "rooms_after_reset": true,
+      "negative_rent_error": true
+    }
+  },
+  "token_findings": [],
+  "console_errors": [],
+  "home_cards": [
+    "1 / 23\n\n$525,000\n\nActive\n1584 Fraser Way, Aurora, CO\n\n10 modeled \u00b7 8 source-plan \u00b7 Aurora\n\nProvisional cash flow\n$1,348.72\nProvisional CoC\nNeeds input\nInvested subtotal\n$144,300\n\nEstimate incomplete \u00b7 needs: Other income, HOA +4",
+    "1 / 30\n\n$534,999\n\nActive\n6704 Grove Street, Denver, CO\n\n10 modeled \u00b7 7 source-plan \u00b7 Denver\n\nProvisional cash flow\n$1,404.37\nProvisional CoC\nNeeds input\nInvested subtotal\n$61,074.94\n\nEstimate incomplete \u00b7 needs: Other income, Private money +3",
+    "1 / 30\n\n$724,100\n\nActive\n911 S Elmira Street, Denver, CO 80247\n\n10 modeled \u00b7 9 source-concept \u00b7 Denver\n\nCash flow / mo\n-$610.01\nCoC\n-3.6%\nCash invested\n$203,802"
+  ],
+  "revision": "Craig Nov7 milestone 1: flat $150/property/mo maintenance-security fee, PadSplit variants removed, neutral Needs input labels",
+  "verified_values": {
+    "6": {
+      "provisional_cash_flow": 1348.72,
+      "invested_subtotal": 144300,
+      "missing": [
+        "Other income",
+        "HOA",
+        "Private money",
+        "Pest",
+        "Holding costs",
+        "Invoice authorization credit"
+      ]
+    },
+    "8": {
+      "provisional_cash_flow": 1404.37,
+      "invested_subtotal": 61074.94,
+      "missing": [
+        "Other income",
+        "Private money",
+        "Pest",
+        "Holding costs",
+        "Invoice authorization credit"
+      ]
+    },
+    "40": {
+      "monthly_cash_flow": -610.01,
+      "annual_cash_flow": -7320.12,
+      "coc_percent": -3.5918,
+      "noi_yr": 41284.8,
+      "cash_invested": 203802,
+      "missing": []
+    }
+  },
+  "checks": {
+    "fee_flat_10_to_16_reset": true,
+    "padsplit_removed_ui_and_math": true,
+    "negative_rent_validation": true,
+    "bad_tokens": [],
+    "console_errors": [],
+    "tests": "121 passed (15 files)"
+  }
+}

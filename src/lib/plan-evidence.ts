@@ -1,0 +1,61 @@
+// Drawing comparisons are tied to source assets, not invented geometry or a new store.
+import mainBefore from '@/assets/elmira-current-main-authentic.png.asset.json';
+import basementBefore from '@/assets/elmira-current-basement-authentic.png.asset.json';
+import mainRedline from '@/assets/elmira-main-windows-t52.png.asset.json';
+import basementRedline from '@/assets/elmira-basement-windows-t52.png.asset.json';
+import { windowEvidence } from './window-evidence';
+import { elmiraBasementConcept } from './elmira-basement-concept';
+import groveMainBefore from '@/assets/grove-before-main-matched.png.asset.json';
+import groveBasementBefore from '@/assets/grove-before-basement-matched.png.asset.json';
+import groveMainAfter from '@/assets/grove-after-main-matched.png.asset.json';
+import groveBasementAfter from '@/assets/grove-after-basement-matched.png.asset.json';
+// Informational level estimates only: never enter or mutate underwriting budgets.
+export function wallDoorAllowance(raw: string, level: 'main'|'basement', researchId?: string) {
+  const scope = [
+    { id: '6', level: 'main', drawing: '1BgaackKdZ4aXywzG4D4uFv3FSmY_V9GE', rooms: [1] },
+    { id: '6', level: 'basement', drawing: '1DRH3TUnIqc66SeRfMYBsZQKW4RzGT-OI', rooms: [7, 8] },
+    { id: '8', level: 'main', drawing: '1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS', rooms: [1] },
+    { id: '8', level: 'basement', drawing: '1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE', rooms: [5] },
+  ].find(s => s.id === researchId && s.level === level && raw.includes(s.drawing));
+  return scope ? { rooms: scope.rooms, unitRate: 3000, amount: scope.rooms.length * 3000 } : null;
+}
+const ACCESS_AUDITS: Record<string, string[]> = {
+  '6-main': ['Room 1: dining conversion; source red wall + door arc into common area', 'Room 2: existing main bedroom', 'Rooms 3–5: existing upper bedrooms on the same composite drawing'],
+  '6-basement': ['Room 6: existing basement bedroom; common route via stair landing needs onsite review, not verified', 'Rooms 7–8: rec-room conversions; source red partitions with deliberate door gaps'],
+  '8-main': ['Room 1: living enclosure; source red wall + door arc into existing common hall', 'Rooms 2–3: existing bedrooms', 'Room 4: primary; ensuite opening verified on source drawing'],
+  '8-basement': ['Room 5: rec partition; source red wall + door gap into retained common hall', 'Rooms 6–7: existing bedrooms'],
+  '40-main': ['Concept bedrooms are numbered sequentially 1–11 across both levels (navy = existing, red = proposed). Source pin mapping: 1=1 primary, 2=2, 3=3, 4=4 living, 5=7 family west, 6=8 family east, 7=9 basement existing, 8/9=10 basement west split, 10=bottom-right existing Room, 11=north-central rec conversion', 'Room 1: primary bedroom; ensuite supported, erroneous outside-house source pin removed', 'Rooms 2–3: existing bedrooms; hall access unchanged', 'Room 4: living enclosure; door gap into a reserved common strip along the east/south to the foyer and family doors; proposed closet (C)', 'Dining and sitting (source pins 5–6): kept common, not converted — enclosing them would sever the kitchen/sitting/dining circulation, so they are not counted as bedrooms', 'Room 5: west family area; door gap at the existing family double doors into the common hall; proposed closet (C)', 'Room 6: east family area below the existing bath; door directly from the common hall neck — no bedroom pass-through; proposed closet (C)', 'Concept totals 11 physical concept bedrooms vs 9 source-planned (Research converted_beds) vs 10 modeled in the financial scenario; common spaces are never counted as bedrooms'],
+  '40-basement': [
+    ...elmiraBasementConcept.rooms.map(room => `Room ${room.number}: ${room.source}; ${room.access}; ${room.closet}.`),
+    'Source mapping only: concept 7 = original source 9; concepts 8 and 9 split prior concept 8 / source 10; concept 10 = original bottom-right Room; concept 11 = north-central rec area above the common hall. Neither duplicates the existing bedroom.',
+    'No bedroom pass-through: stairs to north common hall reach room 7 and utility; west common corridor serves rooms 8/9 and storage; north hall to reserved east strip reaches room 10, laundry and shared bath east door. Existing west bath door remains off the south hall.',
+    'Room 11: new north-central enclosure above the retained blue horizontal common hall, between the west common strip and existing WIC. New south wall has a deliberate door gap directly to the hall; proposed closet C stays inside the room clear of that gap. Hall continues underneath to room 7 and utility; west strip remains common. Existing north window is not verified egress.',
+    'One proposed W on the west exterior wall of added room 9, south of the support-column level. Egress compliance not verified; other existing windows and room 10 egress remain unverified. No new door through an existing black wall; all new bedroom gaps are in red partitions.',
+  ],
+};
+export function planEvidence(raw: string, level: 'main'|'basement', researchId?: string) {
+  const elmira = raw.includes(level === 'main' ? '1XfAO8qr_te1wa14C-vaDvSd8f9LjNI2u' : '17Eyw1NrFHoZXM6tV8NAQnf9AqZOId8Tw');
+  const grove = researchId === '8' && raw.includes(level==='main'?'1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS':'1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE');
+  const allowance = wallDoorAllowance(raw, level, researchId);
+  return {
+    windowAudit: elmira ? windowEvidence(level) : null,
+    afterAssetUrl: elmira ? level==='main' ? mainRedline.url : basementRedline.url : grove ? (level==='main'?groveMainAfter.url:groveBasementAfter.url) : null,
+    afterProvenanceUrl: elmira ? `https://drive.google.com/file/d/${level==='main'?'1XfAO8qr_te1wa14C-vaDvSd8f9LjNI2u':'17Eyw1NrFHoZXM6tV8NAQnf9AqZOId8Tw'}/view` : grove ? `https://drive.google.com/file/d/${level==='main'?'1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS':'1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE'}/view` : null,
+    // App blue pins obscured the authentic red source walls/room numbers; HTML legend below carries room labels instead.
+    suppressOverlays: true,
+    accessAudit: ACCESS_AUDITS[`${researchId}-${level}`] ?? null,
+    beforeAssetUrl: elmira ? (level === 'main' ? mainBefore.url : basementBefore.url) : grove ? (level==='main'?groveMainBefore.url:groveBasementBefore.url) : null,
+    beforeUrl: elmira ? `https://drive.google.com/file/d/${level==='main'?'1INDoYuRXl1PwaVbfSHwKXg0NfoGfhpEH':'1J5yYz3hjJsoosWv1J-IkF3KlAn1B_SH4'}/view` : grove ? 'https://media.zillowmediaexperts.com/sites/6704-grove-st-denver-co-80221-23602201#FloorPlans' : null,
+    beforeProvenanceLabel: grove ? 'Original current drawing · public listing provenance (full uncut original incl. garage/deck)' : 'Original current drawing · Drive provenance',
+    title: level==='main' && researchId==='6' ? 'Main and upper levels' : level==='main' ? 'Main level' : 'Basement level',
+    afterLabel: elmira ? 'After · conceptual redline on current drawing' : 'After · proposed annotated drawing',
+    // Concise always-visible truth line; long budget/note/access prose stays inside the collapsed explanation.
+    summary: elmira ? (level==='main' ? '11 concept bedrooms shown (1–6 this level); calculator models 10. Conceptual layout; verify before construction.' : 'Bedrooms 7–11 this level; 11 concept bedrooms total, calculator models 10. Conceptual layout; verify before construction.') : 'Same-level drawings at matched scale and orientation; dimensions approximate, verify onsite.',
+    note: elmira ? level==='main' ? 'Conceptual layout; verify before construction. Best-fit concept on the authentic current drawing: room 4 living enclosure and a family-room 7/8 split served by a reserved common L-hall from the existing family double doors — every proposed room doors off the common route, no bedroom pass-through, no existing wall cut, no new bath. Dining 5 and sitting 6 stay common. Original annotated source concept preserved via the provenance link.' : 'Conceptual layout; verify before construction. Owner-directed west split gives rooms 8/9; existing bedroom 7 stays unchanged. Bottom-right existing Room becomes concept bedroom 10 behind a new partition that reserves a common west strip. All bedroom doors open to shared halls, no bedroom pass-through or private-bath access required. Room 11 encloses the north-central area above the hall with a new south door gap and closet C; the continuous common hall remains underneath, not inside the bedroom. Existing north window egress is unverified. Black source walls unchanged; one new west window W is a concept, not verified egress.' : grove ? 'Authentic public listing current drawing cropped to the heated building core and shown at the same scale and orientation as the same-level Research proposed plan; presentation banner and margins trimmed, geometry untouched, garage/deck remain in the full original via the provenance link. Original red wall/door annotations preserved; dimensions approximate, legal bedrooms and access require onsite verification.' : 'Authentic red wall/door proposed annotations. Current drawing missing. Different levels are not a Before/After pair.',
+    allocation: elmira ? level==='main' ? 'Main direct conversions + closets: $20,000 (5 × $3,000 + 5 × $1,000). Remaining $24,500 is project-wide, not allocated here. Included within $44,500 project total once. New redline concept draws 3 conversions (concept rooms 4 / 5 / 6, source pins 4 / 7 / 8): wall/door planning allowance ≈ $9,000 (3 × $3,000, estimated) — informational only, within the $20,000 main source scope, not an additional charge.' : 'Basement informational scope: 3 rec-room conversions (8/9/11), wall/door allowance $9,000; 4 proposed closets C (8/9/10/11), $4,000; 1 proposed egress window W, $4,000. Bottom-right room 10 also needs a new partition/door; separate cost unknown. These are not an additional charge or automatic CapEx entry and are not confirmed funded. Historical $44,500 project total retained once; source-explicit basement scope remains separate.' : allowance ? `Wall/door planning allowance (estimated): $${allowance.amount.toLocaleString('en-US')} (${allowance.rooms.length} × $3,000; proposed room${allowance.rooms.length > 1 ? 's' : ''} ${allowance.rooms.join(' / ')}). Level detail only, not an additional budget charge or total renovation quote. ${researchId === '6' ? 'Across levels: $9,000 versus historical $4,000 wall/door line; reconciliation pending, not confirmed funded. Historical $24,300 project budget retained once.' : 'Across levels: $6,000 matches historical wall/door line; $16,300 project budget retained once, remaining budget unallocated.'} Other level costs unknown; no additional closet, egress or bath scope assumed.` : 'Area-scoped renovation allocation not provided. Historical report total is project-wide and counted once; item discrepancies disclosed separately.',
+    suppressRoomOne: elmira && level==='main',
+    // Current concept keeps dining/sitting common; the historical source conversion labels stay on the original drawing only.
+    // Concept bedrooms are numbered sequentially 1–11 on the redline images; old source pin badges are not shown as current numbers (legend hidden for Elmira, source mapping lives in the access audit disclosure).
+    legendStatus: null as Record<string, string> | null,
+  };
+}

@@ -1,0 +1,47 @@
+{
+  "page_url": "https://media.zillowmediaexperts.com/sites/6704-grove-st-denver-co-80221-23602201",
+  "retrieved": "2026-11-07",
+  "method": "Ordinary public HTML FloorPlans img src only; no APIs/synthesized URLs. Unmodified full images, address and disclaimer preserved.",
+  "html_sha256": "de0f2c0239b513b156eb7e2e23442965f7e44966b9f54e3f1cf7223590035043",
+  "geometry_match": {
+    "main": "Same kitchen18ft9x10ft10, living14ft8x15ft11, dining10ft2x15ft11, stairs/laundry/baths/primary; proposed crop omits garage/deck, clean original retains them.",
+    "basement": "Same finished35ft3x14ft9, kitchenette17ftx10ft11, utility7ft8x10ft11, bath7ftx10ft11, bedrooms13ft5x10ft5 and16ft3x10ft11, stairs/hall. Red room5 partition only in After."
+  },
+  "assets": [
+    {
+      "level": "basement",
+      "source_url": "https://aryeo.sfo2.digitaloceanspaces.com/listings/019d68a8-fed8-703e-9053-2a8f1a539a23/floorplans/large/019d6ea6-03fc-73dd-8739-626b86bfa37d.jpeg",
+      "mime": "image/jpeg",
+      "bytes": 88682,
+      "sha256": "fd34889635862a8b12d930d123c08b6195915b3bd59e53a4baff3fab102a2aa7",
+      "dimensions": [
+        2048,
+        1365
+      ],
+      "asset_pointer": "src/assets/grove-current-basement-public.jpg.asset.json"
+    },
+    {
+      "level": "main",
+      "source_url": "https://aryeo.sfo2.digitaloceanspaces.com/listings/019d68a8-fed8-703e-9053-2a8f1a539a23/floorplans/large/019d6ea6-0555-704b-bfc8-ba83da77345a.jpeg",
+      "mime": "image/jpeg",
+      "bytes": 119009,
+      "sha256": "658e9ded0e594f3caadd7a727122ea40f714a44d79eda7b54ed2a1de9125782b",
+      "dimensions": [
+        2048,
+        1365
+      ],
+      "asset_pointer": "src/assets/grove-current-main-public.jpg.asset.json"
+    },
+    {
+      "level": "combined",
+      "source_url": "https://aryeo.sfo2.digitaloceanspaces.com/listings/019d68a8-fed8-703e-9053-2a8f1a539a23/floorplans/large/019d6ea6-0693-72c0-8a92-804875aff941.jpeg",
+      "mime": "image/jpeg",
+      "bytes": 124337,
+      "sha256": "f5f194201e80f2d695e74b8d50e63b4d322dd3abc033735a8f4a368447e2cb58",
+      "dimensions": [
+        2048,
+        1365
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "test_count": 112,
+  "test_target": "http://localhost:8080",
+  "all_three_desktop_mobile": [
+    {
+      "width": 1280,
+      "id": "6",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.791044776119403,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "id": "8",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.791044776119403,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "id": "40",
+      "gallery_decode": 30,
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.791044776119403,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "id": "6",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.7911402526787141,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "id": "8",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.7911402526787141,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "id": "40",
+      "gallery_decode": 30,
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.7911402526787141,
+      "errors": []
+    }
+  ],
+  "financial_parity": [
+    {
+      "id": "6",
+      "card_values": [
+        "$1,498.72",
+        "Missing input",
+        "$144,300"
+      ],
+      "overview": "Numbers overview\n\nProvisional modeled scenario \u00b7 required inputs missing.\n\nINVESTED SUBTOTAL\n$144,300\nKnown upfront inputs only; not total cash required\nPROVISIONAL CASH FLOW\n$1,499\nExcludes unresolved inputs; not complete returns\nANNUAL CASH FLOW\nMissing input\nPROVISIONAL COC\nMissing input\nOnly shown with complete invested denominator\nNOI / YR\nMissing input\nCAPEX TOTAL\n$24,300\nMODELED ROOMS\n10\nSource current rooms: 5; feasibility unverified\nBATHS\n4\n\nExcluded unresolved inputs: Other income, Maint. & Security Fee by PMC, HOA, Private money, Pest, PadSplit, Holding costs, Invoice authorization credit. Subtotals are not complete returns or total cash required.",
+      "parity": "passed; whole-dollar detail rounding"
+    },
+    {
+      "id": "8",
+      "card_values": [
+        "$1,554.37",
+        "Missing input",
+        "$61,074.94"
+      ],
+      "overview": "Numbers overview\n\nProvisional modeled scenario \u00b7 required inputs missing.\n\nINVESTED SUBTOTAL\n$61,075\nKnown upfront inputs only; not total cash required\nPROVISIONAL CASH FLOW\n$1,554\nExcludes unresolved inputs; not complete returns\nANNUAL CASH FLOW\nMissing input\nPROVISIONAL COC\nMissing input\nOnly shown with complete invested denominator\nNOI / YR\nMissing input\nCAPEX TOTAL\n$16,300\nMODELED ROOMS\n10\nSource current rooms: 5; feasibility unverified\nBATHS\n3\n\nExcluded unresolved inputs: Other income, Maint. & Security Fee by PMC, Private money, Pest, PadSplit, Holding costs, Invoice authorization credit. Subtotals are not complete returns or total cash required.",
+      "parity": "passed; whole-dollar detail rounding"
+    },
+    {
+      "id": "40",
+      "card_values": [
+        "$-460.01",
+        "-2.7%",
+        "$203,802"
+      ],
+      "overview": "Numbers overview\n\nProvisional modeled scenario \u00b7 required inputs missing.\n\nCASH INVESTED*\n$203,802\nPROVISIONAL CASH FLOW\n-$460\nExcludes unresolved inputs; not complete returns\nANNUAL CASH FLOW\nMissing input\nPROVISIONAL COC\n-2.7%\nOnly shown with complete invested denominator\nNOI / YR\nMissing input\nCAPEX TOTAL\n$44,500\nMODELED ROOMS\n10\nSource current rooms: 4; feasibility unverified\nBATHS\n4\n\nExcluded unresolved inputs: Maint. & Security Fee by PMC. Subtotals are not complete returns or total cash required.",
+      "parity": "passed; whole-dollar detail rounding"
+    }
+  ],
+  "grove_originals": {
+    "page_url": "https://media.zillowmediaexperts.com/sites/6704-grove-st-denver-co-80221-23602201",
+    "retrieved": "2026-11-07",
+    "method": "Ordinary public HTML FloorPlans img src only; no APIs/synthesized URLs. Unmodified full images, address and disclaimer preserved.",
+    "html_sha256": "de0f2c0239b513b156eb7e2e23442965f7e44966b9f54e3f1cf7223590035043",
+    "geometry_match": {
+      "main": "Same kitchen18ft9x10ft10, living14ft8x15ft11, dining10ft2x15ft11, stairs/laundry/baths/primary; proposed crop omits garage/deck, clean original retains them.",
+      "basement": "Same finished35ft3x14ft9, kitchenette17ftx10ft11, utility7ft8x10ft11, bath7ftx10ft11, bedrooms13ft5x10ft5 and16ft3x10ft11, stairs/hall. Red room5 partition only in After."
+    },
+    "assets": [
+      {
+        "level": "basement",
+        "source_url": "https://aryeo.sfo2.digitaloceanspaces.com/listings/019d68a8-fed8-703e-9053-2a8f1a539a23/floorplans/large/019d6ea6-03fc-73dd-8739-626b86bfa37d.jpeg",
+        "mime": "image/jpeg",
+        "bytes": 88682,
+        "sha256": "fd34889635862a8b12d930d123c08b6195915b3bd59e53a4baff3fab102a2aa7",
+        "dimensions": [
+          2048,
+          1365
+        ],
+        "asset_pointer": "src/assets/grove-current-basement-public.jpg.asset.json"
+      },
+      {
+        "level": "main",
+        "source_url": "https://aryeo.sfo2.digitaloceanspaces.com/listings/019d68a8-fed8-703e-9053-2a8f1a539a23/floorplans/large/019d6ea6-0555-704b-bfc8-ba83da77345a.jpeg",
+        "mime": "image/jpeg",
+        "bytes": 119009,
+        "sha256": "658e9ded0e594f3caadd7a727122ea40f714a44d79eda7b54ed2a1de9125782b",
+        "dimensions": [
+          2048,
+          1365
+        ],
+        "asset_pointer": "src/assets/grove-current-main-public.jpg.asset.json"
+      },
+      {
+        "level": "combined",
+        "source_url": "https://aryeo.sfo2.digitaloceanspaces.com/listings/019d68a8-fed8-703e-9053-2a8f1a539a23/floorplans/large/019d6ea6-0693-72c0-8a92-804875aff941.jpeg",
+        "mime": "image/jpeg",
+        "bytes": 124337,
+        "sha256": "f5f194201e80f2d695e74b8d50e63b4d322dd3abc033735a8f4a368447e2cb58",
+        "dimensions": [
+          2048,
+          1365
+        ]
+      }
+    ]
+  },
+  "export_count": 24
+}

@@ -1,0 +1,54 @@
+{
+  "test_count": 112,
+  "target": "http://localhost:8080",
+  "checks": [
+    {
+      "width": 1280,
+      "id": "6",
+      "caption": "10 modeled \u00b7 8 source-plan \u00b7 Aurora",
+      "detail_default": 10,
+      "max": 16,
+      "reset": 10
+    },
+    {
+      "width": 1280,
+      "id": "8",
+      "caption": "10 modeled \u00b7 7 source-plan \u00b7 Denver",
+      "detail_default": 10,
+      "max": 16,
+      "reset": 10
+    },
+    {
+      "width": 1280,
+      "id": "40",
+      "caption": "10 modeled \u00b7 9 source-concept \u00b7 Denver",
+      "detail_default": 10,
+      "max": 16,
+      "reset": 10
+    },
+    {
+      "width": 390,
+      "id": "6",
+      "caption": "10 modeled \u00b7 8 source-plan \u00b7 Aurora",
+      "detail_default": 10,
+      "max": 16,
+      "reset": 10
+    },
+    {
+      "width": 390,
+      "id": "8",
+      "caption": "10 modeled \u00b7 7 source-plan \u00b7 Denver",
+      "detail_default": 10,
+      "max": 16,
+      "reset": 10
+    },
+    {
+      "width": 390,
+      "id": "40",
+      "caption": "10 modeled \u00b7 9 source-concept \u00b7 Denver",
+      "detail_default": 10,
+      "max": 16,
+      "reset": 10
+    }
+  ]
+}

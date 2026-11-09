@@ -1,0 +1,112 @@
+{
+  "test_count": 110,
+  "test_target": "http://localhost:8080",
+  "listed_tax_fields": [
+    {
+      "id": "6",
+      "annual_tax": 3553,
+      "monthly_tax": 296.0833333333333,
+      "monthly_insurance_estimate": 496.0833333333333,
+      "reset": "passed",
+      "septic": 0,
+      "hoa": null
+    },
+    {
+      "id": "8",
+      "annual_tax": 3928,
+      "monthly_tax": 327.3333333333333,
+      "monthly_insurance_estimate": 527.3333333333333,
+      "reset": "passed",
+      "septic": 0,
+      "hoa": 0
+    }
+  ],
+  "card_detail_parity": [
+    {
+      "id": "6",
+      "card_values": [
+        "$1,498.72",
+        "Missing input",
+        "$144,300"
+      ],
+      "overview": "Numbers overview\n\nProvisional modeled scenario \u00b7 required inputs missing.\n\nINVESTED SUBTOTAL\n$144,300\nKnown upfront inputs only; not total cash required\nPROVISIONAL CASH FLOW\n$1,499\nExcludes unresolved inputs; not complete returns\nANNUAL CASH FLOW\nMissing input\nPROVISIONAL COC\nMissing input\nOnly shown with complete invested denominator\nNOI / YR\nMissing input\nCAPEX TOTAL\n$24,300\nMODELED ROOMS\n10\nSource current rooms: 5; feasibility unverified\nBATHS\n4\n\nExcluded unresolved inputs: Other income, Maint. & Security Fee by PMC, HOA, Private money, Pest, PadSplit, Holding costs, Invoice authorization credit. Subtotals are not complete returns or total cash required.",
+      "parity": "passed; whole-dollar detail rounding"
+    },
+    {
+      "id": "8",
+      "card_values": [
+        "$1,554.37",
+        "Missing input",
+        "$61,074.94"
+      ],
+      "overview": "Numbers overview\n\nProvisional modeled scenario \u00b7 required inputs missing.\n\nINVESTED SUBTOTAL\n$61,075\nKnown upfront inputs only; not total cash required\nPROVISIONAL CASH FLOW\n$1,554\nExcludes unresolved inputs; not complete returns\nANNUAL CASH FLOW\nMissing input\nPROVISIONAL COC\nMissing input\nOnly shown with complete invested denominator\nNOI / YR\nMissing input\nCAPEX TOTAL\n$16,300\nMODELED ROOMS\n10\nSource current rooms: 5; feasibility unverified\nBATHS\n3\n\nExcluded unresolved inputs: Other income, Maint. & Security Fee by PMC, Private money, Pest, PadSplit, Holding costs, Invoice authorization credit. Subtotals are not complete returns or total cash required.",
+      "parity": "passed; whole-dollar detail rounding"
+    },
+    {
+      "id": "40",
+      "card_values": [
+        "$-460.01",
+        "-2.7%",
+        "$203,802"
+      ],
+      "overview": "Numbers overview\n\nProvisional modeled scenario \u00b7 required inputs missing.\n\nCASH INVESTED*\n$203,802\nPROVISIONAL CASH FLOW\n-$460\nExcludes unresolved inputs; not complete returns\nANNUAL CASH FLOW\nMissing input\nPROVISIONAL COC\n-2.7%\nOnly shown with complete invested denominator\nNOI / YR\nMissing input\nCAPEX TOTAL\n$44,500\nMODELED ROOMS\n10\nSource current rooms: 4; feasibility unverified\nBATHS\n4\n\nExcluded unresolved inputs: Maint. & Security Fee by PMC. Subtotals are not complete returns or total cash required.",
+      "parity": "passed; whole-dollar detail rounding"
+    }
+  ],
+  "all_three_desktop_mobile": [
+    {
+      "width": 1280,
+      "id": "6",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.791044776119403,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "id": "8",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.791044776119403,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "id": "40",
+      "gallery_decode": 30,
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.791044776119403,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "id": "6",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.7911402526787141,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "id": "8",
+      "gallery_decode": "controls checked",
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.7911402526787141,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "id": "40",
+      "gallery_decode": 30,
+      "count_reset": 10,
+      "max": 16,
+      "parking_ratio": 1.7911402526787141,
+      "errors": []
+    }
+  ]
+}

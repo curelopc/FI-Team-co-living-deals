@@ -1,0 +1,87 @@
+{
+  "target": "http://localhost:8080",
+  "negative_card_cash": "-$460.01",
+  "checks": [
+    {
+      "width": 1280,
+      "deal": "6",
+      "level": "main",
+      "footer": "Wall/door planning allowance (estimated): $3,000 (1 \u00d7 $3,000; proposed room 1). Level detail only, not an additional budget charge or total renovation quote. Across levels: $9,000 versus historical $4,000 wall/door line; reconciliation pending, not confirmed funded. Historical $24,300 project budget retained once. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 1,
+      "file_name": "fraser-main-before-after.png"
+    },
+    {
+      "width": 1280,
+      "deal": "6",
+      "level": "basement",
+      "footer": "Wall/door planning allowance (estimated): $6,000 (2 \u00d7 $3,000; proposed rooms 7 / 8). Level detail only, not an additional budget charge or total renovation quote. Across levels: $9,000 versus historical $4,000 wall/door line; reconciliation pending, not confirmed funded. Historical $24,300 project budget retained once. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 1,
+      "file_name": "fraser-basement-before-after.png"
+    },
+    {
+      "width": 1280,
+      "deal": "8",
+      "level": "main",
+      "footer": "Wall/door planning allowance (estimated): $3,000 (1 \u00d7 $3,000; proposed room 1). Level detail only, not an additional budget charge or total renovation quote. Across levels: $6,000 matches historical wall/door line; $16,300 project budget retained once, remaining budget unallocated. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 2,
+      "file_name": "grove-main-before-after.png"
+    },
+    {
+      "width": 1280,
+      "deal": "8",
+      "level": "basement",
+      "footer": "Wall/door planning allowance (estimated): $3,000 (1 \u00d7 $3,000; proposed room 5). Level detail only, not an additional budget charge or total renovation quote. Across levels: $6,000 matches historical wall/door line; $16,300 project budget retained once, remaining budget unallocated. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 2,
+      "file_name": "grove-basement-before-after.png"
+    },
+    {
+      "width": 390,
+      "deal": "6",
+      "level": "main",
+      "footer": "Wall/door planning allowance (estimated): $3,000 (1 \u00d7 $3,000; proposed room 1). Level detail only, not an additional budget charge or total renovation quote. Across levels: $9,000 versus historical $4,000 wall/door line; reconciliation pending, not confirmed funded. Historical $24,300 project budget retained once. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 1,
+      "file_name": "fraser-main-before-after-mobile.png"
+    },
+    {
+      "width": 390,
+      "deal": "6",
+      "level": "basement",
+      "footer": "Wall/door planning allowance (estimated): $6,000 (2 \u00d7 $3,000; proposed rooms 7 / 8). Level detail only, not an additional budget charge or total renovation quote. Across levels: $9,000 versus historical $4,000 wall/door line; reconciliation pending, not confirmed funded. Historical $24,300 project budget retained once. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 1,
+      "file_name": "fraser-basement-before-after-mobile.png"
+    },
+    {
+      "width": 390,
+      "deal": "8",
+      "level": "main",
+      "footer": "Wall/door planning allowance (estimated): $3,000 (1 \u00d7 $3,000; proposed room 1). Level detail only, not an additional budget charge or total renovation quote. Across levels: $6,000 matches historical wall/door line; $16,300 project budget retained once, remaining budget unallocated. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 2,
+      "file_name": "grove-main-before-after-mobile.png"
+    },
+    {
+      "width": 390,
+      "deal": "8",
+      "level": "basement",
+      "footer": "Wall/door planning allowance (estimated): $3,000 (1 \u00d7 $3,000; proposed room 5). Level detail only, not an additional budget charge or total renovation quote. Across levels: $6,000 matches historical wall/door line; $16,300 project budget retained once, remaining budget unallocated. Other level costs unknown; no additional closet, egress or bath scope assumed.",
+      "decoded_images": 2,
+      "file_name": "grove-basement-before-after-mobile.png"
+    }
+  ],
+  "vitest": {
+    "passed": 117,
+    "files": 14
+  },
+  "refreshed_exports": [
+    "fraser-basement-before-after-mobile.png",
+    "fraser-basement-before-after.png",
+    "fraser-main-before-after-mobile.png",
+    "fraser-main-before-after.png",
+    "grove-basement-before-after-mobile.png",
+    "grove-basement-before-after.png",
+    "grove-main-before-after-mobile.png",
+    "grove-main-before-after.png",
+    "home-desktop-hover.png",
+    "home-mobile-modeled-count.png"
+  ],
+  "unaffected_exports_preserved": 19
+}

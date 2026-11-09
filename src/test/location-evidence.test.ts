@@ -1,0 +1,12 @@
+import {it,expect} from 'vitest';
+import {parseResearch} from '../lib/research';
+import {locationEvidence} from '../lib/location-evidence';
+it.each([['6',39.6874711,-104.8113607],['8',39.8185563,-105.0272394],['40',39.6996391,-104.8732734]] as const)('applies approved Nov7 coordinates for%s without mutating sheet cells', (id,lat,lng)=>{
+ const source=[['id','site_eligibility','latitude','longitude'],[id,'ELIGIBLE_ACTIVE','39.7','-105.0']];const original=structuredClone(source);const d=parseResearch(source)[0];expect(d?.latitude).toBe(lat);expect(d?.longitude).toBe(lng);expect(d?.cells['latitude']).toBe('39.7');expect(source).toEqual(original);
+});
+it('does not bypass eligibility or missing source coordinates for authorized ids',()=>{expect(parseResearch([['id','site_eligibility','latitude','longitude'],['8','INELIGIBLE','39.7','-105']])).toHaveLength(0);expect(parseResearch([['id','site_eligibility','latitude','longitude'],['8','ELIGIBLE_ACTIVE','','']])).toHaveLength(0);});
+it('preserves other valid feed coordinates',()=>{expect(parseResearch([['id','site_eligibility','latitude','longitude'],['99','ELIGIBLE_ACTIVE','39.2','-104.2']])[0]?.latitude).toBe(39.2);});
+it('Fraser separates driveway and two public curb possibilities, conditional/tandem excluded',()=>{expect(locationEvidence['6']?.cars).toEqual([{x:44,y:49,width:1.8,kind:'drive'},{x:41,y:55.7,width:1.8,kind:'street',vertical:true},{x:37.7,y:52.1,width:1.8,kind:'street',vertical:true}]);});
+it('Grove target apron avoids lawn and separate low-confidence curb positions',()=>{expect(locationEvidence['8']?.cars).toEqual([{x:42.6,y:46.3,width:1.8,kind:'drive'},{x:38,y:52.3,width:1.8,kind:'street',vertical:true},{x:35.5,y:52.3,width:1.8,kind:'street',vertical:true}]);});
+it('Elmira keeps911 driveway, not909 neighbor, with conservative onepercurb',()=>{expect(locationEvidence['40']?.cars).toEqual([{x:51.2,y:54.3,width:1.8,kind:'drive'},{x:51.2,y:56,width:1.8,kind:'drive'},{x:49.6,y:54.3,width:1.8,kind:'drive'},{x:49.6,y:56,width:1.8,kind:'drive'},{x:54,y:51.5,width:1.8,kind:'street',vertical:true},{x:55.8,y:51.5,width:1.8,kind:'street',vertical:true}]);});
+it('Elmira tandem pair stays behind the observed cars on the paved pad, clear of the street',()=>{const cars=locationEvidence['40']?.cars ?? [];const drive=cars.filter(c=>c.kind==='drive');expect(drive).toHaveLength(4);for(const c of drive){expect(c.x).toBeLessThan(53);}expect(cars.filter(c=>c.kind==='street')).toHaveLength(2);});
