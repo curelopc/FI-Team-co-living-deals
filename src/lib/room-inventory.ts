@@ -1,7 +1,10 @@
 import { elmiraBasementConcept } from './elmira-basement-concept';
+import { portalRoomInventory } from './portal-rooms';
 import type { AnalysisRoom } from './underwriting';
 /** Approved numbered drawing inventory, independent of financial/source reproduction. */
 export function drawnRoomInventory(id: string, research?: Record<string, string>): Omit<AnalysisRoom, 'rent'>[] | null {
+ const portal = portalRoomInventory(id);
+ if (portal) return portal;
  const identities: Record<string, [string,string]> = {
   '6':['1BgaackKdZ4aXywzG4D4uFv3FSmY_V9GE','1DRH3TUnIqc66SeRfMYBsZQKW4RzGT-OI'],
   '8':['1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS','1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE'],

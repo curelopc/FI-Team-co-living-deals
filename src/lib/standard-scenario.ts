@@ -4,6 +4,7 @@ import type { AnalysisSeed } from './underwriting';
 import { drawnRoomInventory } from './room-inventory';
 import { validateProposal, type ProposalInventory } from './deal-intake';
 import { fillFinancialAssumptions } from './financial-assumptions';
+import { portalDeal } from './portal-catalog';
 
 /** Craig-authorized modeled scenario, deliberately separate from source reproduction. */
 export function standardScenario(seed: AnalysisSeed, research: Record<string, string>, proposal?: ProposalInventory | null): AnalysisSeed {
@@ -13,18 +14,28 @@ export function standardScenario(seed: AnalysisSeed, research: Record<string, st
   const elmira = research['id'] === '40';
   value.inputs.serviceRent = serviceRent;
   value.inputs.rentBasis = elmira ? 'historical-comparable' : 'research';
-  value.inputs.sharedRentEstimate = elmira ? 670 : null;
-  value.inputs.privateRentEstimate = elmira ? 830 : null;
+  value.inputs.sharedRentEstimate = elmira ? 670 : parseNumber(research['shared_rent_estimate']);
+  value.inputs.privateRentEstimate = elmira ? 830 : parseNumber(research['private_rent_estimate']);
+  const splitRent = value.inputs.sharedRentEstimate != null && value.inputs.privateRentEstimate != null;
   value.inputs.tenantUtilityFee = elmira ? 80 : parseNumber(research['coliving_pro_util_fee']) ?? 80;
   const approved = proposal === undefined ? drawnRoomInventory(research['id'] ?? '', research) : validateProposal(proposal);
   const inventory = approved ?? original.filter(room => room.evidence !== 'Co-Living Pro assumption; drawing not verified').map((room, i) => ({ ...room, number: room.number ?? i + 1, drawn: false, name: `Scenario room ${room.number ?? i + 1} (not drawn)`, level: room.level || 'Unverified' }));
   value.inputs.rooms = inventory.map(room => ({ ...room,
-    rent: elmira ? room.bath.includes('ensuite') ? 830 : 670 : (() => { const source = original.find(row => row.number === room.number && row.evidence !== 'Co-Living Pro assumption; drawing not verified'); return source ? source.rent : serviceRent; })(),
+    rent: splitRent ? (/private|ensuite/i.test(room.bath) ? value.inputs.privateRentEstimate ?? 830 : value.inputs.sharedRentEstimate ?? 670) : (() => { const source = original.find(row => row.number === room.number && row.evidence !== 'Co-Living Pro assumption; drawing not verified'); return source ? source.rent : serviceRent; })(),
   }));
   value.inputs.managementBase = 'gross';
   value.inputs.managementPercent = 16;
   value.inputs.vacancyPercent = 5;
-  const listing = listingFinancialEvidence[research['id'] ?? ''];
+  const portal = portalDeal(research['id']);
+  const listing = listingFinancialEvidence[research['id'] ?? ''] ?? (portal ? {
+    annualTax: portal.taxAnnual,
+    taxLabel: `Listed tax ${portal.taxYear} / mo $`,
+    sourceUrl: portal.listingUrl,
+    retrieved: '2026-11-09',
+    septicNotApplicable: true,
+    noAssociation: true,
+    audit: `Listing tax $${portal.taxAnnual.toLocaleString('en-US')} for ${portal.taxYear}. Insurance is monthly tax plus $200, an estimate. HOA and septic are $0 estimates unless a source amount appears.`,
+  } : undefined);
   if (listing) {
     value.inputs.taxes = listing.annualTax / 12;
     value.inputs.taxLabel = listing.taxLabel;

@@ -34,10 +34,11 @@ vi.mock('../lib/sheets.server', () => ({
 }));
 
 import { getDeal, getDeals } from '../lib/deals.functions';
+import { portalDeals } from '../lib/portal-catalog';
 
 describe('anonymous read-only preview access', () => {
   it('returns eligible home listings with no visitor credentials', async () => {
-    expect((await getDeals()).deals.map(deal => deal.id)).toEqual(['6', '8', '40']);
+    expect((await getDeals()).deals.map(deal => deal.id)).toEqual(['6', '8', '40', ...portalDeals.map(deal => deal.id)]);
   });
   it('returns Research analysis without login, while ineligible IDs stay unavailable', async () => {
     const result = await getDeal({ data: { id: '6' } });

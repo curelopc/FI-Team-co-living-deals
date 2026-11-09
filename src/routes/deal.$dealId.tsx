@@ -11,6 +11,8 @@ import { planEvidence } from '@/lib/plan-evidence';
 import { useAnalysisSession } from '@/components/AnalysisSession';
 import { modelSummary } from '@/lib/deal-intake';
 import { Explanation } from '@/components/Explanation';
+import { ConceptPlan } from '@/components/ConceptPlan';
+import { portalDeal } from '@/lib/portal-catalog';
 import { propertyReview } from '@/lib/property-review';
 import { WindowEvidenceTable } from '@/components/WindowEvidenceTable';
 import fiTeamLogo from '@/assets/the-fi-team-logo.png.asset.json';
@@ -389,6 +391,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         {seed.historical && <HistoricalUnderwrite report={seed.historical} />}
 
+        {portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} /> : <>
         <PlanSection
           key={`${dealId}-main-${mainPlanUrl}`}
           title={planEvidence(cells['Floorplan Main'] || '', 'main', data.research?.id).title}
@@ -410,10 +413,11 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             placeholder="Floor plan coming soon"
           />
         )}
+        </>}
 
         <section className="py-7">
           <SectionTitle>Parking</SectionTitle>
-          {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : parkingUrl ? (
+          {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : portalDeal(data.research?.id) ? <PortalParking id={data.research?.id ?? dealId} /> : parkingUrl ? (
             <ParkingImage key={`${dealId}-${parkingUrl}`} url={parkingUrl} spots={parkingSpots} note={parkingNote} />
           ) : (
             <div
@@ -428,6 +432,9 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         <section className="py-7">
           <SectionTitle>Rent roll by room</SectionTitle>
+          {analysis.sharedRentEstimate != null && analysis.privateRentEstimate != null && (
+            <p className="mb-3 text-sm text-muted-foreground">Bedroom rents are estimates: ${analysis.sharedRentEstimate} shared bath, ${analysis.privateRentEstimate} private bath.</p>
+          )}
           {rentRoll.length === 0 ? (
             <p className="rounded-xl bg-card p-5 text-sm text-muted-foreground shadow-sm">
               Not yet itemized.
@@ -541,6 +548,20 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
           </a>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function PortalParking({ id }: { id: string }) {
+  const deal = portalDeal(id);
+  if (!deal) return null;
+  return (
+    <div className="rounded-xl bg-card p-5 text-sm shadow-sm">
+      <p className="font-bold text-hc-navy">Garage {deal.garageObserved} observed. Driveway {deal.drivewayEstimated} estimated. Street {deal.streetEstimated} estimated.</p>
+      <p className="mt-2 text-muted-foreground">{deal.parkingNote}</p>
+      <Explanation>
+        <p>No aerial was inspected for this address. Garage count is the MLS figure. Driveway and street counts are estimates, not reserved spaces or a legal total.</p>
+      </Explanation>
     </div>
   );
 }
