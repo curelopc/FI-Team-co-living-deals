@@ -2,7 +2,7 @@ import { monthlyPayment, type AnalysisSeed } from './underwriting';
 import { parseNumber } from './deals';
 
 export interface FinancialBasis { field: string; label?: string; kind: 'Source' | 'Estimated'; value: number; units: string; basis: string }
-/** Fill only absent financial values in the working scenario, never the source seed. */
+/** Fill absent financial values in the working scenario, and always apply the FI Team standard 20% down. Never edits the source seed. */
 export function fillFinancialAssumptions(seed: AnalysisSeed, research: Record<string, string>) {
   const input = seed.inputs;
   const records: FinancialBasis[] = [];
@@ -14,7 +14,9 @@ export function fillFinancialAssumptions(seed: AnalysisSeed, research: Record<st
   fill('price', parseNumber(research['purchase_list_price']) ?? 500000, '$ purchase', 'Listing price when available; otherwise $500,000 planning placeholder, not a valuation.');
   fill('rate', 7.5, '% annual', '7.5% planning mortgage rate, not a lender quote.');
   fill('termYears', 30, 'years', '30-year amortization planning assumption.');
-  fill('downPercent', 20, '% purchase price', '20% down planning assumption; no supplemental private financing.');
+  // Every live scenario uses 20% down. An old report down payment stays on the historical report.
+  input.downPercent = 20;
+  records.push({ field: 'downPercent', kind: 'Estimated', value: 20, units: '% purchase price', basis: 'FI Team standard assumption: 20% down on a conventional loan. Loan equals price minus 20%, and principal and interest use that loan. The old report down payment stays in the old report.' });
   fill('closingCosts', (input.price ?? 0)*0.02, '$ upfront', '2% of purchase price closing allowance, excluding renovation and holding.');
   fill('taxes', (input.price ?? 0)*0.006/12, '$ / month', '0.6% of purchase price per year planning tax allowance, not an assessor record.');
   fill('insurance', (input.taxes ?? 0)+200, '$ / month', 'Monthly tax plus $200 insurance convention, not a quote.');

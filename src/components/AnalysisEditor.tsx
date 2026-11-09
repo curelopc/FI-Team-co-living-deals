@@ -8,7 +8,8 @@ export function AnalysisEditor({ seed, value, onChange, onReset }: { seed: Analy
   const result = calculateAnalysis(value);
   const number = (raw: string, _max = Infinity): Amount => raw === '' ? null : Number(raw);
   function field(label: string, key: 'price'|'rate'|'termYears'|'downPercent'|'closingCosts'|'taxes'|'insurance'|'utilities'|'managementPercent'|'vacancyPercent'|'reno'|'holding'|'invoiceCredit'|'otherIncome'|'reservePercent'|'repairsPercent', max?: number) {
-    const displayLabel = key==='taxes' ? value.taxLabel ?? label : label;
+    const standardDown = key==='downPercent' && value.financialBasis?.some(item => item.field==='downPercent' && item.basis.includes('FI Team standard assumption'));
+    const displayLabel = key==='taxes' ? value.taxLabel ?? label : standardDown ? 'Down payment % · FI Team standard assumption' : label;
     return <label className="min-w-0 text-sm font-semibold" key={key}>{displayLabel}<input aria-label={displayLabel} type="number" min="0" max={max} step="0.01" value={value[key] ?? ''} placeholder="Unavailable" onChange={e => onChange({ ...value, [key]: key === 'managementPercent' ? number(e.target.value, max) ?? 16 : number(e.target.value, max) })} className={inputClass} />{value[key] != null && Number(value[key]) < 0 && <span role="alert" className="text-xs text-destructive">Must be 0 or greater. Returns unavailable.</span>}</label>;
   }
   return <section className="border-y border-hc-border py-7" aria-label="Edit analysis">

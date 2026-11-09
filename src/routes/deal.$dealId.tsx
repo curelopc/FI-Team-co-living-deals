@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, type ReactNode } from "react";
 import { AnalysisEditor } from '@/components/AnalysisEditor';
+import { HistoricalUnderwrite } from '@/components/HistoricalUnderwrite';
 import { dealQuery } from '@/lib/deal-queries';
 import { ParkingEvidence } from '@/components/ParkingEvidence';
 import { locationEvidence } from '@/lib/location-evidence';
@@ -349,8 +350,8 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
           <p className="mb-3 text-sm text-muted-foreground">{result.missing.length ? "Returns unavailable · check validation below" : "Estimated"}</p>
 
           <div className="grid grid-cols-2 gap-3.5 min-[800px]:grid-cols-4">
-            <StatCard label={pitch.cashInvested==null?"Invested subtotal":"Cash invested*"} highlight sub={pitch.cashInvested==null?"Known upfront inputs only; not total cash required":undefined}>
-              <Num value={pitch.cashInvested??result.investedSubtotal} money />
+            <StatCard label="Cash invested" highlight>
+              <Num value={result.cashInvested} money />
             </StatCard>
             <StatCard label={pitch.monthlyCashFlow==null?"Provisional cash flow":"Monthly cash flow"} sub={pitch.monthlyCashFlow==null?"Excludes unresolved inputs; not complete returns":undefined}>
               <Num value={pitch.monthlyCashFlow??result.provisionalCashFlow} money />
@@ -358,8 +359,8 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             <StatCard label="Annual cash flow">
               <Num value={pitch.annualCashFlow} money />
             </StatCard>
-            <StatCard label={coc==null?"Provisional CoC":"CoC %*"} highlight sub={coc==null?"Only shown with complete invested denominator":undefined}>
-              {coc ?? (result.provisionalCoc==null?null:fmtPct(result.provisionalCoc)) ?? <span className="text-muted-foreground">Unavailable</span>}
+            <StatCard label="CoC" highlight>
+              {coc ?? <span className="text-muted-foreground">Unavailable</span>}
             </StatCard>
             <StatCard label="NOI / yr">
               <Num value={noi} money />
@@ -385,6 +386,8 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
         </section>
 
         <AnalysisEditor seed={seed} value={analysis} onChange={value => { setAnalysis(value); }} onReset={() => setAnalysis(seed.inputs)} />
+
+        {seed.historical && <HistoricalUnderwrite report={seed.historical} />}
 
         <PlanSection
           key={`${dealId}-main-${mainPlanUrl}`}
