@@ -14,6 +14,7 @@ it('maintenance/security is a flat 150 per property per month, never multiplied 
   expect(fee?.perRoom).toBeFalsy();
   expect(v.expenses.filter(e => e.name === 'Maintenance / security')).toHaveLength(1);
   expect(v.expenses.some(e => e.name === 'Maint. & Security Fee by PMC')).toBe(false);
+  for(let i=0;i<2;i++)v=addRoom(v);
   const r10 = calculateAnalysis(v);
   for (let i = 0; i < 6; i++) v = addRoom(v);
   const r16 = calculateAnalysis(v);
@@ -32,7 +33,7 @@ it('removes every PadSplit variant from the modeled scenario even when the old s
   expect(v.tenantUtilityFee).toBe(80);
 });
 
-it('Elmira becomes a complete estimated scenario with the 150 fee: CF -610.01, annual -7320.12, CoC -3.5918%, NOI 41284.8', () => {
+it('Elmira becomes a complete estimated scenario with the 150 fee: CF -97.51, annual -1170.12, CoC -0.5741%, NOI 47434.8', () => {
   const source = seed();
   source.inputs.price = 724100; source.inputs.downPercent = 20; source.inputs.rate = 7.5; source.inputs.termYears = 30;
   source.inputs.closingCosts = 14482; source.inputs.reno = 44500; source.inputs.holding = 0; source.inputs.invoiceCredit = 0;
@@ -42,12 +43,12 @@ it('Elmira becomes a complete estimated scenario with the 150 fee: CF -610.01, a
   const v = standardScenario(source, { id: '40', coliving_pro_rent_per_room: '950' }).inputs;
   const r = calculateAnalysis(v);
   expect(r.missing).toEqual([]);
-  expect(r.grossIncome).toBe(7660);
-  expect(r.monthlyNoi).toBeCloseTo(3440.4, 6);
-  expect(r.monthlyNoi! * 12).toBeCloseTo(41284.8, 4);
-  expect(r.monthlyCashFlow).toBeCloseTo(-610.01, 1);
-  expect(r.annualCashFlow).toBeCloseTo(-7320.12, 0);
-  expect(r.cocPercent).toBeCloseTo(-3.5918, 3);
+  expect(r.grossIncome).toBe(8410);
+  expect(r.monthlyNoi).toBeCloseTo(3952.9, 6);
+  expect(r.monthlyNoi! * 12).toBeCloseTo(47434.8, 4);
+  expect(r.monthlyCashFlow).toBeCloseTo(-97.51, 1);
+  expect(r.annualCashFlow).toBeCloseTo(-1170.12, 0);
+  expect(r.cocPercent).toBeCloseTo(-0.5741, 3);
   expect(r.cashInvested).toBe(203802);
 });
 
@@ -59,5 +60,5 @@ it('negative rent still blocks complete and provisional income-dependent returns
   expect(r.monthlyCashFlow).toBeNull();
   expect(r.provisionalCashFlow).toBeNull();
   expect(r.provisionalCoc).toBeNull();
-  expect(r.missing).toContain('Modeled room 1 rent must be 0 or greater');
+  expect(r.missing).toContain('Bedroom 1 rent must be 0 or greater');
 });

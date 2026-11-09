@@ -10,10 +10,10 @@ it('enforces 16 rooms in the actual editor and Reset restores every original fie
  render(<Harness/>);
  for(let i=0;i<7;i++)fireEvent.click(screen.getByRole('button',{name:'Add room'}));
  expect(screen.getByRole('button',{name:'Add room'})).toBeDisabled();
- fireEvent.change(screen.getByRole('spinbutton',{name:'Modeled room 16 rent'}),{target:{value:'1000'}});
+ fireEvent.change(screen.getByRole('spinbutton',{name:'Scenario room 16 (not drawn) rent'}),{target:{value:'1000'}});
  fireEvent.change(screen.getByRole('spinbutton',{name:'Rate %'}),{target:{value:'6'}});
  fireEvent.click(screen.getByRole('button',{name:'Reset to original'}));
- expect(screen.queryByRole('spinbutton',{name:'Modeled room 16 rent'})).not.toBeInTheDocument();
+ expect(screen.queryByRole('spinbutton',{name:'Scenario room 16 (not drawn) rent'})).not.toBeInTheDocument();
  expect(screen.getByRole('spinbutton',{name:'Rate %'})).toHaveValue(null);
  expect(screen.getByRole('spinbutton',{name:'Room 1 rent'})).toHaveValue(750);
  expect(screen.getByRole('spinbutton',{name:'Purchase price $'})).toHaveValue(724100);

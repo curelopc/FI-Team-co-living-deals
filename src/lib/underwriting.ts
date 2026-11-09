@@ -1,11 +1,13 @@
 import { reportEvidence, type ReportEvidence } from './report-evidence';
 import { parseNumber, type DealRow, type TabRow } from './deals';
+import type { FinancialBasis } from './financial-assumptions';
 
 export type Amount = number | null;
-export interface AnalysisRoom { name: string; rent: Amount; level: string; bath: string; evidence?: string }
+export interface AnalysisRoom { name: string; rent: Amount; level: string; bath: string; evidence?: string; number?: number; drawn?: boolean }
 export interface AnalysisCapex { name: string; cost: Amount }
 export interface Expense { name: string; amount: Amount; evidence: string; perRoom?: boolean }
 export interface AnalysisInputs {
+  financialBasis?: FinancialBasis[];
   price: Amount; rate: Amount; termYears: Amount; downPercent: Amount; closingCosts: Amount;
   taxes: Amount; insurance: Amount; utilities: Amount; managementPercent: number; vacancyPercent: Amount;
   reno: Amount; holding: Amount; invoiceCredit: Amount; otherIncome: Amount;
@@ -15,7 +17,8 @@ export interface AnalysisInputs {
 export interface AnalysisSeed { inputs: AnalysisInputs; modelOnly: boolean; estimates: string[]; modelAssumptions: string[]; sourceUrl: string; sourceCashFlow: Amount; sourceCoc: Amount; historical?: ReportEvidence | undefined }
 export const MAX_ROOMS = 16;
 export function addRoom(input: AnalysisInputs): AnalysisInputs {
-  return input.rooms.length >= MAX_ROOMS ? input : { ...input, rooms: [...input.rooms, { name: `Modeled room ${input.rooms.length + 1}`, rent: input.rentBasis==='historical-comparable' ? input.sharedRentEstimate ?? null : input.serviceRent ?? null, level: 'Unclear', bath: 'Unclear', evidence: 'Session addition, drawing not verified' }] };
+  const number = Math.max(0, ...input.rooms.map((room, i) => room.number ?? i + 1)) + 1;
+  return input.rooms.length >= MAX_ROOMS ? input : { ...input, rooms: [...input.rooms, { number, drawn: false, name: `Scenario room ${number} (not drawn)`, rent: input.rentBasis==='historical-comparable' ? input.sharedRentEstimate ?? null : input.serviceRent ?? null, level: 'Scenario / not drawn', bath: 'Shared assumption; access unverified', evidence: 'Session addition only, no physical drawing' }] };
 }
 export function removeRoom(input: AnalysisInputs, index: number): AnalysisInputs {
   return input.rooms.length <= 1 ? input : { ...input, rooms: input.rooms.filter((_, i) => i !== index) };
@@ -39,6 +42,9 @@ export function monthlyPayment(annualPercent: number, months: number, loan: numb
 }
 export function calculateAnalysis(input: AnalysisInputs) {
   const missing: string[] = [];
+  const invalid = Object.entries(input).filter(([,value])=>typeof value==='number' && (!Number.isFinite(value)||value<0)).map(([key])=>`${key} must be finite and 0 or greater`);
+  for (const e of input.expenses) if(e.amount!=null&&(!Number.isFinite(e.amount)||e.amount<0)) invalid.push(`${e.name} must be finite and 0 or greater`);
+  for (const e of input.capex) if(e.cost!=null&&(!Number.isFinite(e.cost)||e.cost<0)) invalid.push(`${e.name} must be finite and 0 or greater`);
   const require = (n: Amount, label: string) => { if (n == null) missing.push(label); return n; };
   if (input.rooms.length < 1 || input.rooms.length > MAX_ROOMS) missing.push('Room count (1–16)');
   const grossRent = input.rooms.length ? sum(input.rooms.map(r => require(r.rent!=null&&(!Number.isFinite(r.rent)||r.rent<0)?null:r.rent, r.rent!=null&&r.rent<0?`${r.name} rent must be 0 or greater`:`${r.name} rent`))) : null;
@@ -60,7 +66,7 @@ export function calculateAnalysis(input: AnalysisInputs) {
   };
   const operatingExpenses = sum([management, vacancy, require(input.taxes, 'Monthly property tax'), require(input.insurance, 'Monthly insurance'), require(input.utilities, 'Monthly utilities'), ...input.expenses.map(e => require(expenseAmount(e), e.name))]);
   const monthlyNoi = grossIncome == null || operatingExpenses == null ? null : grossIncome - operatingExpenses;
-  const monthlyCashFlow = monthlyNoi == null || principalInterest == null ? null : monthlyNoi - principalInterest;
+  const monthlyCashFlow = invalid.length || monthlyNoi == null || principalInterest == null ? null : monthlyNoi - principalInterest;
   const annualCashFlow = monthlyCashFlow == null ? null : monthlyCashFlow * 12;
   const cash = sum([downPayment, require(input.closingCosts, 'Closing costs'), capexTotal, require(input.holding, 'Holding costs')]);
   const credit = require(input.invoiceCredit, 'Invoice authorization credit');
@@ -76,14 +82,14 @@ export function calculateAnalysis(input: AnalysisInputs) {
     const percent=e.name==='Monthly CapEx reserve'?input.reservePercent:e.name==='Repairs / maintenance'?input.repairsPercent:undefined;
     return percent===undefined?e.amount==null?null:e.amount*(e.perRoom?input.rooms.length:1):percent==null||knownGrossIncome==null?null:knownGrossIncome*percent/100;
   });
-  const provisionalCashFlow = knownGrossIncome == null || principalInterest == null ? null : knownGrossIncome - [knownManagement,knownVacancy,input.taxes,input.insurance,input.utilities,...partialExpenses].reduce<number>((n,x)=>n+(x??0),0) - principalInterest;
+  const provisionalCashFlow = invalid.length || knownGrossIncome == null || principalInterest == null ? null : knownGrossIncome - [knownManagement,knownVacancy,input.taxes,input.insurance,input.utilities,...partialExpenses].reduce<number>((n,x)=>n+(x??0),0) - principalInterest;
   const knownCapex = input.capex.length ? input.capex.reduce((n,c)=>n+(c.cost??0),0) : input.reno;
   const investedSubtotal = [downPayment,input.closingCosts,knownCapex,input.holding].every(n=>n==null) ? null : [downPayment,input.closingCosts,knownCapex,input.holding].reduce<number>((n,x)=>n+(x??0),0)-(credit??0);
   const provisionalCoc = cashInvested != null && cashInvested>0 && provisionalCashFlow!=null ? provisionalCashFlow*12/cashInvested*100 : null;
   return { grossRent, grossIncome, tenantUtilityIncome, capexTotal, management, vacancy, downPayment, loan, principalInterest, operatingExpenses, monthlyNoi, monthlyCashFlow, annualCashFlow, cashInvested,
     provisionalCashFlow, investedSubtotal, provisionalCoc,
     cocPercent: cashInvested != null && cashInvested > 0 && annualCashFlow != null ? annualCashFlow / cashInvested * 100 : null,
-    missing: [...new Set(missing)], knownOperatingExpenses, sourceComparableCashFlow,
+    missing: [...new Set([...missing,...invalid])], knownOperatingExpenses, sourceComparableCashFlow,
     sourceComparableCoc: cashInvested != null && cashInvested > 0 && sourceComparableCashFlow != null ? sourceComparableCashFlow * 12 / cashInvested * 100 : null };
 }
 export function seedAnalysis(cells: Record<string, string>, rentRoll: TabRow[], capex: TabRow[], research: Record<string, string> = {}, sourceRows: string[][] = []): AnalysisSeed {
@@ -94,7 +100,7 @@ export function seedAnalysis(cells: Record<string, string>, rentRoll: TabRow[], 
   const read = (label: string) => { const raw = source.get(label); return raw?.replace(/[$\s]/g, '') === '-' ? 0 : parseNumber(raw); };
   const modelOnly = rentRoll.length === 0;
   const count = parseNumber(research['converted_beds']);
-  const rooms = latestRooms(rentRoll).map(row => ({ name: row.cells['Room'] || 'Room', rent: parseNumber(row.cells['Rent/mo']), level: row.cells['Level'] || 'Unclear', bath: row.cells['Bath'] || 'Unclear', evidence: row.cells['Rent Note'] || 'Source label; plan verification incomplete' }));
+  const rooms: AnalysisRoom[] = latestRooms(rentRoll).map(row => ({ ...(parseNumber(row.cells['Room']?.match(/\d+/)?.[0]) == null ? {} : {number: Number(row.cells['Room']?.match(/\d+/)?.[0])}), name: row.cells['Room'] || 'Room', rent: parseNumber(row.cells['Rent/mo']), level: row.cells['Level'] || 'Unclear', bath: row.cells['Bath'] || 'Unclear', evidence: row.cells['Rent Note'] || 'Source label; plan verification incomplete' }));
   if (!rooms.length && count != null && Number.isInteger(count) && count > 0) {
     for (let i = 0; i < Math.min(count, MAX_ROOMS); i++) rooms.push({ name: `Room ${i + 1}`, rent: parseNumber(research['coliving_pro_rent_per_room']), level: 'Unclear', bath: 'Unclear', evidence: 'Co-Living Pro assumption; drawing not verified' });
   }

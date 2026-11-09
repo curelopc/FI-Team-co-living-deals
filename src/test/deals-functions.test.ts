@@ -42,7 +42,7 @@ describe('anonymous read-only preview access', () => {
   it('returns Research analysis without login, while ineligible IDs stay unavailable', async () => {
     const result = await getDeal({ data: { id: '6' } });
     expect(result.deal?.cells['Deal ID']).toBe('6');
-    expect(result.analysis?.inputs.rooms).toHaveLength(10);
+    expect(result.analysis?.inputs.rooms).toHaveLength(0); // Changed/unknown plan cannot borrow Fraser's approved inventory.
     expect((await getDeal({ data: { id: '3' } })).deal).toBeNull();
   });
   it('selects Research Callouts by numeric/string deal ID and preserves coordinates by moved header', async () => {
@@ -67,4 +67,4 @@ describe('anonymous read-only preview access', () => {
     expect(elmira.callouts.every(row => row.cells['Deal ID'] === '40' && row.cells['X%'] === '25' && row.cells['Y%'] === '50')).toBe(true);
   });
 });
-it('home and direct detail return identical modeled inputs and preserve original source count',async()=>{const home=await getDeals();const detail=await getDeal({data:{id:'6'}});expect(home.analyses['6']?.inputs).toEqual(detail.analysis?.inputs);expect(detail.sourceAnalysis?.inputs.rooms).toHaveLength(8);expect(detail.analysis?.inputs.rooms).toHaveLength(10);});
+it('home and direct detail return identical modeled inputs and preserve original source count',async()=>{const home=await getDeals();const detail=await getDeal({data:{id:'6'}});expect(home.analyses['6']?.inputs).toEqual(detail.analysis?.inputs);expect(detail.sourceAnalysis?.inputs.rooms).toHaveLength(8);expect(detail.analysis?.inputs.rooms).toHaveLength(0);});

@@ -41,10 +41,23 @@ function sheetsUnlinked(error: unknown): boolean {
 
 async function publishedPayload() {
   const mod = await import("./published-deals.json");
-  return ("default" in mod ? mod.default : mod) as {
+  const stored = ("default" in mod ? mod.default : mod) as {
     deals: ResearchDeal[];
     analyses: Record<string, Awaited<ReturnType<typeof resolveDeal>>["analysis"]>;
     bundles: Record<string, Awaited<ReturnType<typeof resolveDeal>>>;
+  };
+  // Re-run the current scenario on the exported source seeds so Grove's 9-bedroom
+  // rent roll and the shared holding math stay in step with the code, not the old snapshot.
+  const bundles = Object.fromEntries(Object.entries(stored.bundles).map(([id, bundle]) => {
+    const research = bundle.research;
+    const source = bundle.sourceAnalysis;
+    const analysis = source && research ? standardScenario(source, research.cells) : source;
+    return [id, { ...bundle, analysis }];
+  }));
+  return {
+    deals: stored.deals,
+    analyses: Object.fromEntries(stored.deals.map((deal) => [deal.id, bundles[deal.id]?.analysis ?? null])),
+    bundles,
   };
 }
 

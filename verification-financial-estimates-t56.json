@@ -1,0 +1,1424 @@
+{
+  "values": [
+    {
+      "id": "6",
+      "seed": {
+        "price": 525000,
+        "rate": 6.75,
+        "termYears": 30,
+        "downPercent": 20,
+        "closingCosts": 15000,
+        "taxes": 296.0833333333333,
+        "insurance": 496.0833333333333,
+        "utilities": 0,
+        "managementPercent": 16,
+        "vacancyPercent": 5,
+        "reno": 24300,
+        "holding": 8722.56,
+        "invoiceCredit": 0,
+        "otherIncome": 0,
+        "rooms": [
+          {
+            "number": 1,
+            "drawn": true,
+            "name": "Bedroom 1",
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 1; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 2,
+            "drawn": true,
+            "name": "Bedroom 2",
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 2; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 3,
+            "drawn": true,
+            "name": "Bedroom 3",
+            "level": "Upper",
+            "bath": "Primary-accessed shower ensuite (drawing evidence)",
+            "evidence": "Annotated proposed drawing bedroom 3; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 4,
+            "drawn": true,
+            "name": "Bedroom 4",
+            "level": "Upper",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 4; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 5,
+            "drawn": true,
+            "name": "Bedroom 5",
+            "level": "Upper",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 5; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 6,
+            "drawn": true,
+            "name": "Bedroom 6",
+            "level": "Basement",
+            "bath": "Bath access unclear",
+            "evidence": "Annotated proposed drawing bedroom 6; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 7,
+            "drawn": true,
+            "name": "Bedroom 7",
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 7; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          },
+          {
+            "number": 8,
+            "drawn": true,
+            "name": "Bedroom 8",
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 8; current drawing missing; not legal bedroom certification",
+            "rent": 770
+          }
+        ],
+        "capex": [],
+        "expenses": [
+          {
+            "name": "HOA",
+            "amount": 0,
+            "evidence": "Estimated: Assumed no HOA only because no source amount is available; verify association."
+          },
+          {
+            "name": "Private money",
+            "amount": 0,
+            "evidence": "Estimated: Assumed no supplemental private financing; primary mortgage remains separate."
+          },
+          {
+            "name": "Septic",
+            "amount": 0,
+            "evidence": "Not applicable: listed public sewer"
+          },
+          {
+            "name": "Pest",
+            "amount": 35,
+            "evidence": "Estimated: Declared $35/month recurring preventive pest allowance ($420/year), no quote."
+          },
+          {
+            "name": "Maintenance / security",
+            "amount": 150,
+            "evidence": "Estimated $150/property/mo combined; Craig Nov7, editable"
+          },
+          {
+            "name": "Water",
+            "amount": 20,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Gas",
+            "amount": 10,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Electricity",
+            "amount": 50,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Internet",
+            "amount": 100,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Trash",
+            "amount": 70,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Lawn care",
+            "amount": 80,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Cleaning",
+            "amount": 150,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Monthly CapEx reserve",
+            "amount": 250,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Repairs / maintenance",
+            "amount": 250,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          }
+        ],
+        "serviceRent": 770,
+        "rentBasis": "research",
+        "sharedRentEstimate": null,
+        "privateRentEstimate": null,
+        "tenantUtilityFee": 80,
+        "managementBase": "gross",
+        "taxLabel": "Listed tax 2025 / mo $",
+        "insuranceEstimate": true,
+        "financialBasis": [
+          {
+            "field": "price",
+            "kind": "Source",
+            "value": 525000,
+            "units": "$ purchase",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Purchase price"
+          },
+          {
+            "field": "rate",
+            "kind": "Source",
+            "value": 6.75,
+            "units": "% annual",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Mortgage rate"
+          },
+          {
+            "field": "termYears",
+            "kind": "Source",
+            "value": 30,
+            "units": "years",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Loan term"
+          },
+          {
+            "field": "downPercent",
+            "kind": "Source",
+            "value": 20,
+            "units": "% purchase price",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Down payment"
+          },
+          {
+            "field": "closingCosts",
+            "kind": "Source",
+            "value": 15000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Closing costs"
+          },
+          {
+            "field": "taxes",
+            "kind": "Source",
+            "value": 296.0833333333333,
+            "units": "$ / month",
+            "basis": "Listed tax 2025 / mo $",
+            "label": "Property tax"
+          },
+          {
+            "field": "insurance",
+            "kind": "Estimated",
+            "value": 496.0833333333333,
+            "units": "$ / month",
+            "basis": "Preserved editable monthly tax + $200 insurance convention, not an insurance quote.",
+            "label": "Insurance"
+          },
+          {
+            "field": "reno",
+            "kind": "Source",
+            "value": 24300,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Upfront renovation"
+          },
+          {
+            "field": "otherIncome",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Assumed no other income; no unverified parking income.",
+            "label": "Other income"
+          },
+          {
+            "field": "invoiceCredit",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ upfront credit",
+            "basis": "No verified credit assumed. Zero does not imply invoice authorization or approval.",
+            "label": "Invoice credit"
+          },
+          {
+            "field": "HOA",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Assumed no HOA only because no source amount is available; verify association.",
+            "label": "HOA"
+          },
+          {
+            "field": "Private money",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Assumed no supplemental private financing; primary mortgage remains separate.",
+            "label": "Private money"
+          },
+          {
+            "field": "Septic",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Not applicable: listed public sewer",
+            "label": "Septic"
+          },
+          {
+            "field": "Pest",
+            "kind": "Estimated",
+            "value": 35,
+            "units": "$ / month",
+            "basis": "Declared $35/month recurring preventive pest allowance ($420/year), no quote.",
+            "label": "Pest"
+          },
+          {
+            "field": "Maintenance / security",
+            "kind": "Estimated",
+            "value": 150,
+            "units": "$ / month",
+            "basis": "Estimated $150/property/mo combined; Craig Nov7, editable",
+            "label": "Maintenance / security"
+          },
+          {
+            "field": "Water",
+            "kind": "Estimated",
+            "value": 20,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Water"
+          },
+          {
+            "field": "Gas",
+            "kind": "Estimated",
+            "value": 10,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Gas"
+          },
+          {
+            "field": "Electricity",
+            "kind": "Estimated",
+            "value": 50,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Electricity"
+          },
+          {
+            "field": "Internet",
+            "kind": "Estimated",
+            "value": 100,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Internet"
+          },
+          {
+            "field": "Trash",
+            "kind": "Estimated",
+            "value": 70,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Trash"
+          },
+          {
+            "field": "Lawn care",
+            "kind": "Estimated",
+            "value": 80,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Lawn care"
+          },
+          {
+            "field": "Cleaning",
+            "kind": "Estimated",
+            "value": 150,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Cleaning"
+          },
+          {
+            "field": "Monthly CapEx reserve",
+            "kind": "Estimated",
+            "value": 250,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Monthly CapEx reserve"
+          },
+          {
+            "field": "Repairs / maintenance",
+            "kind": "Estimated",
+            "value": 250,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Repairs / maintenance"
+          },
+          {
+            "field": "holding",
+            "kind": "Estimated",
+            "value": 8722.56,
+            "units": "$ upfront / 2 pre-lease months",
+            "basis": "Assumed two months to renovate/lease: 2 \u00d7 ($2724.11 monthly mortgage P&I + $1637.17 tax, insurance, utilities and applicable HOA/pest/septic/private carry). Upfront pre-lease cash only; stabilized monthly cash flow has no additional holding charge. Excludes renovation, closing, management, vacancy, repairs/reserve and furnishing to avoid double counting.",
+            "label": "Holding costs"
+          }
+        ]
+      },
+      "result": {
+        "grossRent": 6160,
+        "grossIncome": 6800,
+        "tenantUtilityIncome": 640,
+        "capexTotal": 24300,
+        "management": 1088,
+        "vacancy": 340,
+        "downPayment": 105000,
+        "loan": 420000,
+        "principalInterest": 2724.112005586506,
+        "operatingExpenses": 3945.1666666666665,
+        "monthlyNoi": 2854.8333333333335,
+        "monthlyCashFlow": 130.72132774682768,
+        "annualCashFlow": 1568.6559329619322,
+        "cashInvested": 153022.56,
+        "provisionalCashFlow": 130.72132774682768,
+        "investedSubtotal": 153022.56,
+        "provisionalCoc": 1.0251141615732557,
+        "cocPercent": 1.0251141615732557,
+        "missing": [],
+        "knownOperatingExpenses": 3945.1666666666665,
+        "sourceComparableCashFlow": 130.72132774682768,
+        "sourceComparableCoc": 1.0251141615732557
+      }
+    },
+    {
+      "id": "8",
+      "seed": {
+        "price": 534999,
+        "rate": 6.25,
+        "termYears": 30,
+        "downPercent": 6.5,
+        "closingCosts": 10000,
+        "taxes": 327.3333333333333,
+        "insurance": 527.3333333333333,
+        "utilities": 0,
+        "managementPercent": 16,
+        "vacancyPercent": 5,
+        "reno": 16300,
+        "holding": 9399.26,
+        "invoiceCredit": 0,
+        "otherIncome": 0,
+        "rooms": [
+          {
+            "number": 1,
+            "drawn": true,
+            "name": "Bedroom 1",
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 1; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          },
+          {
+            "number": 2,
+            "drawn": true,
+            "name": "Bedroom 2",
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 2; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          },
+          {
+            "number": 3,
+            "drawn": true,
+            "name": "Bedroom 3",
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 3; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          },
+          {
+            "number": 4,
+            "drawn": true,
+            "name": "Bedroom 4",
+            "level": "Main",
+            "bath": "Primary Bathroom ensuite (drawing evidence)",
+            "evidence": "Annotated proposed drawing bedroom 4; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          },
+          {
+            "number": 5,
+            "drawn": true,
+            "name": "Bedroom 5",
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 5; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          },
+          {
+            "number": 6,
+            "drawn": true,
+            "name": "Bedroom 6",
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 6; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          },
+          {
+            "number": 7,
+            "drawn": true,
+            "name": "Bedroom 7",
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "Annotated proposed drawing bedroom 7; matched same-level current drawing; not legal bedroom certification",
+            "rent": 830
+          }
+        ],
+        "capex": [],
+        "expenses": [
+          {
+            "name": "HOA",
+            "amount": 0,
+            "evidence": "Listed no association"
+          },
+          {
+            "name": "Private money",
+            "amount": 0,
+            "evidence": "Estimated: Assumed no supplemental private financing; primary mortgage remains separate."
+          },
+          {
+            "name": "Septic",
+            "amount": 0,
+            "evidence": "Not applicable: listed public sewer"
+          },
+          {
+            "name": "Pest",
+            "amount": 35,
+            "evidence": "Estimated: Declared $35/month recurring preventive pest allowance ($420/year), no quote."
+          },
+          {
+            "name": "Maintenance / security",
+            "amount": 150,
+            "evidence": "Estimated $150/property/mo combined; Craig Nov7, editable"
+          },
+          {
+            "name": "Water",
+            "amount": 20,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Gas",
+            "amount": 10,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Electricity",
+            "amount": 50,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Internet",
+            "amount": 100,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Trash",
+            "amount": 70,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Lawn care",
+            "amount": 80,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Cleaning",
+            "amount": 150,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Monthly CapEx reserve",
+            "amount": 250,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Repairs / maintenance",
+            "amount": 250,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          }
+        ],
+        "serviceRent": 830,
+        "rentBasis": "research",
+        "sharedRentEstimate": null,
+        "privateRentEstimate": null,
+        "tenantUtilityFee": 80,
+        "managementBase": "gross",
+        "taxLabel": "Listed tax (year unspecified) / mo $",
+        "insuranceEstimate": true,
+        "financialBasis": [
+          {
+            "field": "price",
+            "kind": "Source",
+            "value": 534999,
+            "units": "$ purchase",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Purchase price"
+          },
+          {
+            "field": "rate",
+            "kind": "Source",
+            "value": 6.25,
+            "units": "% annual",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Mortgage rate"
+          },
+          {
+            "field": "termYears",
+            "kind": "Source",
+            "value": 30,
+            "units": "years",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Loan term"
+          },
+          {
+            "field": "downPercent",
+            "kind": "Source",
+            "value": 6.5,
+            "units": "% purchase price",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Down payment"
+          },
+          {
+            "field": "closingCosts",
+            "kind": "Source",
+            "value": 10000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Closing costs"
+          },
+          {
+            "field": "taxes",
+            "kind": "Source",
+            "value": 327.3333333333333,
+            "units": "$ / month",
+            "basis": "Listed tax (year unspecified) / mo $",
+            "label": "Property tax"
+          },
+          {
+            "field": "insurance",
+            "kind": "Estimated",
+            "value": 527.3333333333333,
+            "units": "$ / month",
+            "basis": "Preserved editable monthly tax + $200 insurance convention, not an insurance quote.",
+            "label": "Insurance"
+          },
+          {
+            "field": "reno",
+            "kind": "Source",
+            "value": 16300,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Upfront renovation"
+          },
+          {
+            "field": "otherIncome",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Assumed no other income; no unverified parking income.",
+            "label": "Other income"
+          },
+          {
+            "field": "invoiceCredit",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ upfront credit",
+            "basis": "No verified credit assumed. Zero does not imply invoice authorization or approval.",
+            "label": "Invoice credit"
+          },
+          {
+            "field": "HOA",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Listed no association",
+            "label": "HOA"
+          },
+          {
+            "field": "Private money",
+            "kind": "Estimated",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Assumed no supplemental private financing; primary mortgage remains separate.",
+            "label": "Private money"
+          },
+          {
+            "field": "Septic",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Not applicable: listed public sewer",
+            "label": "Septic"
+          },
+          {
+            "field": "Pest",
+            "kind": "Estimated",
+            "value": 35,
+            "units": "$ / month",
+            "basis": "Declared $35/month recurring preventive pest allowance ($420/year), no quote.",
+            "label": "Pest"
+          },
+          {
+            "field": "Maintenance / security",
+            "kind": "Estimated",
+            "value": 150,
+            "units": "$ / month",
+            "basis": "Estimated $150/property/mo combined; Craig Nov7, editable",
+            "label": "Maintenance / security"
+          },
+          {
+            "field": "Water",
+            "kind": "Estimated",
+            "value": 20,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Water"
+          },
+          {
+            "field": "Gas",
+            "kind": "Estimated",
+            "value": 10,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Gas"
+          },
+          {
+            "field": "Electricity",
+            "kind": "Estimated",
+            "value": 50,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Electricity"
+          },
+          {
+            "field": "Internet",
+            "kind": "Estimated",
+            "value": 100,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Internet"
+          },
+          {
+            "field": "Trash",
+            "kind": "Estimated",
+            "value": 70,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Trash"
+          },
+          {
+            "field": "Lawn care",
+            "kind": "Estimated",
+            "value": 80,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Lawn care"
+          },
+          {
+            "field": "Cleaning",
+            "kind": "Estimated",
+            "value": 150,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Cleaning"
+          },
+          {
+            "field": "Monthly CapEx reserve",
+            "kind": "Estimated",
+            "value": 250,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Monthly CapEx reserve"
+          },
+          {
+            "field": "Repairs / maintenance",
+            "kind": "Estimated",
+            "value": 250,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Repairs / maintenance"
+          },
+          {
+            "field": "holding",
+            "kind": "Estimated",
+            "value": 9399.26,
+            "units": "$ upfront / 2 pre-lease months",
+            "basis": "Assumed two months to renovate/lease: 2 \u00d7 ($3079.97 monthly mortgage P&I + $1619.67 tax, insurance, utilities and applicable HOA/pest/septic/private carry). Upfront pre-lease cash only; stabilized monthly cash flow has no additional holding charge. Excludes renovation, closing, management, vacancy, repairs/reserve and furnishing to avoid double counting.",
+            "label": "Holding costs"
+          }
+        ]
+      },
+      "result": {
+        "grossRent": 5810,
+        "grossIncome": 6370,
+        "tenantUtilityIncome": 560,
+        "capexTotal": 16300,
+        "management": 1019.2,
+        "vacancy": 318.5,
+        "downPayment": 34774.935,
+        "loan": 500224.065,
+        "principalInterest": 3079.9656088771076,
+        "operatingExpenses": 3837.366666666667,
+        "monthlyNoi": 2532.633333333333,
+        "monthlyCashFlow": -547.3322755437744,
+        "annualCashFlow": -6567.987306525292,
+        "cashInvested": 70474.19499999999,
+        "provisionalCashFlow": -547.3322755437744,
+        "investedSubtotal": 70474.19499999999,
+        "provisionalCoc": -9.319705328347904,
+        "cocPercent": -9.319705328347904,
+        "missing": [],
+        "knownOperatingExpenses": 3837.366666666667,
+        "sourceComparableCashFlow": -547.3322755437744,
+        "sourceComparableCoc": -9.319705328347904
+      }
+    },
+    {
+      "id": "40",
+      "seed": {
+        "price": 724100,
+        "rate": 7.5,
+        "termYears": 30,
+        "downPercent": 20,
+        "closingCosts": 14482,
+        "taxes": 280.5,
+        "insurance": 480.5,
+        "utilities": 0,
+        "managementPercent": 16,
+        "vacancyPercent": 5,
+        "reno": 44500,
+        "holding": 0,
+        "invoiceCredit": 0,
+        "otherIncome": 0,
+        "rooms": [
+          {
+            "number": 1,
+            "level": "Main",
+            "bath": "Primary-accessed ensuite (drawing evidence)",
+            "evidence": "Existing bedroom on authentic main drawing",
+            "drawn": true,
+            "name": "Bedroom 1",
+            "rent": 830
+          },
+          {
+            "number": 2,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Existing bedroom on authentic main drawing",
+            "drawn": true,
+            "name": "Bedroom 2",
+            "rent": 670
+          },
+          {
+            "number": 3,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Existing bedroom on authentic main drawing",
+            "drawn": true,
+            "name": "Bedroom 3",
+            "rent": 670
+          },
+          {
+            "number": 4,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Owner-approved conceptual conversion; common hall access",
+            "drawn": true,
+            "name": "Bedroom 4",
+            "rent": 670
+          },
+          {
+            "number": 5,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Owner-approved conceptual conversion; common hall access",
+            "drawn": true,
+            "name": "Bedroom 5",
+            "rent": 670
+          },
+          {
+            "number": 6,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "evidence": "Owner-approved conceptual conversion; common hall access",
+            "drawn": true,
+            "name": "Bedroom 6",
+            "rent": 670
+          },
+          {
+            "number": 7,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "existing west door from north common hall; concept, not certified",
+            "drawn": true,
+            "name": "Bedroom 7",
+            "rent": 670
+          },
+          {
+            "number": 8,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "new east partition gap to west common hall; concept, not certified",
+            "drawn": true,
+            "name": "Bedroom 8",
+            "rent": 670
+          },
+          {
+            "number": 9,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "new east partition gap to west common hall; concept, not certified",
+            "drawn": true,
+            "name": "Bedroom 9",
+            "rent": 670
+          },
+          {
+            "number": 10,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "new west partition gap to reserved east common hall; not through bath; concept, not certified",
+            "drawn": true,
+            "name": "Bedroom 10",
+            "rent": 670
+          },
+          {
+            "number": 11,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "evidence": "new south partition gap directly to north common hall; concept, not certified",
+            "drawn": true,
+            "name": "Bedroom 11",
+            "rent": 670
+          }
+        ],
+        "capex": [
+          {
+            "name": "Bedroom conversion x5 (living, dining, sitting, family west/east)",
+            "cost": 15000
+          },
+          {
+            "name": "Closet x5 for conversions",
+            "cost": 5000
+          },
+          {
+            "name": "Egress windows",
+            "cost": 0
+          },
+          {
+            "name": "Full bath",
+            "cost": 0
+          },
+          {
+            "name": "Additional refrigerator x2",
+            "cost": 2000
+          },
+          {
+            "name": "Washer / dryer",
+            "cost": 1500
+          },
+          {
+            "name": "Co-living setup",
+            "cost": 2500
+          },
+          {
+            "name": "Consultation",
+            "cost": 2500
+          },
+          {
+            "name": "Contingency",
+            "cost": 10000
+          },
+          {
+            "name": "Furnishings",
+            "cost": 6000
+          }
+        ],
+        "expenses": [
+          {
+            "name": "Private Money Loan Payment",
+            "amount": 0,
+            "evidence": "Original Inputs column B, monthly"
+          },
+          {
+            "name": "Septic Service",
+            "amount": 0,
+            "evidence": "Original Inputs column B, monthly"
+          },
+          {
+            "name": "Pest Control",
+            "amount": 0,
+            "evidence": "Original Inputs column B, monthly"
+          },
+          {
+            "name": "HOA",
+            "amount": 0,
+            "evidence": "Original Inputs column B, monthly"
+          },
+          {
+            "name": "Maintenance / security",
+            "amount": 150,
+            "evidence": "Estimated $150/property/mo combined; Craig Nov7, editable"
+          },
+          {
+            "name": "Water",
+            "amount": 20,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Gas",
+            "amount": 10,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Electricity",
+            "amount": 50,
+            "perRoom": true,
+            "evidence": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7"
+          },
+          {
+            "name": "Internet",
+            "amount": 100,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Trash",
+            "amount": 70,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Lawn care",
+            "amount": 80,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Cleaning",
+            "amount": 150,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Monthly CapEx reserve",
+            "amount": 250,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          },
+          {
+            "name": "Repairs / maintenance",
+            "amount": 250,
+            "evidence": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7"
+          }
+        ],
+        "serviceRent": null,
+        "rentBasis": "historical-comparable",
+        "sharedRentEstimate": 670,
+        "privateRentEstimate": 830,
+        "tenantUtilityFee": 80,
+        "managementBase": "gross",
+        "insuranceEstimate": true,
+        "financialBasis": [
+          {
+            "field": "price",
+            "kind": "Source",
+            "value": 724100,
+            "units": "$ purchase",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Purchase price"
+          },
+          {
+            "field": "rate",
+            "kind": "Source",
+            "value": 7.5,
+            "units": "% annual",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Mortgage rate"
+          },
+          {
+            "field": "termYears",
+            "kind": "Source",
+            "value": 30,
+            "units": "years",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Loan term"
+          },
+          {
+            "field": "downPercent",
+            "kind": "Source",
+            "value": 20,
+            "units": "% purchase price",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Down payment"
+          },
+          {
+            "field": "closingCosts",
+            "kind": "Source",
+            "value": 14482,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Closing costs"
+          },
+          {
+            "field": "taxes",
+            "kind": "Source",
+            "value": 280.5,
+            "units": "$ / month",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Property tax"
+          },
+          {
+            "field": "insurance",
+            "kind": "Estimated",
+            "value": 480.5,
+            "units": "$ / month",
+            "basis": "Preserved editable monthly tax + $200 insurance convention, not an insurance quote.",
+            "label": "Insurance"
+          },
+          {
+            "field": "reno",
+            "kind": "Source",
+            "value": 44500,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Upfront renovation"
+          },
+          {
+            "field": "otherIncome",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Other income"
+          },
+          {
+            "field": "invoiceCredit",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ upfront credit",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Invoice credit"
+          },
+          {
+            "field": "Private Money Loan Payment",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Original Inputs column B, monthly",
+            "label": "Private Money Loan Payment"
+          },
+          {
+            "field": "Septic Service",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Original Inputs column B, monthly",
+            "label": "Septic Service"
+          },
+          {
+            "field": "Pest Control",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Original Inputs column B, monthly",
+            "label": "Pest Control"
+          },
+          {
+            "field": "HOA",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ / month",
+            "basis": "Original Inputs column B, monthly",
+            "label": "HOA"
+          },
+          {
+            "field": "Maintenance / security",
+            "kind": "Estimated",
+            "value": 150,
+            "units": "$ / month",
+            "basis": "Estimated $150/property/mo combined; Craig Nov7, editable",
+            "label": "Maintenance / security"
+          },
+          {
+            "field": "Water",
+            "kind": "Estimated",
+            "value": 20,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Water"
+          },
+          {
+            "field": "Gas",
+            "kind": "Estimated",
+            "value": 10,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Gas"
+          },
+          {
+            "field": "Electricity",
+            "kind": "Estimated",
+            "value": 50,
+            "units": "$ / bedroom / month",
+            "basis": "Estimated $/modeled room/mo; Youngfield/Fremont Inputs, Craig inspected Nov7",
+            "label": "Electricity"
+          },
+          {
+            "field": "Internet",
+            "kind": "Estimated",
+            "value": 100,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Internet"
+          },
+          {
+            "field": "Trash",
+            "kind": "Estimated",
+            "value": 70,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Trash"
+          },
+          {
+            "field": "Lawn care",
+            "kind": "Estimated",
+            "value": 80,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Lawn care"
+          },
+          {
+            "field": "Cleaning",
+            "kind": "Estimated",
+            "value": 150,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Cleaning"
+          },
+          {
+            "field": "Monthly CapEx reserve",
+            "kind": "Estimated",
+            "value": 250,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Monthly CapEx reserve"
+          },
+          {
+            "field": "Repairs / maintenance",
+            "kind": "Estimated",
+            "value": 250,
+            "units": "$ / month",
+            "basis": "Estimated monthly allowance; Craig supplied Acquisitions models Nov7",
+            "label": "Repairs / maintenance"
+          },
+          {
+            "field": "holding",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ upfront",
+            "basis": "Preserved supplied scenario/source value; no missing-field replacement.",
+            "label": "Holding costs"
+          },
+          {
+            "field": "Bedroom conversion x5 (living, dining, sitting, family west/east)",
+            "kind": "Source",
+            "value": 15000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Bedroom conversion x5 (living, dining, sitting, family west/east)"
+          },
+          {
+            "field": "Closet x5 for conversions",
+            "kind": "Source",
+            "value": 5000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Closet x5 for conversions"
+          },
+          {
+            "field": "Egress windows",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Egress windows"
+          },
+          {
+            "field": "Full bath",
+            "kind": "Source",
+            "value": 0,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Full bath"
+          },
+          {
+            "field": "Additional refrigerator x2",
+            "kind": "Source",
+            "value": 2000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Additional refrigerator x2"
+          },
+          {
+            "field": "Washer / dryer",
+            "kind": "Source",
+            "value": 1500,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Washer / dryer"
+          },
+          {
+            "field": "Co-living setup",
+            "kind": "Source",
+            "value": 2500,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Co-living setup"
+          },
+          {
+            "field": "Consultation",
+            "kind": "Source",
+            "value": 2500,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Consultation"
+          },
+          {
+            "field": "Contingency",
+            "kind": "Source",
+            "value": 10000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Contingency"
+          },
+          {
+            "field": "Furnishings",
+            "kind": "Source",
+            "value": 6000,
+            "units": "$ upfront",
+            "basis": "Preserved supplied budget line item, not a new allowance.",
+            "label": "Furnishings"
+          }
+        ]
+      },
+      "result": {
+        "grossRent": 7530,
+        "grossIncome": 8410,
+        "tenantUtilityIncome": 880,
+        "capexTotal": 44500,
+        "management": 1345.6,
+        "vacancy": 420.5,
+        "downPayment": 144820,
+        "loan": 579280,
+        "principalInterest": 4050.4098051445235,
+        "operatingExpenses": 4457.1,
+        "monthlyNoi": 3952.8999999999996,
+        "monthlyCashFlow": -97.50980514452385,
+        "annualCashFlow": -1170.1176617342862,
+        "cashInvested": 203802,
+        "provisionalCashFlow": -97.50980514452385,
+        "investedSubtotal": 203802,
+        "provisionalCoc": -0.574144346833832,
+        "cocPercent": -0.574144346833832,
+        "missing": [],
+        "knownOperatingExpenses": 4457.1,
+        "sourceComparableCashFlow": -97.50980514452385,
+        "sourceComparableCoc": -0.574144346833832
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "6",
+      "width": 1280,
+      "parity": true,
+      "sessionRentEdit": true,
+      "futureCountEdit": true,
+      "reset": true,
+      "negativeRentAndHolding": true,
+      "finite": true,
+      "errors": []
+    },
+    {
+      "id": "8",
+      "width": 1280,
+      "parity": true,
+      "sessionRentEdit": true,
+      "futureCountEdit": true,
+      "reset": true,
+      "negativeRentAndHolding": true,
+      "finite": true,
+      "errors": []
+    },
+    {
+      "id": "40",
+      "width": 1280,
+      "parity": true,
+      "sessionRentEdit": true,
+      "futureCountEdit": true,
+      "reset": true,
+      "negativeRentAndHolding": true,
+      "finite": true,
+      "errors": []
+    },
+    {
+      "id": "6",
+      "width": 390,
+      "parity": true,
+      "sessionRentEdit": true,
+      "futureCountEdit": true,
+      "reset": true,
+      "negativeRentAndHolding": true,
+      "finite": true,
+      "errors": []
+    },
+    {
+      "id": "8",
+      "width": 390,
+      "parity": true,
+      "sessionRentEdit": true,
+      "futureCountEdit": true,
+      "reset": true,
+      "negativeRentAndHolding": true,
+      "finite": true,
+      "errors": []
+    },
+    {
+      "id": "40",
+      "width": 390,
+      "parity": true,
+      "sessionRentEdit": true,
+      "futureCountEdit": true,
+      "reset": true,
+      "negativeRentAndHolding": true,
+      "finite": true,
+      "errors": []
+    }
+  ],
+  "screenshots": {
+    "t56-reviewed-fraser-assumptions.png.asset.json": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/b31c9271-b956-492f-823f-406b33859ce2/t56-reviewed-fraser-assumptions.png",
+    "t56-reviewed-fraser-detail.png.asset.json": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/58f12fec-e532-4c5f-a23c-42e6580e3ab6/t56-reviewed-fraser-detail.png",
+    "t56-reviewed-home-desktop.png.asset.json": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/3542dc18-84ff-4e65-a58e-298cd70f5a08/t56-reviewed-home-desktop.png"
+  }
+}

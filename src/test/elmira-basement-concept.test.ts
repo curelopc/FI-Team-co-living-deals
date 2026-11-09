@@ -38,5 +38,5 @@ it('places room 11 above the hall with its own south door and leaves the utility
 it('retains separate current listing, historical plan and financial counts', () => {
   expect(concept.currentListingBeds).toBe(4);
   expect(concept.sourcePlannedRooms).toBe(9);
-  expect(concept.modeledRooms).toBe(10);
+  expect(concept.modeledRooms).toBe(11);
 });

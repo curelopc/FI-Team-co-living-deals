@@ -11,9 +11,9 @@ it('shows Grove before and after at matched building-core scale with provenance 
  const main=planEvidence('1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS','main','8');
  const basement=planEvidence('1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE','basement','8');
  expect(main.beforeAssetUrl).toContain('grove-before-main-matched.png');
- expect(main.afterAssetUrl).toContain('grove-after-main-matched.png');
+ expect(main.afterAssetUrl).toContain('grove-after-main-t57.png');
  expect(basement.beforeAssetUrl).toContain('grove-before-basement-matched.png');
- expect(basement.afterAssetUrl).toContain('grove-after-basement-matched.png');
+ expect(basement.afterAssetUrl).toContain('grove-after-basement-t57.png');
  expect(main.afterProvenanceUrl).toContain('1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS');
  expect(main.beforeUrl).toContain('media.zillowmediaexperts.com');
 });
@@ -38,7 +38,7 @@ it('uses the deterministic redline concept on the authentic current basement wit
 it('numbers Elmira concept bedrooms sequentially 1–8 with explicit source pin mapping and honest count vs 9 planned / 10 modeled',()=>{
  const audit=planEvidence('1XfAO8qr_te1wa14C-vaDvSd8f9LjNI2u','main','40').accessAudit ?? [];
  expect(audit.some(l=>l.includes('1–11')&&l.includes('5=7 family west')&&l.includes('8/9=10 basement west split'))).toBe(true);
- expect(audit.some(l=>l.includes('11 physical concept bedrooms')&&l.includes('9 source-planned')&&l.includes('10 modeled'))).toBe(true);
+ expect(audit.some(l=>l.includes('11 physical concept bedrooms')&&l.includes('9 source-planned')&&l.includes('11 default proposed bedrooms'))).toBe(true);
  expect(audit.some(l=>l.includes('source pins 5–6')&&l.includes('not counted as bedrooms'))).toBe(true);
 });
 it('estimates only Fraser main dining conversion room 1 at 3000, not existing upper rooms',()=>{
@@ -47,11 +47,11 @@ it('estimates only Fraser main dining conversion room 1 at 3000, not existing up
 it('estimates Fraser basement converted rooms 7 and 8 at 6000',()=>{
  expect(wallDoorAllowance('1DRH3TUnIqc66SeRfMYBsZQKW4RzGT-OI','basement','6')).toEqual({rooms:[7,8],unitRate:3000,amount:6000});
 });
-it('estimates Grove main converted room 1 at 3000',()=>{
- expect(wallDoorAllowance('1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS','main','8')).toEqual({rooms:[1],unitRate:3000,amount:3000});
+it('estimates Grove main converted rooms 1 and 5 at 6000',()=>{
+ expect(wallDoorAllowance('1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS','main','8')).toEqual({rooms:[1,5],unitRate:3000,amount:6000});
 });
-it('estimates Grove basement converted room 5 at 3000',()=>{
- expect(wallDoorAllowance('1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE','basement','8')).toEqual({rooms:[5],unitRate:3000,amount:3000});
+it('estimates Grove basement converted rooms 6 and 7 at 6000',()=>{
+ expect(wallDoorAllowance('1ng4zlQlQkPASHHg6E-qJL7UyNclRXEaE','basement','8')).toEqual({rooms:[6,7],unitRate:3000,amount:6000});
 });
 it('suppresses app overlay pins on Fraser and Grove after drawings so authentic red annotations stay visible',()=>{
  expect(planEvidence('1BgaackKdZ4aXywzG4D4uFv3FSmY_V9GE','main','6').suppressOverlays).toBe(true);
@@ -72,7 +72,7 @@ it('labels Elmira main concept accurately and flags room 8 access as unverified'
  expect(planEvidence('1i_FCqsuT7UazBo78gXiV2dNgttVtqFZS','main','8').legendStatus).toBeNull();
  // Concise visible truth line: 8 physical bedrooms shown, calculator models 10.
  expect(main.summary).toContain('11 concept bedrooms shown');
- expect(main.summary).toContain('calculator models 10');
+ expect(main.summary).toContain('default rent roll 11');
  expect(basement.summary).toContain('11 concept bedrooms total');
  expect(main.accessAudit?.some(l=>l.includes('Source pin mapping'))).toBe(true);
 });

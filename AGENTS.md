@@ -16,7 +16,12 @@
 - Both sheets are read through GET-only connector access in `sheets.server.ts`; pure header-keyed Research eligibility/address normalization lives in `research.ts`, while shared nullable financial math and source seeding live in `underwriting.ts`, while denser pitch helpers remain in `deals.ts` so moved columns are safe.
 - Research IDs key acquisition routes; denser rows overlay only on normalized street address match, while legacy DEN routes remain available. Missing optional pitch data uses empty states rather than invented content.
 - Research image/parking headers map directly into pitch cells; Research Callouts use Research IDs without an overlay, and denser overlays keep their own plans/callouts paired to avoid misplaced pins.
-- Calculator inputs live only in React state in a keyed loaded pitch component; Reset clones the server seed to restore originals without any persistence or sheet mutation.
+- Calculator inputs live in a root-owned per-deal React session context shared by home/detail; Reset clones the immutable server seed, preventing navigation drift, persistence or cross-visitor leakage.
+- Standard seeds use a pure numbered drawing inventory shared with concept evidence; rents apply existing assumptions to these rows so default/reset counts and dependent metrics cannot diverge.
+- New deal proposals enter through validated source-linked ProposalInventory; shared modelSummary owns home/detail missing-proposal states so listing counts never imply drawn bedrooms or final returns.
+- Current registered inventories invalidate on changed live drawing identity; generic intake preserves actual source expenses/insurance and applies labeled allowances only where evidence is absent.
+- Reuse Explanation for initially collapsed source/budget/window/parking detail; the local FUTURE_DEAL_INTAKE_CHECKLIST.md defines evidence acceptance for every future property.
+- Property-specific visual review observations live in property-review separately from approved inventories and financial inputs, so unresolved access/window/parking evidence never silently rewrites the model.
 - Pass original Research cells separately to the pure calculator seed; denser RentRoll takes priority, and model rent/count/utility fields are header-keyed so identity and overlay changes cannot substitute constants.
 - Leaflet imports are isolated behind lazy ClientOnly rendering and a dynamic effect import to prevent browser globals entering SSR.
 - Pitch percentage normalization belongs in the pure deals module so verification scripts and the page use the same calculation.
@@ -44,3 +49,5 @@
 - Parent-authorized public listing financial evidence is isolated in a pure evidence module and applied only by the standard scenario; original seeds/PDF reproduction remain unchanged to preserve historical reconciliation.
 
 - Public current plan assets pair only with exact Research drawing identity and matching level; original full-page provenance/disclaimers and unmodified proposed drawings stay separate so composites or unrelated drawings cannot become Before evidence.
+
+- Missing financial normalization belongs in pure financial-assumptions.ts applied only to the standard working scenario, with field-level basis/units; source seeds and physical evidence stay immutable so editable estimates cannot become fake source facts.

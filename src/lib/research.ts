@@ -24,6 +24,12 @@ export interface ResearchDeal extends DealRow {
   rooms: number | null;
 }
 
+export function listingFacts(cells: Record<string,string>, futureBedrooms: number) {
+  const count = (raw: string | undefined) => { const match=raw?.match(/\d+(?:\.\d+)?/); return match?Number(match[0]):null; };
+  const currentBaths=count(cells['current_baths']);
+  return {sqft:parseNumber(cells['sqft']),currentBeds:count(cells['current_beds']),currentBaths,futureBeds:futureBedrooms,futureBaths:count(cells['converted_baths']) ?? currentBaths};
+}
+
 /** Research id strings are the route keys for /deal/$dealId, not analyst Deal IDs. */
 export function parseResearch(values: string[][]): ResearchDeal[] {
   const headers = (values[0] ?? []).map(h => h.trim());
