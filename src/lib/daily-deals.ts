@@ -3,6 +3,7 @@ import { listingPhotos } from './listing-photos';
 import { locationEvidence } from './location-evidence';
 import { portalDeal } from './portal-catalog';
 import { drawnRoomInventory } from './room-inventory';
+import { evidenceWithRent } from './room-rent-text';
 import { researchPitchRow, type ResearchDeal } from './research';
 import { calculateAnalysis, type AnalysisInputs, type AnalysisRoom, type AnalysisSeed } from './underwriting';
 
@@ -70,7 +71,8 @@ function roomsFor(deal: DailyDeal, id: string): AnalysisRoom[] {
   if (drawn && drawn.length === deal.rooms.length) {
     return drawn.map((room, index) => {
       const source = deal.rooms[index];
-      return { ...room, rent: source?.rent ?? null, evidence: [room.evidence, source?.rent_basis].filter(Boolean).join(' ') };
+      const rent = source?.rent ?? null;
+      return { ...room, rent, evidence: evidenceWithRent([room.evidence, source?.rent_basis].filter(Boolean).join(' '), rent) };
     });
   }
   return deal.rooms.map((room, index) => ({
@@ -80,7 +82,7 @@ function roomsFor(deal: DailyDeal, id: string): AnalysisRoom[] {
     level: room.level || 'Unverified',
     bath: /private|ensuite/i.test(room.bath) ? 'Private bath (concept)' : 'Hall/shared',
     rent: room.rent,
-    evidence: [room.space, room.rent_basis].filter(Boolean).join('. '),
+    evidence: evidenceWithRent([room.space, room.rent_basis].filter(Boolean).join('. '), room.rent),
   }));
 }
 

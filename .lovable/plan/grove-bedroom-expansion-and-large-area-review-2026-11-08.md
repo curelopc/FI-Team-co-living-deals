@@ -4,7 +4,7 @@
 - Redraw Grove on its authentic matched current plans: main bedrooms 1–5 (living, two existing bedrooms, primary, dining); basement 6–9 (two total rec-room bedrooms and two existing bedrooms).
 - Preserve the kitchen and kitchenette. Reserve an uninterrupted common route around both stair landings, serving every bedroom, baths, utility room and existing exits without bedroom pass-through.
 - Replace the old red wall/door-arc conflicts with straight partitions, deliberate door gaps and red C closets. Add standalone W only at the two basement rec-room exterior window locations; photos do not establish compliant egress.
-- Use nine numbered drawing-linked rows for Grove default/Reset, each at its existing explicit $830 estimate. Current listing stays 5 beds/3 baths; future becomes 9 beds/3 baths. Source primary ensuite remains bedroom 4; other rooms remain shared-bath.
+- Use nine numbered drawing-linked rows for Grove default/Reset, each at its existing explicit rent estimate. Current listing stays 5 beds/3 baths; future becomes 9 beds/3 baths. Source primary ensuite remains bedroom 4; other rooms remain shared-bath.
 - Update shared count-dependent rent, utilities, management, vacancy and the existing two-month holding estimate. Preserve historical renovation budget and fixed $150 fee/$35 pest. New concept allowances are informational only.
 
 ## Other-property assessment

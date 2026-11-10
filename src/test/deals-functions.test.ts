@@ -36,6 +36,18 @@ describe('anonymous read-only preview access', () => {
   });
 });
 
+it('rendered deal data has no stale $670 or $830 rent copy', async () => {
+  const home = await getDeals();
+  const rendered = JSON.stringify(home);
+  expect(rendered.includes('$670')).toBe(false);
+  expect(rendered.includes('$830')).toBe(false);
+  for (const deal of home.deals) {
+    for (const room of home.analyses[deal.id]?.inputs.rooms ?? []) {
+      expect(room.evidence ?? '', `${deal.address} ${room.name}`).toContain(`Rent estimate $${room.rent}.`);
+    }
+  }
+});
+
 it('home and direct detail return the same Fraser inputs', async () => {
   const home = await getDeals();
   const detail = await getDeal({ data: { id: '6' } });
