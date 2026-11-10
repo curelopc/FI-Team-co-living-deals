@@ -1,3 +1,4 @@
+import { listingPhotos } from './listing-photos';
 import { portalCapex } from './portal-rooms';
 import { portalDeal, portalDeals, type PortalDeal } from './portal-catalog';
 import { researchPitchRow, type ResearchDeal } from './research';
@@ -21,7 +22,8 @@ export function portalResearch(deal: PortalDeal): ResearchDeal {
     current_baths: deal.bathsLabel,
     converted_beds: String(deal.rooms.length),
     converted_baths: String(deal.baths + deal.addedBaths),
-    photo_url: deal.photoUrl,
+    photo_url: (listingPhotos[deal.id] ?? [])[0] ?? '',
+    photo_gallery: (listingPhotos[deal.id] ?? []).join('\n'),
     listing_url: deal.listingUrl,
     shared_rent_estimate: '670',
     private_rent_estimate: '830',
