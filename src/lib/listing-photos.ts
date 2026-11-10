@@ -42,20 +42,6 @@ export const listingPhotos: Record<string, string[]> = {
     "/listing-photos/6/11.webp",
     "/listing-photos/6/12.webp"
   ],
-  "8": [
-    "/listing-photos/8/01.webp",
-    "/listing-photos/8/02.webp",
-    "/listing-photos/8/03.webp",
-    "/listing-photos/8/04.webp",
-    "/listing-photos/8/05.webp",
-    "/listing-photos/8/06.webp",
-    "/listing-photos/8/07.webp",
-    "/listing-photos/8/08.webp",
-    "/listing-photos/8/09.webp",
-    "/listing-photos/8/10.webp",
-    "/listing-photos/8/11.webp",
-    "/listing-photos/8/12.webp"
-  ],
   "adams-12218": [
     "/listing-photos/adams-12218/01.webp",
     "/listing-photos/adams-12218/02.webp",

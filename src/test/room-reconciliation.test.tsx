@@ -8,7 +8,7 @@ import { standardScenario } from '../lib/standard-scenario';
 import { seedAnalysis, calculateAnalysis, addRoom, removeRoom } from '../lib/underwriting';
 afterEach(cleanup);
 const seed = () => standardScenario(seedAnalysis({Price:'724100'},[],[],{}),{id:'40'});
-it.each([['6',8,['Main','Main','Upper','Upper','Upper','Basement','Basement','Basement']],['8',9,['Main','Main','Main','Main','Main','Basement','Basement','Basement','Basement']],['40',11,['Main','Main','Main','Main','Main','Main','Basement','Basement','Basement','Basement','Basement']]])('aligns %s numbered rentable rows and evidence levels', (id,count,levels)=>{
+it.each([['6',8,['Main','Main','Upper','Upper','Upper','Basement','Basement','Basement']],['8',9,['Main','Main','Main','Main','Main','Basement','Basement','Basement','Basement']],['40',11,['Main','Main','Main','Main','Main','Main','Basement','Basement','Basement','Basement','Basement']]])('aligns %s numbered drawn rooms and evidence levels', (id,count,levels)=>{
  const rows=drawnRoomInventory(String(id));expect(rows?.map(r=>r.number)).toEqual(Array.from({length:Number(count)},(_,i)=>i+1));expect(rows?.map(r=>r.level)).toEqual(levels);
  const value=standardScenario(seedAnalysis({},[],[],{}),{id:String(id),coliving_pro_rent_per_room:id==='6'?'770':'830'}).inputs;
  expect(value.rooms).toHaveLength(Number(count));expect(value.rooms.map(r=>r.number)).toEqual(rows?.map(r=>r.number));

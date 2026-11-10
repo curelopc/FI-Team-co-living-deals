@@ -38,7 +38,7 @@ function PhotoSlides({ photos, address, dealId, researchId, prominent = false }:
     action();
   };
   const frame = cn('w-full', prominent ? 'aspect-[16/9] max-h-[560px]' : 'aspect-[16/10]');
-  if (!available.length) return <div className={cn(frame, 'flex items-center justify-center gap-2 bg-hc-page text-sm text-muted-foreground')}><ImageOff className="h-5 w-5" />Listing photos unavailable</div>;
+  if (!available.length) return <div className={cn(frame, 'flex flex-col items-center justify-center gap-2 bg-hc-page text-sm text-muted-foreground')}><svg aria-hidden="true" viewBox="0 0 64 40" className="h-10 w-16 text-hc-navy/30"><rect x="1" y="1" width="62" height="38" rx="4" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M8 30 L22 16 L32 26 L42 14 L56 30" fill="none" stroke="currentColor" strokeWidth="2" /></svg><span className="inline-flex items-center gap-2"><ImageOff className="h-5 w-5" />Listing photos unavailable</span></div>;
   return <div className="relative overflow-hidden bg-hc-navy" role="region" aria-roledescription="carousel" aria-label={`${address} listing photos`}
     data-card-control="carousel" onPointerDown={e=>{down.current={x:e.clientX,y:e.clientY};dragged.current=false;}} onPointerMove={e=>{if(down.current&&Math.hypot(e.clientX-down.current.x,e.clientY-down.current.y)>6)dragged.current=true;}} onClickCapture={e=>{if(dragged.current){e.preventDefault();e.stopPropagation();}}}
     tabIndex={available.length > 1 ? 0 : undefined}

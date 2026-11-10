@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dailyFigures, dailyPayload, siteIdForSlug } from '../lib/daily-deals';
+import { conceptRoomsFor, dailyFigures, dailyPayload, siteIdForSlug } from '../lib/daily-deals';
 
 const expected = [
   ['fraser-1584', '6'], ['elmira-911', '40'], ['topeka-4725', 'topeka-4725'], ['poppy-892', 'poppy-892'],
@@ -41,6 +41,25 @@ describe('2026-11-10 publish', () => {
       expect(figures?.result.cashInvested, deal.address).toBeCloseTo(figures?.model?.invested ?? NaN, 2);
       expect(figures?.rooms, deal.address).toBe(figures?.model ? payload.bundles[deal.id]?.analysis?.inputs.rooms.length : 0);
       expect(figures?.result.cocPercent, deal.address).toBeCloseTo(figures?.model?.coc_pct ?? NaN, 1);
+      const cents = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      expect(cents.format(figures?.result.monthlyCashFlow ?? NaN), deal.address).toBe(cents.format(figures?.model?.cash_flow ?? NaN));
+      expect(cents.format(figures?.result.cashInvested ?? NaN), deal.address).toBe(cents.format(figures?.model?.invested ?? NaN));
+      const rendered = JSON.stringify(deal);
+      expect(rendered, deal.address).not.toMatch(/Needs input|rentable rows/i);
     }
+  });
+
+  it('draws the new deals on main and basement, with plain W only downstairs', () => {
+    for (const slug of ['beth-216', 'oregon-12055', 'york-7751', 'crown-4860', 'ceylon-4317', 'perth-4965', 'macon-2069', 'pacific-17004', 'fillmore-12357', 'ouray-3404']) {
+      const rooms = conceptRoomsFor(slug);
+      const figures = dailyFigures(slug);
+      expect(rooms, slug).toBeTruthy();
+      expect(rooms?.length, slug).toBe(figures?.rooms);
+      expect(rooms?.filter(room => room.window).every(room => room.level === 'Basement'), slug).toBe(true);
+      expect(rooms?.some(room => room.level === 'Main'), slug).toBe(true);
+      expect(rooms?.some(room => room.level === 'Basement' && room.window), slug).toBe(true);
+      expect(figures?.result.grossRent, slug).toBe(rooms?.reduce((sum, room) => sum + (room.rent ?? 0), 0));
+    }
+    expect(dailyPayload().deals.find(deal => deal.id === 'york-7751')?.latitude).toBeCloseTo(39.837288691039, 5);
   });
 });

@@ -1,4 +1,5 @@
 import dailyRaw from './daily-2026-11-10.json';
+import { layoutConceptRooms, type ConceptLayoutRoom } from './concept-layout';
 import { listingPhotos } from './listing-photos';
 import { locationEvidence } from './location-evidence';
 import { portalDeal } from './portal-catalog';
@@ -34,7 +35,7 @@ const lowConfidence = new Set(['beth-216','21st-255','rose-825','poppy-892']);
 const extraCoords: Record<string, { lat: number; lon: number; note: string }> = {
   'beth-216': { lat: 40.0820119, lon: -104.8017458, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'oregon-12055': { lat: 39.68671, lon: -104.8479936, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
-  'york-7751': { lat: 39.856, lon: -104.965, note: 'ZIP 80229 centroid. The geocoder did not match 7751 York Street, so this pin is approximate.' },
+  'york-7751': { lat: 39.837288691039, lon: -104.95923230826, note: 'US Census Geocoder Public_AR_Current address match for 7751 York Street, Denver, CO 80229, Nov 10, 2026' },
   'crown-4860': { lat: 39.7831589, lon: -104.8316214, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'ceylon-4317': { lat: 39.7746378, lon: -104.764494, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'perth-4965': { lat: 39.7844842, lon: -104.7360974, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
@@ -60,14 +61,69 @@ function coords(id: string, slug: string): { lat: number; lon: number; note: str
   return extraCoords[slug] ?? { lat: 39.74, lon: -104.99, note: 'Map pin not matched to a street address.' };
 }
 
-function planMode(id: string, slug: string): 'drawn' | 'concept' | 'unverified' {
+function planMode(id: string, slug: string): 'drawn' | 'concept' {
   if (id === '6' || id === '40') return 'drawn';
-  if (newSlugs.has(slug)) return 'unverified';
   return 'concept';
 }
 
+const taxYearBySlug: Record<string, number> = {
+  'fraser-1584': 2024, 'elmira-911': 2025, 'topeka-4725': 2025, 'poppy-892': 2025, 'ventura-3582': 2025,
+  'dawson-2418': 2025, '21st-255': 2025, 'eldorado-19299': 2025, 'perry-5246': 2025, 'rose-825': 2024,
+  'yale-4585': 2025, 'adams-12218': 2025, 'beth-216': 2025, 'oregon-12055': 2025, 'york-7751': 2024,
+  'crown-4860': 2025, 'ceylon-4317': 2025, 'perth-4965': 2025, 'macon-2069': 2026, 'pacific-17004': 2021,
+  'fillmore-12357': 2025, 'ouray-3404': 2025,
+};
+
+export function conceptRoomsFor(id: string): ConceptLayoutRoom[] | null {
+  const deal = dailyDealById(id);
+  if (!deal || !newSlugs.has(deal.slug)) return null;
+  return layoutConceptRooms(deal.rooms);
+}
+
+function handoffFlags(deal: DailyDeal): string[] {
+  const year = taxYearBySlug[deal.slug];
+  const flags = [
+    'Assumptions, labeled as estimates: 20% down, 7.5% 30-year investor rate, 2% closing, and cash invested includes 2 months of holding. Insurance is set equal to property tax. Repairs and the capex reserve are each 5% of gross. Per room: electric $40.23, water $25, gas $15. Management is 16% of gross and vacancy is 5%.',
+    'The public portal returns Active listings only, so a pending or under-contract status would not appear. No listing was marked Pending today.',
+  ];
+  if (year != null && year < 2025) flags.push(`Property tax is the portal ${year} figure. That year is older than 2025.`);
+  if (year === 2026) flags.push('Property tax is the portal 2026 figure.');
+  if (deal.slug === 'fraser-1584') {
+    flags.push('Price reduced from $525,000 to $490,000 (portal alert 2026-11-09). This underwrite uses $490,000.');
+    flags.push('Portal tax used here is the 2024 amount, $3,240. An earlier listing history showed 2025 tax of $3,553, and that figure is not used here.');
+    flags.push('The existing concept drawing marks bedroom 3 as a primary-accessed ensuite. This underwrite counted 0 private-bath rooms, so every room uses the shared furnished rate.');
+  }
+  if (deal.slug === 'elmira-911') {
+    flags.push('Finished area in this underwrite is 3,547 sq ft. The earlier site figure was 3,651 sq ft.');
+    flags.push('The existing concept drawing marks bedroom 1 as a primary-accessed ensuite. This underwrite counted 0 private-bath rooms, so every room uses the shared furnished rate.');
+  }
+  if (deal.city !== 'Denver' && deal.risks.some(risk => /Denver group-living/i.test(risk))) {
+    flags.push(`One note mentions Denver group-living rules. This home is in ${deal.city}. Confirm ${deal.city} occupancy rules before relying on that sentence.`);
+  }
+  if (newSlugs.has(deal.slug)) {
+    flags.push('Concept plan only. No measured floor plan was reviewed. Existing bedrooms and the living, dining, office, and nook rooms are drawn on the main floor. The family room and lower rec split A, which the handoff marked for a new window, are drawn in the basement so plain W stays off the upper floor. Egress is not verified. Basement finish cost is not included.');
+  }
+  if (lowConfidence.has(deal.slug)) flags.push('CoLivingPro confidence is on the low side for this address. Treat the rent as an estimate.');
+  return flags;
+}
+
+function describeConcept(room: ConceptLayoutRoom): string {
+  const conversion = room.work !== 'existing';
+  return [
+    conversion
+      ? 'Concept conversion: straight wall and a door gap to common space. No bedroom pass-through.'
+      : 'Existing bedroom. Door to common space. No bedroom pass-through.',
+    conversion ? 'Closet C.' : '',
+    room.window ? 'Plain W for a basement new or egress window. Egress is not verified.' : '',
+    /private|ensuite/i.test(room.bath) ? 'Private bath.' : 'Shared bath.',
+    room.space,
+    room.rent_basis,
+  ].filter(Boolean).join(' ');
+}
+
 function roomsFor(deal: DailyDeal, id: string): AnalysisRoom[] {
-  const drawn = drawnRoomInventory(id);
+  const concept = newSlugs.has(deal.slug) ? layoutConceptRooms(deal.rooms) : null;
+  const drawn = concept ? null : drawnRoomInventory(id);
   if (drawn && drawn.length === deal.rooms.length) {
     return drawn.map((room, index) => {
       const source = deal.rooms[index];
@@ -75,14 +131,15 @@ function roomsFor(deal: DailyDeal, id: string): AnalysisRoom[] {
       return { ...room, rent, evidence: evidenceWithRent([room.evidence, source?.rent_basis].filter(Boolean).join(' '), rent) };
     });
   }
-  return deal.rooms.map((room, index) => ({
+  const sourceRooms = concept ?? deal.rooms.map(room => ({ ...room, level: room.level || 'Unverified', window: false, closet: false, rent_basis: room.rent_basis }));
+  return sourceRooms.map((room, index) => ({
     number: index + 1,
     drawn: true,
     name: `Bedroom ${index + 1}`,
     level: room.level || 'Unverified',
     bath: /private|ensuite/i.test(room.bath) ? 'Private bath (concept)' : 'Hall/shared',
     rent: room.rent,
-    evidence: evidenceWithRent([room.space, room.rent_basis].filter(Boolean).join('. '), room.rent),
+    evidence: evidenceWithRent(concept ? describeConcept(room as ConceptLayoutRoom) : [room.space, room.rent_basis].filter(Boolean).join('. '), room.rent),
   }));
 }
 
@@ -170,6 +227,7 @@ export function dailyBundle(id: string) {
     common: deal.common,
     parking_note: deal.parking_note,
     risks: deal.risks.join('\n'),
+    flags: handoffFlags(deal).join('\n'),
   };
   const research: ResearchDeal = {
     id, address: deal.addr, city: deal.city,
@@ -180,7 +238,7 @@ export function dailyBundle(id: string) {
   };
   const inputs = inputsFor(deal, roomsFor(deal, id));
   const analysis: AnalysisSeed = {
-    inputs, modelOnly: true, estimates: deal.risks, modelAssumptions: [deal.model.rent_assumption, deal.clp_note].filter(Boolean),
+    inputs, modelOnly: true, estimates: deal.risks, modelAssumptions: handoffFlags(deal),
     sourceUrl: deal.listing_url, sourceCashFlow: deal.model.cash_flow, sourceCoc: deal.model.coc_pct,
   };
   return {
