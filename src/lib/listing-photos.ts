@@ -70,6 +70,23 @@ export const listingPhotos: Record<string, string[]> = {
     "/listing-photos/adams-12218/11.webp",
     "/listing-photos/adams-12218/12.webp"
   ],
+  "beth-216": [
+    "/listing-photos/beth-216/01.webp"
+  ],
+  "ceylon-4317": [
+    "/listing-photos/ceylon-4317/01.webp"
+  ],
+  "crown-4860": [
+    "/listing-photos/crown-4860/01.webp"
+  ],
+  "dawson-2418": [
+    "/listing-photos/dawson-2418/01.webp",
+    "/listing-photos/dawson-2418/02.webp",
+    "/listing-photos/dawson-2418/03.webp",
+    "/listing-photos/dawson-2418/04.webp",
+    "/listing-photos/dawson-2418/05.webp",
+    "/listing-photos/dawson-2418/06.webp"
+  ],
   "eldorado-19299": [
     "/listing-photos/eldorado-19299/01.webp",
     "/listing-photos/eldorado-19299/02.webp",
@@ -84,6 +101,21 @@ export const listingPhotos: Record<string, string[]> = {
     "/listing-photos/eldorado-19299/11.webp",
     "/listing-photos/eldorado-19299/12.webp"
   ],
+  "fillmore-12357": [
+    "/listing-photos/fillmore-12357/01.webp"
+  ],
+  "macon-2069": [
+    "/listing-photos/macon-2069/01.webp"
+  ],
+  "oregon-12055": [
+    "/listing-photos/oregon-12055/01.webp"
+  ],
+  "ouray-3404": [
+    "/listing-photos/ouray-3404/01.webp"
+  ],
+  "pacific-17004": [
+    "/listing-photos/pacific-17004/01.webp"
+  ],
   "perry-5246": [
     "/listing-photos/perry-5246/01.webp",
     "/listing-photos/perry-5246/02.webp",
@@ -97,6 +129,9 @@ export const listingPhotos: Record<string, string[]> = {
     "/listing-photos/perry-5246/10.webp",
     "/listing-photos/perry-5246/11.webp",
     "/listing-photos/perry-5246/12.webp"
+  ],
+  "perth-4965": [
+    "/listing-photos/perth-4965/01.webp"
   ],
   "poppy-892": [
     "/listing-photos/poppy-892/01.webp",
@@ -167,5 +202,8 @@ export const listingPhotos: Record<string, string[]> = {
     "/listing-photos/yale-4585/10.webp",
     "/listing-photos/yale-4585/11.webp",
     "/listing-photos/yale-4585/12.webp"
+  ],
+  "york-7751": [
+    "/listing-photos/york-7751/01.webp"
   ]
 }
