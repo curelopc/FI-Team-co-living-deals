@@ -5,6 +5,7 @@ import { drawnRoomInventory } from './room-inventory';
 import { validateProposal, type ProposalInventory } from './deal-intake';
 import { fillFinancialAssumptions } from './financial-assumptions';
 import { portalDeal } from './portal-catalog';
+import { evidenceWithRent } from './room-rent-text';
 
 /** Craig-authorized modeled scenario, deliberately separate from source reproduction. */
 export function standardScenario(seed: AnalysisSeed, research: Record<string, string>, proposal?: ProposalInventory | null): AnalysisSeed {
@@ -20,9 +21,10 @@ export function standardScenario(seed: AnalysisSeed, research: Record<string, st
   value.inputs.tenantUtilityFee = elmira ? 80 : parseNumber(research['coliving_pro_util_fee']) ?? 80;
   const approved = proposal === undefined ? drawnRoomInventory(research['id'] ?? '', research) : validateProposal(proposal);
   const inventory = approved ?? original.filter(room => room.evidence !== 'Co-Living Pro assumption; drawing not verified').map((room, i) => ({ ...room, number: room.number ?? i + 1, drawn: false, name: `Scenario room ${room.number ?? i + 1} (not drawn)`, level: room.level || 'Unverified' }));
-  value.inputs.rooms = inventory.map(room => ({ ...room,
-    rent: splitRent ? (/private|ensuite/i.test(room.bath) ? value.inputs.privateRentEstimate ?? 830 : value.inputs.sharedRentEstimate ?? 670) : (() => { const source = original.find(row => row.number === room.number && row.evidence !== 'Co-Living Pro assumption; drawing not verified'); return source ? source.rent : serviceRent; })(),
-  }));
+  value.inputs.rooms = inventory.map(room => {
+    const rent = splitRent ? (/private|ensuite/i.test(room.bath) ? value.inputs.privateRentEstimate ?? 830 : value.inputs.sharedRentEstimate ?? 670) : (() => { const source = original.find(row => row.number === room.number && row.evidence !== 'Co-Living Pro assumption; drawing not verified'); return source ? source.rent : serviceRent; })();
+    return { ...room, rent, evidence: evidenceWithRent(room.evidence, rent) };
+  });
   value.inputs.managementBase = 'gross';
   value.inputs.managementPercent = 16;
   value.inputs.vacancyPercent = 5;

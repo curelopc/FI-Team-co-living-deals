@@ -402,7 +402,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             {rc['heuristic'] && <p className="mt-3 text-sm text-muted-foreground">{rc['heuristic']}</p>}
             {rc['common'] && <p className="mt-2 text-sm text-muted-foreground">{rc['common']}</p>}
           </section>
-        ) : portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} /> : <>
+        ) : portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} rooms={analysis.rooms} /> : <>
         <PlanSection
           key={`${dealId}-main-${mainPlanUrl}`}
           title={planEvidence(cells['Floorplan Main'] || '', 'main', data.research?.id).title}

@@ -18,7 +18,7 @@ function portalAnalysisRoom(room: PortalRoom, number: number): Omit<AnalysisRoom
       : 'Existing bedroom. Door to common space. No bedroom pass-through.',
     closet ? 'Closet C.' : '',
     window ? 'Plain W for a basement new or egress window. Egress is not verified.' : '',
-    room.bath === 'private' ? 'Private bath. Rent estimate $830.' : 'Shared bath. Rent estimate $670.',
+    room.bath === 'private' ? 'Private bath.' : 'Shared bath.',
     room.space,
   ].filter(Boolean);
   return {

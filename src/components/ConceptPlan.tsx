@@ -1,12 +1,16 @@
 import { Explanation } from './Explanation';
 import { portalDeal } from '@/lib/portal-catalog';
+import { dailyBundle } from '@/lib/daily-deals';
+import { roomRentText } from '@/lib/room-rent-text';
+import type { Amount } from '@/lib/underwriting';
 
 const levelOrder = ['Upper', 'Main', 'Lower', 'Basement'];
 
 /** Concept only. Rooms come from the listing room list, not a measured drawing. */
-export function ConceptPlan({ id }: { id: string }) {
+export function ConceptPlan({ id, rooms }: { id: string; rooms?: Array<{ rent: Amount }> }) {
   const deal = portalDeal(id);
   if (!deal) return null;
+  const rents = rooms ?? dailyBundle(id)?.analysis?.inputs.rooms ?? [];
   const levels = [...new Set(deal.rooms.map(room => room.level))].sort((a, b) => {
     const ai = levelOrder.indexOf(a);
     const bi = levelOrder.indexOf(b);
@@ -24,7 +28,10 @@ export function ConceptPlan({ id }: { id: string }) {
           <div key={level} className="rounded-xl border border-hc-border bg-card p-4">
             <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted-foreground">{level}</h3>
             <ol className="grid gap-2 sm:grid-cols-2">
-              {deal.rooms.map((room, index) => room.level === level ? (
+              {deal.rooms.map((room, index) => {
+                if (room.level !== level) return null;
+                const rentText = roomRentText(rents[index]?.rent);
+                return (
                 <li key={`${level}-${index + 1}`} className={`rounded-lg border px-3 py-2 text-sm ${room.work === 'existing' ? 'border-hc-navy text-hc-navy' : 'border-destructive text-destructive'}`}>
                   <span className="font-extrabold">{index + 1}</span>
                   <span className="ml-2 text-hc-navy">{room.space}</span>
@@ -32,10 +39,12 @@ export function ConceptPlan({ id }: { id: string }) {
                     {room.work === 'existing' ? 'Existing' : 'Conversion'}
                     {room.work !== 'existing' || room.closet ? ' · C' : ''}
                     {room.window && room.level === 'Basement' ? ' · W' : ''}
-                    {room.bath === 'private' ? ' · private bath estimate $830' : ' · shared bath estimate $670'}
+                    {room.bath === 'private' ? ' · private bath' : ' · shared bath'}
+                    {rentText ? ` · ${rentText}` : ''}
                   </span>
                 </li>
-              ) : null)}
+                );
+              })}
             </ol>
           </div>
         ))}
