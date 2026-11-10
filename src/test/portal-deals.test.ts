@@ -50,11 +50,8 @@ it('adds all ten portal deals through the shared scenario', () => {
     const cells = bundle?.research.cells;
     if (!cells) continue;
     expect(cells['site_eligibility']).toBe('ELIGIBLE_ACTIVE');
-    if (row.id === 'dawson-2418') expect(cells['photo_url']).toBe('');
-    else {
-      expect(cells['photo_url']).toMatch(/^\/listing-photos\//);
-      expect(cells['photo_gallery']?.split('\n')).toHaveLength(12);
-    }
+    expect(cells['photo_url']).toMatch(/^\/listing-photos\//);
+    expect(cells['photo_gallery']?.split('\n')).toHaveLength(row.id === 'dawson-2418' ? 6 : 12);
     expect(cells['sqft']).toBe(String(portalDeals.find(deal => deal.id === row.id)?.sqft));
   }
 });

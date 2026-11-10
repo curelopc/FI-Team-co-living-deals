@@ -25,8 +25,7 @@ export const Route = createFileRoute('/')({
     { name: 'robots', content: 'noindex' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' },
   ] }), loader:({context})=>context.queryClient.ensureQueryData(dealsQuery()), errorComponent:()=> <p>Could not load deals.</p>, notFoundComponent:()=> <p>Deals not found.</p>, component: DealsPage,
 });
-const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 });
-const money = (n: number | null) => n == null ? 'Unavailable' : currency.format(n);
+const money = (n: number | null) => n == null ? 'Unavailable' : `${n < 0 ? '-' : ''}$${Math.abs(Math.round(n)).toLocaleString('en-US')}`;
 const inputClass = 'mt-1 w-full rounded-md border border-input bg-card px-3 py-2 text-sm';
 function DealsPage() {
   const session = useAnalysisSession();
@@ -49,8 +48,8 @@ function DealsPage() {
         return <article key={d.id} data-deal-id={d.id} tabIndex={0} aria-label={`Open ${d.address}`} onClick={e=>{if(!(e.target instanceof Element)||e.target.closest('button,a,[data-card-control]'))return;open(d.id);}} onKeyDown={e=>{if(e.target===e.currentTarget&&e.key==='Enter'){e.preventDefault();open(d.id);}}} onMouseEnter={()=>{setHighlighted(d.id);if(data.bundles[d.id])cache.setQueryData(['deal',d.id],data.bundles[d.id]);}} onMouseLeave={()=>setHighlighted(null)} onFocusCapture={()=>setHighlighted(d.id)} onBlurCapture={e=>{if (!e.currentTarget.contains(e.relatedTarget)) setHighlighted(null);}} className={`grid min-w-0 overflow-hidden rounded-lg border bg-card sm:grid-cols-[190px_1fr] ${highlighted === d.id ? 'border-hc-amber ring-1 ring-hc-amber' : 'border-border'}`}>
           <div className="min-w-0"><MlsPhotoCarousel photos={parseMlsPhotos(d.cells)} address={d.address} dealId={d.id} /></div>
           <div className="min-w-0 p-3"><Link to="/deal/$dealId" params={{dealId:d.id}} className="block"><div className="flex items-center justify-between"><p className="text-xl font-extrabold text-hc-navy">{money(d.displayPrice)}</p><span className="text-xs font-bold text-hc-pursue">Active</span></div><h2 className="mt-1 text-sm font-bold text-hc-navy">{d.address}</h2><p className="mt-1 text-xs text-muted-foreground">{facts.sqft?.toLocaleString('en-US') ?? 'Unverified'} sq ft · {d.city}</p><p className="mt-1 text-xs">Current {facts.currentBeds ?? 'Unverified'} bd · {facts.currentBaths ?? 'Unverified'} ba</p><p className="mt-1 text-xs font-semibold">Future {facts.futureBeds} bd · {facts.futureBaths ?? 'Unverified'} ba · proposed</p></Link>
-          <p className="mt-2 text-xs">Gross room rent / mo <strong>{money(result?.grossRent ?? null)}</strong></p>
-          <dl className="mt-3 grid grid-cols-3 gap-2 text-xs"><div><dt>{result?.monthlyCashFlow==null?'Provisional cash flow':'Cash flow / mo'}</dt><dd className="mt-1 font-bold">{money(result?.monthlyCashFlow ?? null)}</dd></div><div><dt>CoC</dt><dd className="mt-1 font-bold">{result?.cocPercent==null?'Unavailable':`${result.cocPercent.toFixed(1)}%`}</dd></div><div><dt>Cash invested</dt><dd className="mt-1 font-bold">{money(result?.cashInvested ?? null)}</dd></div></dl>
+          <p className="mt-2 text-xs">CoLivingPro estimated rent (furnished; private rate for en-suite rooms, shared for others) <strong>{d.cells['clp_status']==='rent not found' ? 'CoLivingPro rent not found' : money(result?.grossRent ?? null)}</strong></p>
+          <dl className="mt-3 grid grid-cols-3 gap-2 text-xs"><div><dt>Cash flow / mo</dt><dd className="mt-1 font-bold">{result?.monthlyCashFlow==null?'':money(result.monthlyCashFlow)}</dd></div><div><dt>CoC</dt><dd className="mt-1 font-bold">{result?.cocPercent==null?'':`${result.cocPercent.toFixed(1)}%`}</dd></div><div><dt>Cash invested</dt><dd className="mt-1 font-bold">{money(result?.cashInvested ?? null)}</dd></div></dl>
           {result && <p className="mt-2 text-xs text-muted-foreground">{result.missing.length ? `Returns unavailable · ${result.missing[0]}` : 'Estimated'}</p>}
           </div>
         </article>;

@@ -4,39 +4,17 @@ import { parseResearch, normalizeAddress, researchPitchRow, seedAnalysis, RESEAR
 
 import { latestDeals, latestRooms, capexLines } from './underwriting';
 import { standardScenario } from './standard-scenario';
-import { mergePortalDeals, portalBundle } from './portal-bundles';
+import { mergePortalDeals } from './portal-bundles';
+import { dailyBundle, dailyPayload } from './daily-deals';
 
-// Anonymous preview reads use server-only connector credentials, never a visitor session.
+// The published site is the 2026-11-10 deal file. Fraser stays /deal/6 and Elmira stays /deal/40.
 export const getDeals = createServerFn({ method: "GET" })
   .inputValidator((data: { refresh?: boolean } = {}) => data)
-  .handler(async ({data}) => {
-    try {
-      const snapshot = await readSnapshot(data?.refresh);
-      const deals = parseResearch(snapshot[0] ?? []);
-      const bundles: Awaited<ReturnType<typeof resolveDeal>>[] = [];
-      for(let i=0;i<deals.length;i+=6) bundles.push(...await Promise.all(deals.slice(i,i+6).map(deal => resolveDeal(deal.id, snapshot, data?.refresh))));
-      return mergePortalDeals({ deals, analyses:Object.fromEntries(bundles.map((bundle,i)=>[deals[i]?.id,bundle.analysis])), bundles:Object.fromEntries(bundles.map((bundle,i)=>[deals[i]?.id,bundle])) });
-    } catch (error) {
-      // Live reads need the Lovable Sheets connector. Without those keys, serve the
-      // published export so the pages still render the same three deals.
-      if (data?.refresh || !sheetsUnlinked(error)) throw error;
-      return publishedPayload();
-    }
-  });
+  .handler(async () => dailyPayload());
 
 export const getDeal = createServerFn({ method: "GET" })
   .inputValidator((data: { id: string }) => data)
-  .handler(async ({ data }) => {
-    const portal = portalBundle(data.id);
-    if (portal) return portal;
-    try {
-      return await resolveDeal(data.id);
-    } catch (error) {
-      if (!sheetsUnlinked(error)) throw error;
-      const payload = await publishedPayload();
-      return payload.bundles[data.id] ?? emptyDeal();
-    }
-  });
+  .handler(async ({ data }) => dailyBundle(data.id) ?? emptyDeal());
 
 function sheetsUnlinked(error: unknown): boolean {
   return error instanceof Error && error.message.includes("not linked");

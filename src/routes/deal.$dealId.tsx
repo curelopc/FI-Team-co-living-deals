@@ -355,8 +355,8 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             <StatCard label="Cash invested" highlight>
               <Num value={result.cashInvested} money />
             </StatCard>
-            <StatCard label={pitch.monthlyCashFlow==null?"Provisional cash flow":"Monthly cash flow"} sub={pitch.monthlyCashFlow==null?"Excludes unresolved inputs; not complete returns":undefined}>
-              <Num value={pitch.monthlyCashFlow??result.provisionalCashFlow} money />
+            <StatCard label="Monthly cash flow">
+              <Num value={pitch.monthlyCashFlow} money />
             </StatCard>
             <StatCard label="Annual cash flow">
               <Num value={pitch.annualCashFlow} money />
@@ -370,7 +370,10 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             <StatCard label="CapEx total">
               <Num value={pitch.capexTotal} money />
             </StatCard>
-            <StatCard label="Proposed bedrooms" sub={`${drawnCount ?? 'Unknown'} drawn; current listing ${curBeds ?? currentRooms}; concept, not certified`}>
+            <StatCard label="Cap rate">
+              {rc?.['cap_rate'] ? `${Number(rc['cap_rate']).toFixed(2)}%` : <span className="text-muted-foreground">Unavailable</span>}
+            </StatCard>
+            <StatCard label="Proposed bedrooms" sub={rc?.['plan_mode']==='unverified' ? 'Unverified concept, no floor plan reviewed yet' : `${drawnCount ?? 'Unknown'} drawn; current listing ${curBeds ?? currentRooms}; concept, not certified`}>
               {analysis.rooms.length || <span className="text-muted-foreground">Unavailable</span>}
             </StatCard>
             <StatCard label="Baths">
@@ -391,7 +394,15 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         {seed.historical && <HistoricalUnderwrite report={seed.historical} />}
 
-        {portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} /> : <>
+        {rc?.['plan_mode'] === 'unverified' ? (
+          <section className="py-7">
+            <SectionTitle>Unverified concept, no floor plan reviewed yet</SectionTitle>
+            <p className="mb-3 text-sm text-muted-foreground">Room list only. No floor plan was reviewed, and none is drawn here.</p>
+            <ul className="list-disc space-y-1 pl-5 text-sm">{analysis.rooms.map(room => <li key={`${room.number}-${room.name}`}>{room.name}: {room.level}, {room.bath}. {room.evidence}</li>)}</ul>
+            {rc['heuristic'] && <p className="mt-3 text-sm text-muted-foreground">{rc['heuristic']}</p>}
+            {rc['common'] && <p className="mt-2 text-sm text-muted-foreground">{rc['common']}</p>}
+          </section>
+        ) : portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} /> : <>
         <PlanSection
           key={`${dealId}-main-${mainPlanUrl}`}
           title={planEvidence(cells['Floorplan Main'] || '', 'main', data.research?.id).title}
@@ -417,7 +428,9 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         <section className="py-7">
           <SectionTitle>Parking</SectionTitle>
-          {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : portalDeal(data.research?.id) ? <PortalParking id={data.research?.id ?? dealId} /> : parkingUrl ? (
+          {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : portalDeal(data.research?.id) ? <PortalParking id={data.research?.id ?? dealId} /> : rc?.['parking_note'] ? (
+            <p className="rounded-xl bg-card p-5 text-sm text-muted-foreground">{rc['parking_note']}</p>
+          ) : parkingUrl ? (
             <ParkingImage key={`${dealId}-${parkingUrl}`} url={parkingUrl} spots={parkingSpots} note={parkingNote} />
           ) : (
             <div
@@ -432,9 +445,15 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         <section className="py-7">
           <SectionTitle>Rent roll by room</SectionTitle>
-          {analysis.sharedRentEstimate != null && analysis.privateRentEstimate != null && (
-            <p className="mb-3 text-sm text-muted-foreground">Bedroom rents are estimates: ${analysis.sharedRentEstimate} shared bath, ${analysis.privateRentEstimate} private bath.</p>
-          )}
+          <p className="mb-3 text-sm text-muted-foreground">CoLivingPro estimated rent (furnished; private rate for en-suite rooms, shared for others)</p>
+          {rc?.['clp_status'] === 'rent not found' && <p className="mb-3 text-sm text-muted-foreground">CoLivingPro rent not found. Cash flow and CoC stay blank until a rent is sourced.</p>}
+          <Explanation>
+            {rc?.['rent_assumption'] && <p className="text-sm text-muted-foreground">{rc['rent_assumption']}</p>}
+            {(rc?.['clp_shared_conf'] || rc?.['clp_private_conf']) && <p className="mt-2 text-sm text-muted-foreground">CoLivingPro confidence: shared bath {rc['clp_shared_conf'] || 'not stated'}, private bath {rc['clp_private_conf'] || 'not stated'}.</p>}
+            {rc?.['clp_low'] === 'yes' && <p className="mt-2 text-sm font-semibold text-hc-navy">Low confidence. This address is weaker than the other CoLivingPro pulls, so treat the rent as a rough estimate.</p>}
+            {rc?.['clp_note'] && <p className="mt-2 text-sm text-muted-foreground">{rc['clp_note']}</p>}
+            {rc?.['risks'] && <ul className="mt-2 list-disc pl-5 text-sm text-muted-foreground">{rc['risks'].split('\n').filter(Boolean).map(line => <li key={line}>{line}</li>)}</ul>}
+          </Explanation>
           {rentRoll.length === 0 ? (
             <p className="rounded-xl bg-card p-5 text-sm text-muted-foreground shadow-sm">
               Not yet itemized.
