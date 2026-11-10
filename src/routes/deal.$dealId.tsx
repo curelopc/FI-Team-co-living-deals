@@ -48,7 +48,7 @@ export const Route = createFileRoute("/deal/$dealId")({
   component: PitchPage,
 });
 
-const fmtMoney = (n: number) => `${n < 0 ? "-" : ""}$${Math.abs(Math.round(n)).toLocaleString("en-US")}`;
+const fmtMoney = (n: number, digits = 0) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(n);
 const fmtPct = (n: number) => `${n.toFixed(1)}%`;
 
 const STRIPES = {
@@ -66,7 +66,7 @@ const VERDICT_STYLES: Record<VerdictKind, { label: string; className: string }> 
 /** A number value, or a gray "Unavailable" when missing. Negative money renders red. */
 function Num({ value, money = false, pct = false }: { value: number | null; money?: boolean; pct?: boolean }) {
   if (value == null) return <span className="text-muted-foreground">Unavailable</span>;
-  const text = money ? fmtMoney(value) : pct ? fmtPct(value) : String(value);
+  const text = money ? fmtMoney(value, 2) : pct ? fmtPct(value) : String(value);
   return <span className={money && value < 0 ? "text-destructive" : undefined}>{text}</span>;
 }
 
@@ -373,7 +373,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             <StatCard label="Cap rate">
               {rc?.['cap_rate'] ? `${Number(rc['cap_rate']).toFixed(2)}%` : <span className="text-muted-foreground">Unavailable</span>}
             </StatCard>
-            <StatCard label="Proposed bedrooms" sub={rc?.['plan_mode']==='unverified' ? 'Unverified concept, no floor plan reviewed yet' : `${drawnCount ?? 'Unknown'} drawn; current listing ${curBeds ?? currentRooms}; concept, not certified`}>
+            <StatCard label="Proposed bedrooms" sub={`${drawnCount ?? analysis.rooms.length} drawn; current listing ${curBeds ?? currentRooms}; concept, not certified`}>
               {analysis.rooms.length || <span className="text-muted-foreground">Unavailable</span>}
             </StatCard>
             <StatCard label="Baths">
@@ -394,15 +394,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         {seed.historical && <HistoricalUnderwrite report={seed.historical} />}
 
-        {rc?.['plan_mode'] === 'unverified' ? (
-          <section className="py-7">
-            <SectionTitle>Unverified concept, no floor plan reviewed yet</SectionTitle>
-            <p className="mb-3 text-sm text-muted-foreground">Room list only. No floor plan was reviewed, and none is drawn here.</p>
-            <ul className="list-disc space-y-1 pl-5 text-sm">{analysis.rooms.map(room => <li key={`${room.number}-${room.name}`}>{room.name}: {room.level}, {room.bath}. {room.evidence}</li>)}</ul>
-            {rc['heuristic'] && <p className="mt-3 text-sm text-muted-foreground">{rc['heuristic']}</p>}
-            {rc['common'] && <p className="mt-2 text-sm text-muted-foreground">{rc['common']}</p>}
-          </section>
-        ) : portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} rooms={analysis.rooms} /> : <>
+        {rc?.['plan_mode'] === 'concept' || portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} rooms={analysis.rooms} /> : <>
         <PlanSection
           key={`${dealId}-main-${mainPlanUrl}`}
           title={planEvidence(cells['Floorplan Main'] || '', 'main', data.research?.id).title}
@@ -429,7 +421,13 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
         <section className="py-7">
           <SectionTitle>Parking</SectionTitle>
           {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : portalDeal(data.research?.id) ? <PortalParking id={data.research?.id ?? dealId} /> : rc?.['parking_note'] ? (
-            <p className="rounded-xl bg-card p-5 text-sm text-muted-foreground">{rc['parking_note']}</p>
+            <div className="rounded-xl bg-card p-5 text-sm shadow-sm">
+              <p className="font-bold text-hc-navy">{rc['parking_note'].match(/^(\d+) garage/)?.[1] ? `Garage ${rc['parking_note'].match(/^(\d+) garage/)?.[1]} observed.` : 'Garage count from the listing.'} {/not found/i.test(rc['parking_note']) ? 'Driveway not found. Street not found.' : 'Driveway and street figures are estimates.'}</p>
+              <Explanation>
+                <p>{rc['parking_note']}</p>
+                <p>Garage count is the MLS figure (observed). Driveway and street counts that were not found stay blank. Parking is shown, and it is not used to remove a deal.</p>
+              </Explanation>
+            </div>
           ) : parkingUrl ? (
             <ParkingImage key={`${dealId}-${parkingUrl}`} url={parkingUrl} spots={parkingSpots} note={parkingNote} />
           ) : (
@@ -448,7 +446,8 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
           <p className="mb-3 text-sm text-muted-foreground">CoLivingPro estimated rent (furnished; private rate for en-suite rooms, shared for others)</p>
           {rc?.['clp_status'] === 'rent not found' && <p className="mb-3 text-sm text-muted-foreground">CoLivingPro rent not found. Cash flow and CoC stay blank until a rent is sourced.</p>}
           <Explanation>
-            {rc?.['rent_assumption'] && <p className="text-sm text-muted-foreground">{rc['rent_assumption']}</p>}
+            {rc?.['flags']?.split('\n').filter(Boolean).map(line => <p key={line} className="mt-2 text-sm text-muted-foreground">{line}</p>)}
+            {rc?.['rent_assumption'] && <p className="mt-2 text-sm text-muted-foreground">{rc['rent_assumption']}</p>}
             {(rc?.['clp_shared_conf'] || rc?.['clp_private_conf']) && <p className="mt-2 text-sm text-muted-foreground">CoLivingPro confidence: shared bath {rc['clp_shared_conf'] || 'not stated'}, private bath {rc['clp_private_conf'] || 'not stated'}.</p>}
             {rc?.['clp_low'] === 'yes' && <p className="mt-2 text-sm font-semibold text-hc-navy">Low confidence. This address is weaker than the other CoLivingPro pulls, so treat the rent as a rough estimate.</p>}
             {rc?.['clp_note'] && <p className="mt-2 text-sm text-muted-foreground">{rc['clp_note']}</p>}
