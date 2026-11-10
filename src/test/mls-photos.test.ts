@@ -26,5 +26,6 @@ describe('MLS photo headers', () => {
   it('filters non-http protocols, relative URLs and invalid cells without inventing photos', () => {
     expect(parseMlsPhotos({ photo_url: 'javascript:alert(1)', photo_gallery: '/relative.jpg | nope\ndata:image/png;base64,abc\nftp://images.example/a.jpg' })).toEqual([]);
     expect(parseMlsPhotos({})).toEqual([]);
+    expect(parseMlsPhotos({ photo_url: '/listing-photos/6/01.webp', photo_gallery: '/relative.jpg\n/listing-photos/6/02.webp' })).toEqual(['/listing-photos/6/01.webp', '/listing-photos/6/02.webp']);
   });
 });

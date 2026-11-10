@@ -4,6 +4,7 @@ export function HistoricalUnderwrite({report}:{report:ReportEvidence}) {
   const s=historicalSummary(report);
   return <section className="border-y border-hc-border py-6" aria-label="Historical source baseline">
     <h2 className="text-xl font-bold">Historical original report · self-managed</h2>
+    <p className="mt-2 text-sm text-muted-foreground">Old report only, not the live scenario. The live scenario uses the FI Team standard assumption of 20% down. These figures keep the old report's own price, down payment, loan, and returns.</p>
     <p className="mt-2 text-sm text-muted-foreground">Historical price/rents and source-reported results, not current returns. No embedded calculator hyperlink in the original PDF. Source screenshots omit displayed vacancy in their totals. Missing utilities, recurring cleaning and PMI are not verified zero.</p>
     <dl className="mt-4 grid grid-cols-2 gap-2 text-sm">
       <dt>Original price / down payment</dt><dd>{money(report.price)} / {report.down}% ({money(report.price*report.down/100)})</dd>

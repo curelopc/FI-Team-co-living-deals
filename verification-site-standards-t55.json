@@ -1,0 +1,603 @@
+{
+  "audit": {
+    "eligibleIds": [
+      "6",
+      "8",
+      "40"
+    ],
+    "count": 3,
+    "properties": [
+      {
+        "id": "6",
+        "address": "1584 Fraser Way, Aurora, CO",
+        "status": "Provisional",
+        "roomCount": 8,
+        "drawnCount": 8,
+        "grossRent": 6160,
+        "grossIncome": null,
+        "missing": [
+          "Other income",
+          "HOA",
+          "Private money",
+          "Pest",
+          "Holding costs",
+          "Invoice authorization credit"
+        ],
+        "rooms": [
+          {
+            "number": 1,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 1; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 2,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 2; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 3,
+            "level": "Upper",
+            "bath": "Primary-accessed shower ensuite (drawing evidence)",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 3; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 4,
+            "level": "Upper",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 4; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 5,
+            "level": "Upper",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 5; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 6,
+            "level": "Basement",
+            "bath": "Bath access unclear",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 6; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 7,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 7; current drawing missing; not legal bedroom certification"
+          },
+          {
+            "number": 8,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 770,
+            "evidence": "Annotated proposed drawing bedroom 8; current drawing missing; not legal bedroom certification"
+          }
+        ],
+        "sourceBudget": 24300,
+        "calculatedBudget": 24300,
+        "insuranceEstimate": true,
+        "review": {
+          "photosInspected": 23,
+          "observations": [
+            "Fresh review of23 current feed photos and both annotated After plans. Main1\u20132, upper3\u20135, basement6\u20138 are labeled; no clean Before fabricated.",
+            "Photos9/13/20 show the existing basement rec/wet-bar area with a small high window. These are tentative area matches, not proof of proposed room7/8 opening suitability.",
+            "Upper/main bedrooms and baths appear in photos1/4/5/7/15/18/21; exact bedroom-number matches are not established. Photo8 is an upper plan and14 a main plan, not basement Before evidence."
+          ],
+          "windowStatus": "Basement7/8 new or upgraded window work remains conditional, placement not reviewed reliably enough for W coordinates. Room6 window suitability unknown. No upstairs proposed work by owner scope.",
+          "accessStatus": "Source stair landing appears inside room6 before the shared bath/rec area. A reserved common landing/route is not demonstrated by this After. Eight source concept rows are estimates, not completed access approval; needs review before construction. Source door arcs also meet solid red lines; actual door gaps require concept correction before construction.",
+          "parkingStatus": "Own attributed aerial inspected: single apron illustration, shared curb estimates. Neighbor cuts, corner restrictions and pedestrian clearance not certified; no measured dimensions or legal total."
+        },
+        "listing": {
+          "price": 525000,
+          "sqft": "3018",
+          "beds": "5",
+          "baths": "4 Bathrooms"
+        }
+      },
+      {
+        "id": "8",
+        "address": "6704 Grove Street, Denver, CO",
+        "status": "Provisional",
+        "roomCount": 7,
+        "drawnCount": 7,
+        "grossRent": 5810,
+        "grossIncome": null,
+        "missing": [
+          "Other income",
+          "Private money",
+          "Pest",
+          "Holding costs",
+          "Invoice authorization credit"
+        ],
+        "rooms": [
+          {
+            "number": 1,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 1; matched same-level current drawing; not legal bedroom certification"
+          },
+          {
+            "number": 2,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 2; matched same-level current drawing; not legal bedroom certification"
+          },
+          {
+            "number": 3,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 3; matched same-level current drawing; not legal bedroom certification"
+          },
+          {
+            "number": 4,
+            "level": "Main",
+            "bath": "Primary Bathroom ensuite (drawing evidence)",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 4; matched same-level current drawing; not legal bedroom certification"
+          },
+          {
+            "number": 5,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 5; matched same-level current drawing; not legal bedroom certification"
+          },
+          {
+            "number": 6,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 6; matched same-level current drawing; not legal bedroom certification"
+          },
+          {
+            "number": 7,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Annotated proposed drawing bedroom 7; matched same-level current drawing; not legal bedroom certification"
+          }
+        ],
+        "sourceBudget": 16300,
+        "calculatedBudget": 16300,
+        "insuranceEstimate": true,
+        "review": {
+          "photosInspected": 30,
+          "observations": [
+            "Fresh review of30 current feed photos, authentic public current main/basement and same-level annotated After. Main1\u20134, basement5\u20137; no extra bedrooms inferred.",
+            "Photos21\u201327 show existing bedroom windows and closets, but room-number/level associations remain uncertain. Current selected30 stop before a reliable basement rec photo match; no copied Elmira window proof."
+          ],
+          "windowStatus": "Basement5 source drawing shows an exterior opening, but no reliably identified matching photo or opening specification; new/upgrade need and W placement remain unreviewed. Basement6/7 suitability unknown. No upstairs proposed work by owner scope.",
+          "accessStatus": "Retained central basement hall connects stairs, bath and existing6/7 on plan. Proposed5 has a source door arc at a continuous red partition; deliberate physical gap and proposed closet scope not separately documented. Needs review; do not claim funded/constructed or compliant.",
+          "parkingStatus": "Own attributed aerial inspected, narrow apron and shared curb only. W67th corner and neighbor cuts excluded conceptually; clearances/garage capacity unknown. Historical StreetView blurred, no fresh StreetView claim."
+        },
+        "listing": {
+          "price": 534999,
+          "sqft": "3016",
+          "beds": "5",
+          "baths": "3 Bathrooms"
+        }
+      },
+      {
+        "id": "40",
+        "address": "911 S Elmira Street, Denver, CO 80247",
+        "status": "Estimated",
+        "roomCount": 11,
+        "drawnCount": 11,
+        "grossRent": 7530,
+        "grossIncome": 8410,
+        "missing": [],
+        "rooms": [
+          {
+            "number": 1,
+            "level": "Main",
+            "bath": "Primary-accessed ensuite (drawing evidence)",
+            "drawn": true,
+            "rent": 830,
+            "evidence": "Existing bedroom on authentic main drawing"
+          },
+          {
+            "number": 2,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "Existing bedroom on authentic main drawing"
+          },
+          {
+            "number": 3,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "Existing bedroom on authentic main drawing"
+          },
+          {
+            "number": 4,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "Owner-approved conceptual conversion; common hall access"
+          },
+          {
+            "number": 5,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "Owner-approved conceptual conversion; common hall access"
+          },
+          {
+            "number": 6,
+            "level": "Main",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "Owner-approved conceptual conversion; common hall access"
+          },
+          {
+            "number": 7,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "existing west door from north common hall; concept, not certified"
+          },
+          {
+            "number": 8,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "new east partition gap to west common hall; concept, not certified"
+          },
+          {
+            "number": 9,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "new east partition gap to west common hall; concept, not certified"
+          },
+          {
+            "number": 10,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "new west partition gap to reserved east common hall; not through bath; concept, not certified"
+          },
+          {
+            "number": 11,
+            "level": "Basement",
+            "bath": "Hall/shared",
+            "drawn": true,
+            "rent": 670,
+            "evidence": "new south partition gap directly to north common hall; concept, not certified"
+          }
+        ],
+        "sourceBudget": 44500,
+        "calculatedBudget": 44500,
+        "insuranceEstimate": true,
+        "review": {
+          "photosInspected": 30,
+          "observations": [
+            "Fresh review of30 durable actual listing photos and approved current/redline main/basement. Main1\u20136 and basement7\u201311 remain unchanged.",
+            "Photos26/27 are sunroom,28/29 rear exterior, not basement-bedroom window proof. Existing room-by-room historical photo audit remains conditional."
+          ],
+          "windowStatus": "Four standalone basement W marks at8/9/10/11, no upstairs work. Conditional matches and opening/sill dimensions remain unresolved; owner-directed scope is not legal egress certification.",
+          "accessStatus": "Approved blue shared hall route and red gaps/closets preserved. Eleven is conceptual inventory, not onsite or legal certification.",
+          "parkingStatus": "Own attributed aerial inspected;2 observed plus2 tandem estimates distinguished from shared curb. Neighbor909 driveway excluded; neighbor-cut/egress clearance and legal capacity remain unverified."
+        },
+        "listing": {
+          "price": 724100,
+          "sqft": "3651",
+          "beds": "4",
+          "baths": "4 Bathrooms"
+        }
+      }
+    ],
+    "browser": [
+      {
+        "width": 1280,
+        "id": "6",
+        "defaultReset": 8,
+        "grossRent": 6160,
+        "editHomeBack": true,
+        "max16": true,
+        "negativeGuard": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "width": 1280,
+        "id": "8",
+        "defaultReset": 7,
+        "grossRent": 5810,
+        "editHomeBack": true,
+        "max16": true,
+        "negativeGuard": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "width": 1280,
+        "id": "40",
+        "defaultReset": 11,
+        "grossRent": 7530,
+        "editHomeBack": true,
+        "max16": true,
+        "negativeGuard": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "width": 390,
+        "id": "6",
+        "defaultReset": 8,
+        "grossRent": 6160,
+        "editHomeBack": true,
+        "max16": true,
+        "negativeGuard": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "width": 390,
+        "id": "8",
+        "defaultReset": 7,
+        "grossRent": 5810,
+        "editHomeBack": true,
+        "max16": true,
+        "negativeGuard": true,
+        "keyboard": true,
+        "errors": []
+      },
+      {
+        "width": 390,
+        "id": "40",
+        "defaultReset": 11,
+        "grossRent": 7530,
+        "editHomeBack": true,
+        "max16": true,
+        "negativeGuard": true,
+        "keyboard": true,
+        "errors": []
+      }
+    ],
+    "hosted": "Not checked; local preview only"
+  },
+  "screenshots": [
+    {
+      "name": "40-basement-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/0d1dfce8-2ea4-4b0f-9ae4-70659e645e3b/t55-40-basement-1280.png",
+      "size": 120921,
+      "sha256": "85598b8b12affbf3e2c8d96b05eb39af787a0d0851ddbf7738b832c3836f3558",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-basement-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/5f240dcf-c5a9-460f-a33c-d5365a732610/t55-40-basement-390.png",
+      "size": 88526,
+      "sha256": "dce05c66680235183f2afafd4646695ce7990fe335f568bca6f16df0c62c4c45",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-main-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/635f2200-a634-4b02-9d11-637eee06e77d/t55-40-main-1280.png",
+      "size": 86064,
+      "sha256": "6f7fd76fbaa7e64a41ef6eb9e4cae4ad2a4eab0e7e47cf9298cb4023a7a1a20f",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-main-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/2d8bea06-2108-4d02-babf-06a5c7c4d447/t55-40-main-390.png",
+      "size": 83343,
+      "sha256": "5e75917e1b0ec4a2474b0fe8b5ae04ead3a114d2b92d7a62b3ac1d4de719a09d",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-parking-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/2bc99a9c-49b2-4836-85f7-3037170043e0/t55-40-parking-1280.png",
+      "size": 1515956,
+      "sha256": "84d073ee4d2a8a5cfa47de93fadb957d870fda2951b353fede9b842e33d2e2ce",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-parking-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/af56ab65-25b4-4c2f-bc3f-f7f257d744b7/t55-40-parking-390.png",
+      "size": 169041,
+      "sha256": "01b0de37100f3e531eaf3617b3786f7ca51c4121d215e70c508f5628d74d0833",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-summary-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/b89b1e2d-1d08-4712-a47a-88e0fea45809/t55-40-summary-1280.png",
+      "size": 44859,
+      "sha256": "9dff7a04055de9e4d4690969ed9a895b980a884d54185cb6337c93febdee67fa",
+      "mime": "image/png"
+    },
+    {
+      "name": "40-summary-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/02aa0884-4174-458a-a4ba-171ce3f51834/t55-40-summary-390.png",
+      "size": 44459,
+      "sha256": "73fd7d2b292a96fb7bea83b02c5fd22c8d42077c6d5899aca45c7fde348e4989",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-basement-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/bd8fa906-512c-49d1-b710-c878c1f81994/t55-6-basement-1280.png",
+      "size": 116653,
+      "sha256": "8b56aac41eca119ffb77729a239be8a23182a96e6289500512dc4a610763a697",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-basement-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/d1dca506-ddd0-4bf5-9b45-294b4a657486/t55-6-basement-390.png",
+      "size": 71998,
+      "sha256": "21d0d10b9d741e5b37cdc2f085b613936de30a9f13ca4d19f66bf2a2387e1bfc",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-main-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/7f0c8c27-e50e-477d-bb1e-83908b3ea10c/t55-6-main-1280.png",
+      "size": 220156,
+      "sha256": "d0f4ee54ccf5ba80a71f07068f342f26a31e992dccbb1e394197e4d3ba4b5b39",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-main-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/30aaeafb-5f9a-4e65-828c-e0fc00e73641/t55-6-main-390.png",
+      "size": 123967,
+      "sha256": "42831e230521af23e35edca62a7c67c40fa266eb722438b0a78cc92aae10668f",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-parking-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/80100945-a623-4121-90d5-90e367187776/t55-6-parking-1280.png",
+      "size": 1322954,
+      "sha256": "0dc25cd9405ab62ecf7eca094c676ed8c09dfe56173af2b90e0a5c482bc1238f",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-parking-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/441b756d-d54c-4a30-8935-c60f8bb53292/t55-6-parking-390.png",
+      "size": 157808,
+      "sha256": "39b8ba3ee3c6abfe4f6596b2067e9dec23a0f967dbd591f8b4bb8e25663d73cb",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-summary-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/b07dc15a-ff61-4a46-925e-55ec2605d8a5/t55-6-summary-1280.png",
+      "size": 69703,
+      "sha256": "e22cb14d89c182ceb729cac27001a66e5134cff275ed74a11e631f5fd009ed4a",
+      "mime": "image/png"
+    },
+    {
+      "name": "6-summary-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/9b7d074e-4ec2-42e7-b9fb-a9167741c962/t55-6-summary-390.png",
+      "size": 73075,
+      "sha256": "5deac47e410931b5bfbfbebfdecc94bff84813a74f6f3897937c798d7c82dd96",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-basement-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/940c2d05-0824-48d7-9c5d-b78b78ac8c47/t55-8-basement-1280.png",
+      "size": 76300,
+      "sha256": "37d6f768e03b10da3dd684c7265eb7e3ba7cf684bf8ac8cf957c4ec0b2be590a",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-basement-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/4e233ea3-d861-4ffd-bb89-64cc4c303f0f/t55-8-basement-390.png",
+      "size": 57268,
+      "sha256": "078dc4e4a9f5a4234e330fb6e32100d6f8fcbc3d3fe4333de33d9e63afc01cc7",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-main-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/8e963ca2-919a-472e-b733-6014e5c9688c/t55-8-main-1280.png",
+      "size": 112394,
+      "sha256": "a42ab63cc30a748ccd32fbf3e9e24b5bd8de834ef513f5a81737c14c5b34e4df",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-main-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/9dd38d3c-f03e-4cfd-bab6-d11b5fac3bc0/t55-8-main-390.png",
+      "size": 74593,
+      "sha256": "29858dfbec8c71b33293dfccb29a9d72accaa1666603ce6a505031c36ced8287",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-parking-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/a88baf2c-b1c5-4835-a092-a40fc66e4c0d/t55-8-parking-1280.png",
+      "size": 1368762,
+      "sha256": "1d92074c826d24cbcfcbabfa7434922437ee4712ede26724f1064f2c2690a8b9",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-parking-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/88e826f0-83a6-4f10-93f6-33131b71b8c7/t55-8-parking-390.png",
+      "size": 160619,
+      "sha256": "480fe69da89c9e4dee93b8f9b9cb3d9b349df0965c8c8fb7b0a81965a58bb711",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-summary-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/efbc0cb4-4324-4199-a5cb-a1ce4533d23b/t55-8-summary-1280.png",
+      "size": 69760,
+      "sha256": "661b9c8e9de320b25aa5551cf48a592d18d36377155820e150c4d7b0f68dfe01",
+      "mime": "image/png"
+    },
+    {
+      "name": "8-summary-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/90804e9c-7b14-4ffe-bb56-af2c5f3d2941/t55-8-summary-390.png",
+      "size": 72957,
+      "sha256": "50337c72b0e01c12dc5b028546acf153c429b75bc29d20919ed22daaebd73536",
+      "mime": "image/png"
+    },
+    {
+      "name": "home-1280.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/82fd869b-a5a1-432a-be1f-192a7dae97ce/t55-home-1280.png",
+      "size": 667218,
+      "sha256": "f3f1ffe35519e899beab0d6ec9ded3d18a3836a82f9c2e41f3ca14c5e166747c",
+      "mime": "image/png"
+    },
+    {
+      "name": "home-390.png",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/4a24e6a1-200a-405a-81c6-e705e44e30e0/t55-home-390.png",
+      "size": 743030,
+      "sha256": "db1b38c4987cc4b0f465b8be7d775312492f4e1acc3dd59491d7183b4369d0d5",
+      "mime": "image/png"
+    }
+  ],
+  "reviewImages": [
+    {
+      "name": "deal-6-review.jpg",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/2e55cda4-4214-4239-8158-ab7623cc2e2f/t55-deal-6-review.jpg",
+      "size": 260543,
+      "sha256": "142ce334864ce20ee4348f5b63b33db3363a8b15e9f78da6218f8e8723326f32",
+      "mime": "image/jpeg"
+    },
+    {
+      "name": "deal-8-review.jpg",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/0772a02a-c45a-4359-bb7a-849101f4783a/t55-deal-8-review.jpg",
+      "size": 245929,
+      "sha256": "623e488ace20abfdb4ada7494450cb4997bbe1dc1129e16ebf8681bb384dc21a",
+      "mime": "image/jpeg"
+    },
+    {
+      "name": "deal-40-review.jpg",
+      "url": "https://fi-team-coliving-deals.lovable.app/__l5e/assets-v1/f1d524b3-87a9-4215-8a05-cf03d578941d/t55-deal-40-review.jpg",
+      "size": 257186,
+      "sha256": "a52c66a39202a9cfa10b1d7a02f41c4b2e7f582fde68fe2e65169c161ada176b",
+      "mime": "image/jpeg"
+    }
+  ]
+}

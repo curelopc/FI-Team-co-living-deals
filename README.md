@@ -45,4 +45,4 @@ LOVABLE_API_KEY=
 GOOGLE_SHEETS_API_KEY=
 ```
 
-Without those keys, deal pages serve `src/lib/published-deals.json`, a snapshot of the three active deals taken from the published site. Refresh still reports an error until the keys are set. Never commit key values.
+Without those keys, deal pages load `src/lib/published-deals.json`, a snapshot of the three active deals taken from the published site, then apply the current scenario to those source seeds. Refresh still reports an error until the keys are set. Never commit key values.

@@ -10,6 +10,6 @@ export const listingFinancialEvidence: Record<string, { annualTax: number; taxLa
     annualTax: 3928, taxLabel: 'Listed tax (year unspecified) / mo $',
     sourceUrl: 'https://www.kentwood.com/realestate/details/31604563/6704-grove-street-denver-co-80221', retrieved: '2026-11-07',
     septicNotApplicable: true, noAssociation: true,
-    audit: 'Parent WebFetch: TaxAnnualAmount $3,928, year not shown. Third-party listing, not verified county bill. Association:false supports HOA0; public sewer supports no septic expense. Parking data garage0/carport2 conflicts narrative2-car garage: garage remains unverified. Source actual6.5% down retained, not heading20%. Historical PDF tax150/insurance150 unchanged.',
+    audit: 'Parent WebFetch: TaxAnnualAmount $3,928, year not shown. Third-party listing, not verified county bill. Association:false supports HOA0; public sewer supports no septic expense. Parking data garage0/carport2 conflicts narrative2-car garage: garage remains unverified. Old report calculator used 6.5% down, not its 20% heading. The live scenario uses the FI Team standard 20% down. Historical PDF tax 150 and insurance 150 stay in the old report.',
   },
 };

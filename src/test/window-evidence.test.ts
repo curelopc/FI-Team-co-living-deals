@@ -6,7 +6,7 @@ it('audits eleven unique approved bedrooms without changing their count', () => 
   expect(windowEvidence('main')).toHaveLength(6);
   expect(windowEvidence('basement')).toHaveLength(5);
   expect(concept.totalRooms).toBe(11);
-  expect(concept.modeledRooms).toBe(10);
+  expect(concept.modeledRooms).toBe(11);
 });
 it('limits owner-directed window work to four standalone basement W marks, keeping room 9 once', () => {
   expect(audit.rooms.filter(room => room.mark === 'W').map(room => room.room)).toEqual([8,9,10,11]);

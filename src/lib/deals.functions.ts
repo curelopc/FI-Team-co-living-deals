@@ -4,6 +4,7 @@ import { parseResearch, normalizeAddress, researchPitchRow, seedAnalysis, RESEAR
 
 import { latestDeals, latestRooms, capexLines } from './underwriting';
 import { standardScenario } from './standard-scenario';
+import { mergePortalDeals, portalBundle } from './portal-bundles';
 
 // Anonymous preview reads use server-only connector credentials, never a visitor session.
 export const getDeals = createServerFn({ method: "GET" })
@@ -14,7 +15,7 @@ export const getDeals = createServerFn({ method: "GET" })
       const deals = parseResearch(snapshot[0] ?? []);
       const bundles: Awaited<ReturnType<typeof resolveDeal>>[] = [];
       for(let i=0;i<deals.length;i+=6) bundles.push(...await Promise.all(deals.slice(i,i+6).map(deal => resolveDeal(deal.id, snapshot, data?.refresh))));
-      return { deals, analyses:Object.fromEntries(bundles.map((bundle,i)=>[deals[i]?.id,bundle.analysis])), bundles:Object.fromEntries(bundles.map((bundle,i)=>[deals[i]?.id,bundle])) };
+      return mergePortalDeals({ deals, analyses:Object.fromEntries(bundles.map((bundle,i)=>[deals[i]?.id,bundle.analysis])), bundles:Object.fromEntries(bundles.map((bundle,i)=>[deals[i]?.id,bundle])) });
     } catch (error) {
       // Live reads need the Lovable Sheets connector. Without those keys, serve the
       // published export so the pages still render the same three deals.
@@ -26,6 +27,8 @@ export const getDeals = createServerFn({ method: "GET" })
 export const getDeal = createServerFn({ method: "GET" })
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data }) => {
+    const portal = portalBundle(data.id);
+    if (portal) return portal;
     try {
       return await resolveDeal(data.id);
     } catch (error) {
@@ -41,11 +44,24 @@ function sheetsUnlinked(error: unknown): boolean {
 
 async function publishedPayload() {
   const mod = await import("./published-deals.json");
-  return ("default" in mod ? mod.default : mod) as {
+  const stored = ("default" in mod ? mod.default : mod) as {
     deals: ResearchDeal[];
     analyses: Record<string, Awaited<ReturnType<typeof resolveDeal>>["analysis"]>;
     bundles: Record<string, Awaited<ReturnType<typeof resolveDeal>>>;
   };
+  // Re-run the current scenario on the exported source seeds so Grove's 9-bedroom
+  // rent roll and the shared holding math stay in step with the code, not the old snapshot.
+  const bundles = Object.fromEntries(Object.entries(stored.bundles).map(([id, bundle]) => {
+    const research = bundle.research;
+    const source = bundle.sourceAnalysis;
+    const analysis = source && research ? standardScenario(source, research.cells) : source;
+    return [id, { ...bundle, analysis }];
+  }));
+  return mergePortalDeals({
+    deals: stored.deals,
+    analyses: Object.fromEntries(stored.deals.map((deal) => [deal.id, bundles[deal.id]?.analysis ?? null])),
+    bundles,
+  });
 }
 
 function emptyDeal(): Awaited<ReturnType<typeof resolveDeal>> {

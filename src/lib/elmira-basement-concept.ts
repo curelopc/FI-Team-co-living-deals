@@ -9,7 +9,7 @@ export const elmiraBasementConcept = {
     { number: 11, source: 'north-central recreation area above retained common hall', access: 'new south partition gap directly to north common hall', closet: 'proposed C', newDoorThroughExistingWall: false },
   ],
   totalRooms: 11,
-  modeledRooms: 10,
+  modeledRooms: 11,
   sourcePlannedRooms: 9,
   currentListingBeds: 4,
   windows: [{ room: 9, wall: 'west exterior wall, south of support-column level', label: 'W: proposed egress, compliance not verified', allowance: 4000 }],

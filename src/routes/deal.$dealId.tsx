@@ -3,10 +3,17 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, type ReactNode } from "react";
 import { AnalysisEditor } from '@/components/AnalysisEditor';
+import { HistoricalUnderwrite } from '@/components/HistoricalUnderwrite';
 import { dealQuery } from '@/lib/deal-queries';
 import { ParkingEvidence } from '@/components/ParkingEvidence';
 import { locationEvidence } from '@/lib/location-evidence';
 import { planEvidence } from '@/lib/plan-evidence';
+import { useAnalysisSession } from '@/components/AnalysisSession';
+import { modelSummary } from '@/lib/deal-intake';
+import { Explanation } from '@/components/Explanation';
+import { ConceptPlan } from '@/components/ConceptPlan';
+import { portalDeal } from '@/lib/portal-catalog';
+import { propertyReview } from '@/lib/property-review';
 import { WindowEvidenceTable } from '@/components/WindowEvidenceTable';
 import fiTeamLogo from '@/assets/the-fi-team-logo.png.asset.json';
 import { MlsPhotoCarousel } from '@/components/MlsPhotoCarousel';
@@ -24,12 +31,12 @@ import {
 } from "@/lib/deals";
 
 export const Route = createFileRoute("/deal/$dealId")({
-  head: () => ({
+  head: ({ params }) => ({
     meta: [
-      { title: "Deal Pitch | The FI Team Co-Living Deals" },
-      { name: "description", content: "The FI Team co-living deal pitch with read-only sheet values and session analysis." },
-      { property: "og:title", content: "Deal Pitch | The FI Team Co-Living Deals" },
-      { property: "og:description", content: "The FI Team co-living deal pitch with read-only sheet values and session analysis." },
+      { title: `Deal ${params.dealId} | The FI Team Co-Living Deal` },
+      { name: "description", content: `Listing, numbered proposal and session estimates for The FI Team co-living deal ${params.dealId}.` },
+      { property: "og:title", content: `Deal ${params.dealId} | The FI Team Co-Living Deal` },
+      { property: "og:description", content: `Listing, numbered proposal and session estimates for The FI Team co-living deal ${params.dealId}.` },
       { name: "robots", content: "noindex" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -56,9 +63,9 @@ const VERDICT_STYLES: Record<VerdictKind, { label: string; className: string }> 
   pending: { label: "Pending", className: "bg-hc-border text-hc-navy" },
 };
 
-/** A number value, or a gray "Needs input" when missing. Negative money renders red. */
+/** A number value, or a gray "Unavailable" when missing. Negative money renders red. */
 function Num({ value, money = false, pct = false }: { value: number | null; money?: boolean; pct?: boolean }) {
-  if (value == null) return <span className="text-muted-foreground">Needs input</span>;
+  if (value == null) return <span className="text-muted-foreground">Unavailable</span>;
   const text = money ? fmtMoney(value) : pct ? fmtPct(value) : String(value);
   return <span className={money && value < 0 ? "text-destructive" : undefined}>{text}</span>;
 }
@@ -110,35 +117,20 @@ function Pin({ n, x, y }: { n: string; x: number; y: number }) {
   );
 }
 
-function Explanation({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="mt-3">
-      <button
-        type="button"
-        aria-expanded={open}
-        onClick={() => setOpen((o) => !o)}
-        className="rounded-lg border border-hc-border px-3 py-1.5 text-xs font-bold text-hc-blue transition hover:bg-muted"
-      >
-        {open ? "Hide explanation" : "Show explanation"}
-      </button>
-      {open && <div className="mt-2">{children}</div>}
-    </div>
-  );
-}
-
 function PlanSection({
   title,
   imageUrl,
   callouts,
   placeholder,
   evidence,
+  reviewId,
 }: {
   title: string;
   imageUrl: string | null;
   callouts: TabRow[];
   placeholder: string;
   evidence: ReturnType<typeof planEvidence>;
+  reviewId?: string | undefined;
 }) {
   const [failed, setFailed] = useState(false);
   const [useFallback, setUseFallback] = useState(false);
@@ -146,9 +138,9 @@ function PlanSection({
   return (
     <section className="py-7">
       <SectionTitle>{title}</SectionTitle>
-      <div className="grid items-start gap-5 md:grid-cols-[1fr_auto_1fr]">
+      <div className={`grid items-start gap-5 ${evidence.beforeUrl && imageUrl ? 'md:grid-cols-[1fr_auto_1fr]' : 'md:grid-cols-2'}`}>
         <div><h3 className="mb-2 font-bold">Before · current drawing</h3>{evidence.beforeUrl ? <><EvidenceImage key={evidence.beforeUrl} url={evidence.beforeAssetUrl ?? driveImageUrl(evidence.beforeUrl)} alt={`${title} before current drawing`} /><a href={evidence.beforeUrl} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs text-hc-blue underline">{evidence.beforeProvenanceLabel}</a></> : <p className="flex min-h-40 items-center justify-center bg-muted text-muted-foreground">Current drawing missing</p>}</div>
-        <span aria-hidden="true" className="self-center text-center text-2xl text-hc-amber">→</span>
+        {evidence.beforeUrl && imageUrl && <span aria-hidden="true" className="self-center text-center text-2xl text-hc-amber">→</span>}
         <div><h3 className="mb-2 font-bold">{evidence.afterLabel}</h3>
         {showImage ? (
           <div className="relative self-start">
@@ -197,8 +189,13 @@ function PlanSection({
       <p className="mt-3 text-xs font-semibold text-muted-foreground">{evidence.summary}</p>
       {evidence.windowAudit?.some(row => row.proposedWindowScope) && <p className="mt-2 text-xs font-semibold text-muted-foreground">W = new or upgraded window</p>}
       <Explanation>
+        <div className="space-y-2 text-xs text-muted-foreground">
+          {propertyReview(reviewId).observations.map(line => <p key={line}>{line}</p>)}
+          <p>{propertyReview(reviewId).accessStatus}</p><p>{propertyReview(reviewId).windowStatus}</p>
+        </div>
         <p className="text-sm text-muted-foreground">{evidence.note}</p>
         <p className="mt-2 text-xs text-muted-foreground">{evidence.allocation}</p>
+        {!evidence.windowAudit && <p className="mt-2 text-xs text-muted-foreground">Window/photo associations unreviewed for this proposal. No upstairs window work by owner scope; basement new or upgraded work uses standalone W only when supported by this property's own review. No copied window positions or compliance claim.</p>}
         {evidence.windowAudit && <WindowEvidenceTable rows={evidence.windowAudit} />}
         {evidence.accessAudit && (
           <div className="mt-3 rounded-lg border border-hc-border p-3">
@@ -238,10 +235,13 @@ function PitchPage() {
 
 function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal>>; dealId: string }) {
   const seed = data.analysis;
-  const [analysis, setAnalysis] = useState(() => seed ? structuredClone(seed.inputs) : null);
+  const session = useAnalysisSession();
+  const analysis = session.inputs[dealId] ?? seed?.inputs;
+  const setAnalysis = (value: NonNullable<typeof analysis>) => session.update(dealId, value);
   const { deal, capex, callouts } = data;
   if (!deal || !analysis || !seed) return null;
-  const result = calculateAnalysis(analysis);
+  const result = modelSummary(analysis, seed.inputs);
+  const drawnCount = result.drawnCount;
   const rentRoll = analysis.rooms.map((room, i) => ({ rowNumber: i + 2, cells: { Room: room.name, Level: room.level, Bath: room.bath, 'Rent/mo': room.rent == null ? '' : String(room.rent) } }));
   const cells = deal.cells;
 
@@ -250,7 +250,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
   const kind = verdictKind(cells["Verdict"]);
   const verdict = VERDICT_STYLES[kind];
   const why = cells["Why"] ?? "";
-  const price = parseNumber(cells["Price"]);
+  const price = data.research?.displayPrice ?? parseNumber(deal.cells['Price']);
   // Sourced square footage from the Research sheet `sqft` column; omitted cleanly when missing.
   const sqft = parseNumber(data.research?.cells['sqft'] ?? cells['Sqft'] ?? cells['Sq Ft'] ?? cells['Square Feet']);
   // Sourced current vs proposed bed/bath counts from the Research sheet; omitted cleanly when missing.
@@ -307,17 +307,17 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             {cells["Address"] || dealId}
           </h1>
           <div className="mt-1 text-2xl font-bold text-hc-amber">
-            List price {price != null ? fmtMoney(price) : "Needs input"}
+            List price {price != null ? fmtMoney(price) : "Unavailable"}
             {sqft != null && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {sqft.toLocaleString('en-US')} sq ft</span>}
             {curBeds != null && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {curBeds} bd</span>}
             {curBaths != null && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {curBaths} ba</span>}
           </div>
           {(propBeds != null || propBaths != null) && (
             <p className="mt-1 text-sm text-primary-foreground/80">
-              Current beds/baths above → proposed (source): {propBeds != null ? `${propBeds} bd` : 'beds n/a'}{propBaths != null ? ` · ${propBaths} ba` : ''}
+              Current listing above · Future {analysis.rooms.length} bd{(propBaths ?? curBaths) != null ? ` · ${propBaths ?? curBaths} ba` : ''} · proposed concept
             </p>
           )}
-          {data.research && data.research.displayPrice !== data.research.fiPrice && <p className="mt-1 text-sm text-hc-navy-muted">FI Team list {data.research.fiPrice == null ? 'Needs input' : fmtMoney(data.research.fiPrice)}</p>}
+          {data.research && data.research.displayPrice !== data.research.fiPrice && <p className="mt-1 text-sm text-hc-navy-muted">FI Team list {data.research.fiPrice == null ? 'Unavailable' : fmtMoney(data.research.fiPrice)}</p>}
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             {listingUrl && (
               <a
@@ -349,11 +349,11 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
       <main className="mx-auto max-w-[1120px] px-5">
         <section className="py-7">
           <SectionTitle>Numbers overview</SectionTitle>
-          {result.missing.length>0 && <p className="mb-3 text-sm text-muted-foreground">Estimate incomplete · some inputs still needed below.</p>}
+          <p className="mb-3 text-sm text-muted-foreground">{result.missing.length ? "Returns unavailable · check validation below" : "Estimated"}</p>
 
           <div className="grid grid-cols-2 gap-3.5 min-[800px]:grid-cols-4">
-            <StatCard label={pitch.cashInvested==null?"Invested subtotal":"Cash invested*"} highlight sub={pitch.cashInvested==null?"Known upfront inputs only; not total cash required":undefined}>
-              <Num value={pitch.cashInvested??result.investedSubtotal} money />
+            <StatCard label="Cash invested" highlight>
+              <Num value={result.cashInvested} money />
             </StatCard>
             <StatCard label={pitch.monthlyCashFlow==null?"Provisional cash flow":"Monthly cash flow"} sub={pitch.monthlyCashFlow==null?"Excludes unresolved inputs; not complete returns":undefined}>
               <Num value={pitch.monthlyCashFlow??result.provisionalCashFlow} money />
@@ -361,8 +361,8 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             <StatCard label="Annual cash flow">
               <Num value={pitch.annualCashFlow} money />
             </StatCard>
-            <StatCard label={coc==null?"Provisional CoC":"CoC %*"} highlight sub={coc==null?"Only shown with complete invested denominator":undefined}>
-              {coc ?? (result.provisionalCoc==null?null:fmtPct(result.provisionalCoc)) ?? <span className="text-muted-foreground">Needs input</span>}
+            <StatCard label="CoC" highlight>
+              {coc ?? <span className="text-muted-foreground">Unavailable</span>}
             </StatCard>
             <StatCard label="NOI / yr">
               <Num value={noi} money />
@@ -370,14 +370,16 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             <StatCard label="CapEx total">
               <Num value={pitch.capexTotal} money />
             </StatCard>
-            <StatCard label="Modeled rooms" sub={currentRooms ? `Source current rooms: ${currentRooms}; feasibility unverified` : 'Physical feasibility unverified'}>
-              {analysis.rooms.length || <span className="text-muted-foreground">Needs input</span>}
+            <StatCard label="Proposed bedrooms" sub={`${drawnCount ?? 'Unknown'} drawn; current listing ${curBeds ?? currentRooms}; concept, not certified`}>
+              {analysis.rooms.length || <span className="text-muted-foreground">Unavailable</span>}
             </StatCard>
             <StatCard label="Baths">
-              {baths || <span className="text-muted-foreground">Needs input</span>}
+              {propBaths ?? curBaths ?? <span className="text-muted-foreground">Unverified</span>}
             </StatCard>
+            <StatCard label="Gross room rent / mo"><Num value={result.grossRent} money /></StatCard>
+            <StatCard label="Gross income / mo" sub="Room rent + tenant utilities + other income"><Num value={result.grossIncome} money /></StatCard>
           </div>
-          {result.missing.length>0&&<p className="mt-3 text-xs text-muted-foreground">Needs input: {result.missing.join(', ')}. Subtotals are not complete returns or total cash required.</p>}
+          {result.missing.length>0&&<p className="mt-3 text-xs text-muted-foreground">Validation: {result.missing.join(', ')}. Subtotals are not complete returns or total cash required.</p>}
           {pitch.capexMismatch && (
             <p className="mt-3 text-xs text-muted-foreground">
               Note: the CapEx tab total differs from Conversion Budget + Furnishing on the deal row.
@@ -385,12 +387,16 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
           )}
         </section>
 
-        <AnalysisEditor seed={seed} value={analysis} onChange={value => { setAnalysis(value); }} onReset={() => { setAnalysis(structuredClone(seed.inputs)); }} />
+        <AnalysisEditor seed={seed} value={analysis} onChange={value => { setAnalysis(value); }} onReset={() => setAnalysis(seed.inputs)} />
 
+        {seed.historical && <HistoricalUnderwrite report={seed.historical} />}
+
+        {portalDeal(data.research?.id) ? <ConceptPlan id={data.research?.id ?? dealId} /> : <>
         <PlanSection
           key={`${dealId}-main-${mainPlanUrl}`}
           title={planEvidence(cells['Floorplan Main'] || '', 'main', data.research?.id).title}
           evidence={planEvidence(cells['Floorplan Main'] || '', 'main', data.research?.id)}
+          reviewId={data.research?.id}
           imageUrl={mainPlanUrl}
           callouts={mainCallouts}
           placeholder="Floor plan coming soon"
@@ -401,15 +407,17 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             key={`${dealId}-basement-${basementPlanUrl}`}
             title="Basement level"
             evidence={planEvidence(basementRaw, 'basement', data.research?.id)}
+            reviewId={data.research?.id}
             imageUrl={basementPlanUrl}
             callouts={basementCallouts}
             placeholder="Floor plan coming soon"
           />
         )}
+        </>}
 
         <section className="py-7">
           <SectionTitle>Parking</SectionTitle>
-          {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : parkingUrl ? (
+          {data.research && locationEvidence[data.research.id] ? <ParkingEvidence id={data.research.id}/> : portalDeal(data.research?.id) ? <PortalParking id={data.research?.id ?? dealId} /> : parkingUrl ? (
             <ParkingImage key={`${dealId}-${parkingUrl}`} url={parkingUrl} spots={parkingSpots} note={parkingNote} />
           ) : (
             <div
@@ -424,6 +432,9 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         <section className="py-7">
           <SectionTitle>Rent roll by room</SectionTitle>
+          {analysis.sharedRentEstimate != null && analysis.privateRentEstimate != null && (
+            <p className="mb-3 text-sm text-muted-foreground">Bedroom rents are estimates: ${analysis.sharedRentEstimate} shared bath, ${analysis.privateRentEstimate} private bath.</p>
+          )}
           {rentRoll.length === 0 ? (
             <p className="rounded-xl bg-card p-5 text-sm text-muted-foreground shadow-sm">
               Not yet itemized.
@@ -451,7 +462,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
                     const rent = parseNumber(r.cells["Rent/mo"]);
                     return (
                       <tr key={r.rowNumber} className="border-b border-hc-border last:border-0">
-                        <td className="px-4 py-3 font-semibold">{r.cells["Room"]}</td>
+                        <td className="whitespace-nowrap px-4 py-3 font-semibold">{r.cells["Room"]}</td>
                         <td className="px-4 py-3">{r.cells["Level"]}</td>
                         <td className="px-4 py-3">{r.cells["Bath"]}</td>
                         <td className="px-4 py-3 text-xs">{analysis.rooms[r.rowNumber - 2]?.evidence || "Drawing/bath access unclear"}</td><td className="px-4 py-3 text-right">
@@ -476,6 +487,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
 
         <section className="py-7 pb-10">
           <SectionTitle>CapEx line items</SectionTitle>
+          <Explanation>
           {capex.length === 0 ? (
             <p className="rounded-xl bg-card p-5 text-sm text-muted-foreground shadow-sm">
               Not yet itemized.
@@ -518,13 +530,14 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
               </table>
             </div>
           )}
+          </Explanation>
         </section>
       </main>
 
       <footer className="bg-hc-navy py-7 text-sm text-hc-navy-muted">
         <div className="mx-auto max-w-[1120px] px-5">
           The FI Team · Co-living analysis uses sheet values and labeled session estimates, not an offer or investment advice. Deal ID {dealId} ·
-          Updated {cells["Date Found"] || "Needs input"} ·{" "}
+          Updated {cells["Date Found"] || "Unavailable"} ·{" "}
           <a
             href={data.sheetUrl}
             target="_blank"
@@ -539,12 +552,26 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
   );
 }
 
+function PortalParking({ id }: { id: string }) {
+  const deal = portalDeal(id);
+  if (!deal) return null;
+  return (
+    <div className="rounded-xl bg-card p-5 text-sm shadow-sm">
+      <p className="font-bold text-hc-navy">Garage {deal.garageObserved} observed. Driveway {deal.drivewayEstimated} estimated. Street {deal.streetEstimated} estimated.</p>
+      <p className="mt-2 text-muted-foreground">{deal.parkingNote}</p>
+      <Explanation>
+        <p>No aerial was inspected for this address. Garage count is the MLS figure. Driveway and street counts are estimates, not reserved spaces or a legal total.</p>
+      </Explanation>
+    </div>
+  );
+}
+
 function ParkingCallout({ spots, note }: { spots: string; note: string }) {
   return (
     <div className="absolute right-3 bottom-3 max-w-[70%] rounded-xl bg-hc-navy px-4 py-3 text-primary-foreground md:right-4 md:bottom-4">
       <div className="text-xs font-semibold">Potential spaces · ESTIMATED/unverified</div>
-      <div className="text-2xl font-extrabold text-hc-amber">{spots || "Needs input"}</div>
-      {note && <div className="mt-0.5 text-xs text-hc-navy-muted">{note}</div>}<div className="mt-1 text-xs text-hc-navy-muted">Legal restrictions unverified. Existing aerial only; no fresh inspection.</div>
+      <div className="text-2xl font-extrabold text-hc-amber">{spots || "Unavailable"}</div>
+      <Explanation>{note && <p>{note}</p>}<p>Source claim only. Parking/photo review unverified; shared curb, neighbor cuts and egress clearance unknown. Not legal capacity.</p></Explanation>
     </div>
   );
 }
