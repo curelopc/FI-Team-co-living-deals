@@ -18,7 +18,7 @@ import { getDeal, getDeals } from '../lib/deals.functions';
 describe('anonymous read-only preview access', () => {
   it('returns the published deals with no visitor credentials', async () => {
     const home = await getDeals();
-    expect(home.deals).toHaveLength(22);
+    expect(home.deals).toHaveLength(21);
     expect(home.deals[0]?.id).toBe('6');
     expect(home.deals[1]?.id).toBe('40');
   });
@@ -28,6 +28,7 @@ describe('anonymous read-only preview access', () => {
     expect(fraser.analysis?.inputs.rooms).toHaveLength(8);
     expect(fraser.analysis?.inputs.price).toBe(490000);
     expect((await getDeal({ data: { id: '8' } })).deal).toBeNull();
+    expect((await getDeal({ data: { id: 'macon-2069' } })).deal).toBeNull();
   });
   it('keeps Elmira on its existing URL', async () => {
     const elmira = await getDeal({ data: { id: '40' } });

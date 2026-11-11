@@ -7,7 +7,7 @@ import { standardScenario } from './standard-scenario';
 import { mergePortalDeals } from './portal-bundles';
 import { dailyBundle, dailyPayload } from './daily-deals';
 
-// The published site is the 2026-11-10 deal file. Fraser stays /deal/6 and Elmira stays /deal/40.
+// Published catalog includes the 2026-11-11 handoff. Fraser stays /deal/6 and Elmira stays /deal/40.
 export const getDeals = createServerFn({ method: "GET" })
   .inputValidator((data: { refresh?: boolean } = {}) => data)
   .handler(async () => dailyPayload());

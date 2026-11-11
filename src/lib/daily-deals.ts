@@ -14,6 +14,8 @@ type DailyModel = {
   cash_flow: number | null; coc_pct: number | null; cap_rate_pct: number | null;
   invested: number | null; holding: number | null; down: number | null; closing: number | null;
   reno: number | null; pi: number | null; loan: number | null;
+  dscr: number | null; price_for_8pct_coc: number | null; price_for_12pct_coc: number | null;
+  breakeven_price: number | null;
   expenses: Record<string, number>; rent_assumption: string;
 };
 type DailyDeal = {
@@ -29,7 +31,7 @@ const dailyDeals = dailyRaw as DailyDeal[];
 
 /** Keep the live URLs. Fraser stays /deal/6 and Elmira stays /deal/40. */
 const siteIdBySlug: Record<string, string> = { 'fraser-1584': '6', 'elmira-911': '40' };
-const newSlugs = new Set(['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4317','perth-4965','macon-2069','pacific-17004','fillmore-12357','ouray-3404']);
+const newSlugs = new Set(['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4317','perth-4965','pacific-17004','fillmore-12357','ouray-3404']);
 const lowConfidence = new Set(['beth-216','21st-255','rose-825','poppy-892']);
 
 const extraCoords: Record<string, { lat: number; lon: number; note: string }> = {
@@ -39,7 +41,6 @@ const extraCoords: Record<string, { lat: number; lon: number; note: string }> = 
   'crown-4860': { lat: 39.7831589, lon: -104.8316214, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'ceylon-4317': { lat: 39.7746378, lon: -104.764494, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'perth-4965': { lat: 39.7844842, lon: -104.7360974, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
-  'macon-2069': { lat: 39.6790936, lon: -104.8563071, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'pacific-17004': { lat: 39.6789253, lon: -104.7899516, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'fillmore-12357': { lat: 39.9201084, lon: -104.9521989, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'ouray-3404': { lat: 39.6542696, lon: -104.7922024, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
@@ -70,7 +71,7 @@ const taxYearBySlug: Record<string, number> = {
   'fraser-1584': 2024, 'elmira-911': 2025, 'topeka-4725': 2025, 'poppy-892': 2025, 'ventura-3582': 2025,
   'dawson-2418': 2025, '21st-255': 2025, 'eldorado-19299': 2025, 'perry-5246': 2025, 'rose-825': 2024,
   'yale-4585': 2025, 'adams-12218': 2025, 'beth-216': 2025, 'oregon-12055': 2025, 'york-7751': 2024,
-  'crown-4860': 2025, 'ceylon-4317': 2025, 'perth-4965': 2025, 'macon-2069': 2026, 'pacific-17004': 2021,
+  'crown-4860': 2025, 'ceylon-4317': 2025, 'perth-4965': 2025, 'pacific-17004': 2021,
   'fillmore-12357': 2025, 'ouray-3404': 2025,
 };
 
@@ -96,6 +97,9 @@ function handoffFlags(deal: DailyDeal): string[] {
   if (deal.slug === 'elmira-911') {
     flags.push('Finished area in this underwrite is 3,547 sq ft. The earlier site figure was 3,651 sq ft.');
     flags.push('The existing concept drawing marks bedroom 1 as a primary-accessed ensuite. This underwrite counted 0 private-bath rooms, so every room uses the shared furnished rate.');
+  }
+  if (deal.slug === 'topeka-4725') {
+    flags.push('Price reduced from $499,900 to $494,900 on 2026-11-11 (official REcolorado alert, MLS 6110384, still Active). This underwrite uses $494,900. CoLivingPro rents were not re-pulled. Cash flow is $656.48/mo (was $628.51). CoC is 4.4% (was 4.2%). Cash invested is $177,931.05 (was $179,086.99). Cap rate is 8.3% (was 8.22%). DSCR is 1.24 (was 1.22). All-in is $565,298 (was $570,398). Price per finished sq ft is $143.60 (was $145.10).');
   }
   if (deal.city !== 'Denver' && deal.risks.some(risk => /Denver group-living/i.test(risk))) {
     flags.push(`One note mentions Denver group-living rules. This home is in ${deal.city}. Confirm ${deal.city} occupancy rules before relying on that sentence.`);
@@ -261,6 +265,22 @@ export function dailyPayload() {
     analyses[id] = bundle.analysis;
   }
   return { deals, analyses, bundles };
+}
+
+export function publishedMetrics(id: string) {
+  const deal = dailyDealById(id);
+  const closing = deal?.model.closing;
+  const reno = deal?.model.reno;
+  if (!deal?.sqft || closing == null || reno == null) return null;
+  return {
+    pricePerSqft: Math.round((deal.price / deal.sqft) * 10) / 10,
+    allIn: deal.price + closing + reno,
+    dscr: deal.model.dscr,
+    capRate: deal.model.cap_rate_pct,
+    priceFor8: deal.model.price_for_8pct_coc,
+    priceFor12: deal.model.price_for_12pct_coc,
+    priceForCashFlowZero: deal.model.breakeven_price,
+  };
 }
 
 export function dailyFigures(id: string) {
