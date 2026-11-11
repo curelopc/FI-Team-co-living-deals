@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, type ReactNode } from "react";
@@ -13,6 +13,7 @@ import { modelSummary } from '@/lib/deal-intake';
 import { Explanation } from '@/components/Explanation';
 import { ConceptPlan } from '@/components/ConceptPlan';
 import { portalDeal } from '@/lib/portal-catalog';
+import { publishedMetrics } from '@/lib/daily-deals';
 import { propertyReview } from '@/lib/property-review';
 import { WindowEvidenceTable } from '@/components/WindowEvidenceTable';
 import fiTeamLogo from '@/assets/the-fi-team-logo.png.asset.json';
@@ -42,9 +43,13 @@ export const Route = createFileRoute("/deal/$dealId")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  loader:({context,params})=>context.queryClient.ensureQueryData(dealQuery(params.dealId)),
+  loader: async ({ context, params }) => {
+    const data = await context.queryClient.ensureQueryData(dealQuery(params.dealId));
+    if (!data?.deal) throw notFound();
+    return data;
+  },
   errorComponent:()=> <p>Could not load this deal.</p>,
-  notFoundComponent:()=> <p>Deal not found.</p>,
+  notFoundComponent:()=> <div className="min-h-screen bg-hc-page p-10"><h1 className="text-2xl font-extrabold text-hc-navy">404</h1><p className="mt-2 text-muted-foreground">Deal not found.</p><Link to="/" className="mt-4 inline-block text-sm font-semibold text-hc-blue">All deals</Link></div>,
   component: PitchPage,
 });
 
@@ -262,6 +267,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
   const propBeds = parseCount(rc?.['converted_beds'] ?? cells['Post-Conversion Rooms']);
   const propBaths = parseCount(rc?.['converted_baths'] ?? '');
   const coc = result.cocPercent == null ? null : fmtPct(result.cocPercent);
+  const metrics = publishedMetrics(dealId);
   const noi = result.monthlyNoi == null ? null : result.monthlyNoi * 12;
   const grossRent = parseNumber(cells["Gross Rent/mo"]);
   const currentRooms = cells["Current Rooms"] ?? "";
@@ -309,6 +315,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
           <div className="mt-1 text-2xl font-bold text-hc-amber">
             List price {price != null ? fmtMoney(price) : "Unavailable"}
             {sqft != null && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {sqft.toLocaleString('en-US')} sq ft</span>}
+            {metrics && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {fmtMoney(metrics.pricePerSqft, 2)} / sq ft</span>}
             {curBeds != null && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {curBeds} bd</span>}
             {curBaths != null && <span className="ml-2 whitespace-nowrap text-lg font-semibold text-primary-foreground/80">· {curBaths} ba</span>}
           </div>
@@ -372,6 +379,24 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             </StatCard>
             <StatCard label="Cap rate">
               {rc?.['cap_rate'] ? `${Number(rc['cap_rate']).toFixed(2)}%` : <span className="text-muted-foreground">Unavailable</span>}
+            </StatCard>
+            <StatCard label="DSCR" sub="Debt service coverage ratio">
+              {metrics?.dscr == null ? <span className="text-muted-foreground">Unavailable</span> : metrics.dscr.toFixed(2)}
+            </StatCard>
+            <StatCard label="All-in" sub="Price, closing, and renovation">
+              <Num value={metrics?.allIn ?? null} money />
+            </StatCard>
+            <StatCard label="Price / sq ft">
+              <Num value={metrics?.pricePerSqft ?? null} money />
+            </StatCard>
+            <StatCard label="Price for 8% CoC" sub="Underwrite target, rounded to $1,000">
+              <Num value={metrics?.priceFor8 ?? null} money />
+            </StatCard>
+            <StatCard label="Price for 12% CoC" sub="Underwrite target, rounded to $1,000">
+              <Num value={metrics?.priceFor12 ?? null} money />
+            </StatCard>
+            <StatCard label="Price for cash flow zero" sub="Underwrite target, rounded to $1,000">
+              <Num value={metrics?.priceForCashFlowZero ?? null} money />
             </StatCard>
             <StatCard label="Proposed bedrooms" sub={`${drawnCount ?? analysis.rooms.length} drawn; current listing ${curBeds ?? currentRooms}; concept, not certified`}>
               {analysis.rooms.length || <span className="text-muted-foreground">Unavailable</span>}

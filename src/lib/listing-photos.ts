@@ -90,9 +90,6 @@ export const listingPhotos: Record<string, string[]> = {
   "fillmore-12357": [
     "/listing-photos/fillmore-12357/01.webp"
   ],
-  "macon-2069": [
-    "/listing-photos/macon-2069/01.webp"
-  ],
   "oregon-12055": [
     "/listing-photos/oregon-12055/01.webp"
   ],
