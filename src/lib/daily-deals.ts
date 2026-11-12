@@ -31,7 +31,9 @@ const dailyDeals = dailyRaw as DailyDeal[];
 
 /** Keep the live URLs. Fraser stays /deal/6 and Elmira stays /deal/40. */
 const siteIdBySlug: Record<string, string> = { 'fraser-1584': '6', 'elmira-911': '40' };
-const newSlugs = new Set(['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4317','perth-4965','pacific-17004','fillmore-12357','ouray-3404']);
+const nov11Slugs = ['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4317','perth-4965','pacific-17004','fillmore-12357','ouray-3404'];
+const nov12Slugs = ['w96th-565','clarkson-7911','kalispell-1157','del-mar-179','zuni-2807','lakeview-6974','waco-3668','ammons-1805','radcliffe-8901'];
+const newSlugs = new Set([...nov11Slugs, ...nov12Slugs]);
 const lowConfidence = new Set(['beth-216','21st-255','rose-825','poppy-892']);
 
 const extraCoords: Record<string, { lat: number; lon: number; note: string }> = {
@@ -44,6 +46,15 @@ const extraCoords: Record<string, { lat: number; lon: number; note: string }> = 
   'pacific-17004': { lat: 39.6789253, lon: -104.7899516, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'fillmore-12357': { lat: 39.9201084, lon: -104.9521989, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
   'ouray-3404': { lat: 39.6542696, lon: -104.7922024, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
+  'w96th-565': { lat: 39.870748489656, lon: -104.994303197592, note: 'US Census Geocoder Public_AR_Current address match for 565 W 96th Avenue, Thornton, CO 80260, Nov 12, 2026' },
+  'clarkson-7911': { lat: 39.840328229142, lon: -104.976813880257, note: 'US Census Geocoder Public_AR_Current address match for 7911 Clarkson Court, Denver, CO 80229, Nov 12, 2026' },
+  'kalispell-1157': { lat: 39.695290634338, lon: -104.802006368696, note: 'US Census Geocoder Public_AR_Current address match for 1157 S Kalispell Way, Aurora, CO 80017, Nov 12, 2026' },
+  'del-mar-179': { lat: 39.722555056685, lon: -104.845538967866, note: 'US Census Geocoder Public_AR_Current address match for 179 Del Mar Circle, Aurora, CO 80011, Nov 12, 2026' },
+  'zuni-2807': { lat: 39.665212280151, lon: -105.01582786548, note: 'US Census Geocoder Public_AR_Current address match for 2807 S Zuni Street, Denver, CO 80236, Nov 12, 2026' },
+  'lakeview-6974': { lat: 39.592608526635, lon: -104.998792866338, note: 'US Census Geocoder Public_AR_Current address match for 6974 S Lakeview Street, Littleton, CO 80120, Nov 12, 2026' },
+  'waco-3668': { lat: 39.650536048432, lon: -104.777392399403, note: 'US Census Geocoder Public_AR_Current address match for 3668 S Waco Street, Aurora, CO 80013, Nov 12, 2026' },
+  'ammons-1805': { lat: 39.684150345127, lon: -105.087355928437, note: 'US Census Geocoder Public_AR_Current address match for 1805 S Ammons Street, Denver, CO 80232, Nov 12, 2026' },
+  'radcliffe-8901': { lat: 39.636644845435, lon: -105.096856911577, note: 'US Census Geocoder Public_AR_Current address match for 8901 W Radcliffe Place, Littleton, CO 80123, Nov 12, 2026' },
 };
 
 export function siteIdForSlug(slug: string): string {
@@ -73,6 +84,9 @@ const taxYearBySlug: Record<string, number> = {
   'yale-4585': 2025, 'adams-12218': 2025, 'beth-216': 2025, 'oregon-12055': 2025, 'york-7751': 2024,
   'crown-4860': 2025, 'ceylon-4317': 2025, 'perth-4965': 2025, 'pacific-17004': 2021,
   'fillmore-12357': 2025, 'ouray-3404': 2025,
+  'w96th-565': 2025, 'clarkson-7911': 2025, 'kalispell-1157': 2025, 'del-mar-179': 2025,
+  'zuni-2807': 2025, 'lakeview-6974': 2025, 'waco-3668': 2025, 'ammons-1805': 2025,
+  'radcliffe-8901': 2024,
 };
 
 export function conceptRoomsFor(id: string): ConceptLayoutRoom[] | null {
@@ -86,6 +100,7 @@ function handoffFlags(deal: DailyDeal): string[] {
   const flags = [
     'Assumptions, labeled as estimates: 20% down, 7.5% 30-year investor rate, 2% closing, and cash invested includes 2 months of holding. Insurance is set equal to property tax. Repairs and the capex reserve are each 5% of gross. Per room: electric $40.23, water $25, gas $15. Management is 16% of gross and vacancy is 5%.',
     'The public portal returns Active listings only, so a pending or under-contract status would not appear. No listing was marked Pending today.',
+    '2026-11-12 upkeep: no deal was removed and none was marked Pending.',
   ];
   if (year != null && year < 2025) flags.push(`Property tax is the portal ${year} figure. That year is older than 2025.`);
   if (year === 2026) flags.push('Property tax is the portal 2026 figure.');
@@ -108,6 +123,39 @@ function handoffFlags(deal: DailyDeal): string[] {
     flags.push('Concept plan only. No measured floor plan was reviewed. Existing bedrooms and the living, dining, office, and nook rooms are drawn on the main floor. The family room and lower rec split A, which the handoff marked for a new window, are drawn in the basement so plain W stays off the upper floor. Egress is not verified. Basement finish cost is not included.');
   }
   if (lowConfidence.has(deal.slug)) flags.push('CoLivingPro confidence is on the low side for this address. Treat the rent as an estimate.');
+  if (deal.slug === 'rose-825') {
+    flags.push('Price reduced from $724,900 to $699,900 on 2026-11-12 (REcolorado public portal card for MLS 7213931, still Active). No Gmail price-reduced alert was found. This underwrite uses $699,900. CoLivingPro rents were not re-pulled (2026-11-10). Cash flow is -$172.46/mo (was -$312.30). CoC is -0.8% (was -1.4%). Cash invested is $255,861.94 (was $261,641.62). Cap rate is 6.42% (was 6.2%). DSCR is 0.96 (was 0.92). All-in is $804,398 (was $829,898). Price per finished sq ft is $184.20 (was $190.80).');
+  }
+  if (nov12Slugs.includes(deal.slug)) {
+    flags.push('2026-11-12 handoff: the room-add plan is an unverified concept. No floor plan was reviewed. Egress windows are assumed for 1 of every 3 added rooms. Basement finish and baths were not assessed. Every concept room is a shared bath, so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Parking shows the MLS garage count as observed. Driveway and street counts were not found and are not used to remove the deal. The listing photo is the portal cover saved in this repo.');
+  }
+  if (deal.slug === 'w96th-565') {
+    flags.push('Previously kept off the site on 2026-11-11 because there was no verified conversion plan. Published 2026-11-12 as an unverified concept: 5 existing bedrooms plus 5 assumed conversions. CoLivingPro Shared $700 plus $80 was pulled 2026-11-11 (confidence 90%) and was not re-pulled. A same-morning note that the estimator was logged out is not the rent used here, and no default rent was substituted. Estate auction / AS-IS: terms, reserve, and buyer premium were not found, so $736,000 may not be the price paid. The 5-existing-bedroom-only case was Pass at -16.7% CoC. Pass at -2.3% CoC on this 10-room concept, about $427/mo, cash invested $221,278.22, cap 6.02%, DSCR 0.90. About $976/room or a price near $470,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'clarkson-7911') {
+    flags.push('The listing already has 7 bedrooms, so this concept adds 3 rooms (living, dining, and family). Pass. CoLivingPro Shared $720 plus $80 (confidence 89%). CoC 1.3%, cash flow $198.63/mo, cash invested $180,160.73, cap 7.12%, DSCR 1.06. About $865/room or a price near $450,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'kalispell-1157') {
+    flags.push('Pass. CoLivingPro Shared $670 plus $80 (confidence 91%). CoC 0.7%, cash flow $99.88/mo, cash invested $178,868.24, cap 6.93%, DSCR 1.03. About $828/room or a price near $398,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'del-mar-179') {
+    flags.push('Pass. CoLivingPro Shared $660 plus $80 (confidence 91%). CoC -1.4%, cash flow -$220.09/mo, cash invested $188,192.18, cap 6.26%, DSCR 0.93. About $874/room or a price near $384,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'zuni-2807') {
+    flags.push('Pass. CoLivingPro Shared $710 plus $80 (confidence 87%). CoC 1.1%, cash flow $178.43/mo, cash invested $190,175.13, cap 7.07%, DSCR 1.05. About $868/room or a price near $448,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'lakeview-6974') {
+    flags.push('The listing has 3 bedrooms, so this concept adds 7 rooms. Pass. CoLivingPro Shared $680 plus $80 (confidence 83%). CoC -1.3%, cash flow -$222.96/mo, cash invested $199,373.91, cap 6.26%, DSCR 0.93. About $905/room or a price near $368,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'waco-3668') {
+    flags.push('Pass. CoLivingPro Shared $640 plus $80 (confidence 87%). CoC -2.0%, cash flow -$329.84/mo, cash invested $202,713.69, cap 6.07%, DSCR 0.90. About $884/room or a price near $385,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'ammons-1805') {
+    flags.push("CoLivingPro matched '1805 South Ammons Street, Lakewood, CO' while the listing says Denver 80232. Rent was kept and the city is not verified. 80232 straddles Denver and Lakewood mailing addresses. Likely the same parcel; confirm before treating the rent as verified. This is the home from the underwriting video; this plan is the generic concept, not that video analysis. The listing already has 7 bedrooms, so this concept adds 3 rooms (living, dining, and family). Pass. CoLivingPro Shared $720 plus $80 (confidence 89%). CoC 0.1%, cash flow $20.69/mo, cash invested $190,438.62, cap 6.75%, DSCR 1.01. About $901/room or a price near $461,000 would be needed for 8% CoC.");
+  }
+  if (deal.slug === 'radcliffe-8901') {
+    flags.push('Pass. CoLivingPro Shared $710 plus $80 (confidence 87%). CoC 0.4%, cash flow $71.62/mo, cash invested $201,776.75, cap 6.85%, DSCR 1.02. About $895/room or a price near $437,000 would be needed for 8% CoC.');
+  }
   return flags;
 }
 
@@ -182,9 +230,9 @@ function inputsFor(deal: DailyDeal, rooms: AnalysisRoom[]): AnalysisInputs {
     rooms,
     capex: deal.model.reno == null ? [] : [{ name: 'Renovation and furnishing', cost: deal.model.reno }],
     expenses: lines.filter((entry): entry is [string, number] => entry[1] != null).map(([name, amount]) => ({
-      name, amount, evidence: '2026-11-10 deal model. Estimate, not a quote.',
+      name, amount, evidence: `${nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
     })),
-    tenantUtilityFee: deal.clp_status === 'ok' ? 80 : null,
+    tenantUtilityFee: deal.clp_status === 'ok' || deal.clp_status === 'ok_flagged' ? 80 : null,
     managementBase: 'gross',
     sharedRentEstimate: deal.shared_rent,
     privateRentEstimate: deal.private_rent,

@@ -188,5 +188,33 @@ export const listingPhotos: Record<string, string[]> = {
   ],
   "york-7751": [
     "/listing-photos/york-7751/01.webp"
+  ],
+  "ammons-1805": [
+    "/listing-photos/ammons-1805/01.webp"
+  ],
+  "clarkson-7911": [
+    "/listing-photos/clarkson-7911/01.webp"
+  ],
+  "del-mar-179": [
+    "/listing-photos/del-mar-179/01.webp"
+  ],
+  "kalispell-1157": [
+    "/listing-photos/kalispell-1157/01.webp"
+  ],
+  "lakeview-6974": [
+    "/listing-photos/lakeview-6974/01.webp"
+  ],
+  "radcliffe-8901": [
+    "/listing-photos/radcliffe-8901/01.webp"
+  ],
+  "w96th-565": [
+    "/listing-photos/w96th-565/01.webp",
+    "/listing-photos/w96th-565/02.webp"
+  ],
+  "waco-3668": [
+    "/listing-photos/waco-3668/01.webp"
+  ],
+  "zuni-2807": [
+    "/listing-photos/zuni-2807/01.webp"
   ]
 }
