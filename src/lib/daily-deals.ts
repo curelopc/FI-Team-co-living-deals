@@ -33,7 +33,9 @@ const dailyDeals = dailyRaw as DailyDeal[];
 const siteIdBySlug: Record<string, string> = { 'fraser-1584': '6', 'elmira-911': '40' };
 const nov11Slugs = ['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4317','perth-4965','pacific-17004','fillmore-12357','ouray-3404'];
 const nov12Slugs = ['w96th-565','clarkson-7911','kalispell-1157','del-mar-179','zuni-2807','lakeview-6974','waco-3668','ammons-1805','radcliffe-8901'];
-const newSlugs = new Set([...nov11Slugs, ...nov12Slugs]);
+const nov13Slugs = ['16th-avdr-120','mineral-1522','99th-17066','green-meadows-5901','52nd-6799','52nd-6641','canosa-6896','93rd-20076','26th-14606','67th-1652'];
+const newSlugs = new Set([...nov11Slugs, ...nov12Slugs, ...nov13Slugs]);
+const pendingSlugs = new Set(['oregon-12055']);
 const lowConfidence = new Set(['beth-216','21st-255','rose-825','poppy-892']);
 
 const extraCoords: Record<string, { lat: number; lon: number; note: string }> = {
@@ -55,6 +57,16 @@ const extraCoords: Record<string, { lat: number; lon: number; note: string }> = 
   'waco-3668': { lat: 39.650536048432, lon: -104.777392399403, note: 'US Census Geocoder Public_AR_Current address match for 3668 S Waco Street, Aurora, CO 80013, Nov 12, 2026' },
   'ammons-1805': { lat: 39.684150345127, lon: -105.087355928437, note: 'US Census Geocoder Public_AR_Current address match for 1805 S Ammons Street, Denver, CO 80232, Nov 12, 2026' },
   'radcliffe-8901': { lat: 39.636644845435, lon: -105.096856911577, note: 'US Census Geocoder Public_AR_Current address match for 8901 W Radcliffe Place, Littleton, CO 80123, Nov 12, 2026' },
+  '16th-avdr-120': { lat: 39.985084881132, lon: -104.802569743214, note: 'US Census Geocoder Public_AR_Current address match for 120 S 16th Avenue, Brighton, CO 80601, Nov 13, 2026. The portal street name 120 S 16th Avdr Drive did not match, so this pin is the Avenue match and the parcel is not verified.' },
+  'mineral-1522': { lat: 39.572947033353, lon: -104.971108271257, note: 'US Census Geocoder Public_AR_Current address match for 1522 E Mineral Place, Centennial, CO 80122, Nov 13, 2026' },
+  '99th-17066': { lat: 39.877870865398, lon: -104.787390194071, note: 'US Census Geocoder Public_AR_Current address match for 17066 E 99th Place, Commerce City, CO 80022, Nov 13, 2026' },
+  'green-meadows-5901': { lat: 39.677721959037, lon: -105.061135690582, note: 'US Census Geocoder Public_AR_Current address match for 5901 W Green Meadows Place, Denver, CO 80227, Nov 13, 2026' },
+  '52nd-6799': { lat: 39.791117329099, lon: -105.072974398457, note: 'US Census Geocoder Public_AR_Current address match for 6799 W 52nd Avenue, Arvada, CO 80002, Nov 13, 2026' },
+  '52nd-6641': { lat: 39.791126188843, lon: -105.071102049051, note: 'US Census Geocoder Public_AR_Current address match for 6641 W 52nd Avenue, Arvada, CO 80002, Nov 13, 2026' },
+  'canosa-6896': { lat: 39.821719189521, lon: -105.020051699812, note: 'US Census Geocoder Public_AR_Current address match for 6896 Canosa Street, Denver, CO 80221, Nov 13, 2026' },
+  '93rd-20076': { lat: 39.865509402547, lon: -105.226366658318, note: 'US Census Geocoder Public_AR_Current address match for 20076 W 93rd Avenue, Arvada, CO 80007, Nov 13, 2026' },
+  '26th-14606': { lat: 39.755402369909, lon: -104.817892431833, note: 'US Census Geocoder Public_AR_Current address match for 14606 E 26th Place, Aurora, CO 80011, Nov 13, 2026' },
+  '67th-1652': { lat: 39.817786467562, lon: -105.007233319488, note: 'Estimated pin on the Census Public_AR_Current address range between 1500 and 1700 W 67th Avenue, Denver, CO 80221, Nov 13, 2026. 1652 itself did not return an address match. Not a surveyed point.' },
 };
 
 export function siteIdForSlug(slug: string): string {
@@ -87,7 +99,21 @@ const taxYearBySlug: Record<string, number> = {
   'w96th-565': 2025, 'clarkson-7911': 2025, 'kalispell-1157': 2025, 'del-mar-179': 2025,
   'zuni-2807': 2025, 'lakeview-6974': 2025, 'waco-3668': 2025, 'ammons-1805': 2025,
   'radcliffe-8901': 2024,
+  '16th-avdr-120': 2025, 'mineral-1522': 2025, '99th-17066': 2025, 'green-meadows-5901': 2025,
+  '52nd-6799': 2025, '52nd-6641': 2025, 'canosa-6896': 2025, '93rd-20076': 2025,
+  '26th-14606': 2025, '67th-1652': 2025,
 };
+
+function dollars(amount: number | null, digits = 2): string {
+  if (amount == null) return 'unavailable';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: digits, maximumFractionDigits: digits }).format(amount);
+}
+
+function passSummary(deal: DailyDeal): string {
+  const model = deal.model;
+  const rentDigits = deal.shared_rent != null && Number.isInteger(deal.shared_rent) ? 0 : 2;
+  return `Pass. CoLivingPro Shared ${dollars(deal.shared_rent, rentDigits)} plus $80 (confidence ${deal.shared_conf}). CoC ${model.coc_pct}%, cash flow ${dollars(model.cash_flow)}/mo, cash invested ${dollars(model.invested)}, cap ${model.cap_rate_pct}%, DSCR ${model.dscr}. A price near ${dollars(model.price_for_8pct_coc, 0)} would be needed for 8% CoC.`;
+}
 
 export function conceptRoomsFor(id: string): ConceptLayoutRoom[] | null {
   const deal = dailyDealById(id);
@@ -99,8 +125,8 @@ function handoffFlags(deal: DailyDeal): string[] {
   const year = taxYearBySlug[deal.slug];
   const flags = [
     'Assumptions, labeled as estimates: 20% down, 7.5% 30-year investor rate, 2% closing, and cash invested includes 2 months of holding. Insurance is set equal to property tax. Repairs and the capex reserve are each 5% of gross. Per room: electric $40.23, water $25, gas $15. Management is 16% of gross and vacancy is 5%.',
-    'The public portal returns Active listings only, so a pending or under-contract status would not appear. No listing was marked Pending today.',
-    '2026-11-12 upkeep: no deal was removed and none was marked Pending.',
+    'The public portal returns Active listings only, so a listing missing from it is not proof it was withdrawn.',
+    '2026-11-13 upkeep: no deal was removed and no list price on the site changed. 12055 E Oregon Circle is Pending, flagged UNCONFIRMED. 3404 S Ouray Way stays Active and is flagged.',
   ];
   if (year != null && year < 2025) flags.push(`Property tax is the portal ${year} figure. That year is older than 2025.`);
   if (year === 2026) flags.push('Property tax is the portal 2026 figure.');
@@ -155,6 +181,25 @@ function handoffFlags(deal: DailyDeal): string[] {
   }
   if (deal.slug === 'radcliffe-8901') {
     flags.push('Pass. CoLivingPro Shared $710 plus $80 (confidence 87%). CoC 0.4%, cash flow $71.62/mo, cash invested $201,776.75, cap 6.85%, DSCR 1.02. About $895/room or a price near $437,000 would be needed for 8% CoC.');
+  }
+  if (deal.slug === 'oregon-12055') {
+    flags.push('Missing from the Active portal today; Feaster Realty public syndication of MLS 2645750 shows Status Active Under Contract (list $540,000, open house Sat 11/14 still advertised); other syndication sites still show Active. No Gmail alert. Treat as Pending, flagged UNCONFIRMED.');
+  }
+  if (deal.slug === 'ouray-3404') {
+    flags.push('Missing from the Active portal today, but public syndication (Compass, Redfin, Kenna, Jefferson RE) still shows Active at $535,000. No Gmail alert. Kept as Active, flagged. Re-check tomorrow.');
+  }
+  if (nov13Slugs.includes(deal.slug)) {
+    flags.push('2026-11-13 handoff: the room-add plan is an unverified heuristic concept. No floor plan was reviewed. Egress windows are assumed for 1 of every 3 added rooms. Basement finish and baths were not assessed. Every concept room is a shared bath, so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Parking shows the MLS garage count as observed. Driveway and street counts were not found and are not used to remove the deal. The parking-spots-per-room rule is suspended. Not found: floor plans, satellite parking, Remine land values, calculator copies, and callouts. The listing photo is the portal cover saved in this repo.');
+    flags.push(passSummary(deal));
+  }
+  if (deal.slug === '16th-avdr-120') {
+    flags.push('The portal address reads 120 S 16th Avdr Drive. CoLivingPro matched 120 South 16th Avenue, Brighton. Assumed the same parcel, not verified.');
+  }
+  if (deal.slug === 'green-meadows-5901') {
+    flags.push('Finished area is 2,843 sq ft, so this concept is 9 rooms.');
+  }
+  if (deal.slug === '67th-1652') {
+    flags.push('The map pin is estimated along the Census address range between 1500 and 1700 W 67th Avenue. 1652 itself did not return an address match.');
   }
   return flags;
 }
@@ -230,7 +275,7 @@ function inputsFor(deal: DailyDeal, rooms: AnalysisRoom[]): AnalysisInputs {
     rooms,
     capex: deal.model.reno == null ? [] : [{ name: 'Renovation and furnishing', cost: deal.model.reno }],
     expenses: lines.filter((entry): entry is [string, number] => entry[1] != null).map(([name, amount]) => ({
-      name, amount, evidence: `${nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
+      name, amount, evidence: `${nov13Slugs.includes(deal.slug) ? '2026-11-13' : nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
     })),
     tenantUtilityFee: deal.clp_status === 'ok' || deal.clp_status === 'ok_flagged' ? 80 : null,
     managementBase: 'gross',
@@ -250,7 +295,7 @@ export function dailyBundle(id: string) {
   const cells: Record<string, string> = {
     id,
     site_eligibility: 'ELIGIBLE_ACTIVE',
-    listing_status: 'ACTIVE',
+    listing_status: pendingSlugs.has(deal.slug) ? 'PENDING' : 'ACTIVE',
     address_raw: deal.addr,
     address_normalized: deal.addr,
     city: deal.city,
@@ -258,7 +303,7 @@ export function dailyBundle(id: string) {
     latitude: String(where.lat),
     longitude: String(where.lon),
     purchase_list_price: String(deal.price),
-    status_source: `Active $${deal.price.toLocaleString('en-US')}`,
+    status_source: pendingSlugs.has(deal.slug) ? `Pending (unconfirmed) $${deal.price.toLocaleString('en-US')}` : `Active $${deal.price.toLocaleString('en-US')}`,
     sqft: String(deal.sqft),
     current_beds: String(deal.beds),
     current_baths: deal.baths,

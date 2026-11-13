@@ -14,10 +14,14 @@ const expected = [
   ['w96th-565', 'w96th-565'], ['clarkson-7911', 'clarkson-7911'], ['kalispell-1157', 'kalispell-1157'],
   ['del-mar-179', 'del-mar-179'], ['zuni-2807', 'zuni-2807'], ['lakeview-6974', 'lakeview-6974'],
   ['waco-3668', 'waco-3668'], ['ammons-1805', 'ammons-1805'], ['radcliffe-8901', 'radcliffe-8901'],
+  ['16th-avdr-120', '16th-avdr-120'], ['mineral-1522', 'mineral-1522'], ['99th-17066', '99th-17066'],
+  ['green-meadows-5901', 'green-meadows-5901'], ['52nd-6799', '52nd-6799'], ['52nd-6641', '52nd-6641'],
+  ['canosa-6896', 'canosa-6896'], ['93rd-20076', '93rd-20076'], ['26th-14606', '26th-14606'],
+  ['67th-1652', '67th-1652'],
 ] as const;
 
-describe('2026-11-12 publish', () => {
-  it('lists 30 deals, keeps Fraser and Elmira URLs, and leaves Grove, Macon, and Runyon Lake off', async () => {
+describe('2026-11-13 publish', () => {
+  it('lists 40 deals, keeps Fraser and Elmira URLs, and leaves Grove, Macon, and Runyon Lake off', async () => {
     const home = dailyPayload();
     expect(home.deals.map(deal => deal.id)).toEqual(expected.map(([, id]) => id));
     expect(home.deals.some(deal => deal.id === '8' || /grove/i.test(deal.address))).toBe(false);
@@ -165,5 +169,50 @@ describe('2026-11-12 publish', () => {
     expect(ammons?.research.cells['flags']).toMatch(/Denver 80232/);
     expect(dailyPayload().bundles['clarkson-7911']?.research.cells['flags']).toMatch(/7 bedrooms/);
     expect(dailyPayload().bundles['w96th-565']?.research.latitude).toBeCloseTo(39.870748489656, 5);
+  });
+
+  const nov13 = ['16th-avdr-120', 'mineral-1522', '99th-17066', 'green-meadows-5901', '52nd-6799', '52nd-6641', 'canosa-6896', '93rd-20076', '26th-14606', '67th-1652'] as const;
+
+  it('draws the 2026-11-13 deals, marks Oregon pending, and keeps Ouray active', () => {
+    for (const slug of nov13) {
+      const rooms = conceptRoomsFor(slug);
+      const figures = dailyFigures(slug);
+      const bundle = dailyPayload().bundles[slug];
+      const expectedRooms = slug === 'green-meadows-5901' ? 9 : 10;
+      expect(rooms, slug).toBeTruthy();
+      expect(rooms?.length, slug).toBe(expectedRooms);
+      expect(figures?.rooms, slug).toBe(expectedRooms);
+      expect(rooms?.filter(room => room.window).every(room => room.level === 'Basement'), slug).toBe(true);
+      expect(rooms?.some(room => room.level === 'Main'), slug).toBe(true);
+      expect(rooms?.some(room => room.level === 'Basement' && room.window), slug).toBe(true);
+      expect(rooms?.filter(room => room.level !== 'Basement').every(room => !room.window), slug).toBe(true);
+      expect(figures?.result.grossRent, slug).toBe(rooms?.reduce((sum, room) => sum + (room.rent ?? 0), 0));
+      expect(bundle?.research.cells['photo_url'], slug).toMatch(new RegExp(`^/listing-photos/${slug}/`));
+      expect(bundle?.research.cells['photo_gallery'], slug).not.toMatch(/https?:/i);
+      expect(existsSync(`public/listing-photos/${slug}/01.webp`)).toBe(true);
+      expect(bundle?.research.cells['flags'], slug).toMatch(/unverified heuristic concept/i);
+      expect(bundle?.research.cells['listing_status'], slug).toBe('ACTIVE');
+      expect(bundle?.research.cells['current_beds'], slug).toBeTruthy();
+      expect(bundle?.research.cells['current_baths'], slug).toBeTruthy();
+      expect(bundle?.research.cells['converted_beds'], slug).toBe(String(expectedRooms));
+      const summary = bundle?.analysis ? modelSummary(bundle.analysis.inputs) : null;
+      expect(summary?.roomCount, slug).toBe(expectedRooms);
+      expect(summary?.drawnCount, slug).toBe(expectedRooms);
+      expect(summary?.grossRent, slug).toBe(figures?.result.grossRent);
+    }
+    const oregon = dailyPayload().bundles['oregon-12055'];
+    expect(oregon?.research.cells['listing_status']).toBe('PENDING');
+    expect(oregon?.research.cells['flags']).toMatch(/UNCONFIRMED/);
+    expect(oregon?.research.cells['flags']).toContain('Feaster Realty public syndication of MLS 2645750 shows Status Active Under Contract');
+    const ouray = dailyPayload().bundles['ouray-3404'];
+    expect(ouray?.research.cells['listing_status']).toBe('ACTIVE');
+    expect(ouray?.research.cells['flags']).toContain('public syndication (Compass, Redfin, Kenna, Jefferson RE) still shows Active at $535,000');
+    const bright = dailyPayload().bundles['16th-avdr-120'];
+    expect(bright?.research.cells['flags']).toMatch(/16th Avdr Drive/);
+    expect(bright?.research.cells['flags']).toMatch(/120 South 16th Avenue/);
+    expect(dailyPayload().bundles['green-meadows-5901']?.research.cells['flags']).toMatch(/2,843 sq ft/);
+    expect(dailyPayload().bundles['green-meadows-5901']?.research.cells['sqft']).toBe('2843');
+    const rendered = JSON.stringify(dailyPayload());
+    expect(rendered).not.toMatch(/Needs input|rentable rows|matrixmedia|GetMedia\.ashx/i);
   });
 });
