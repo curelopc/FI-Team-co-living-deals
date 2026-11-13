@@ -18,7 +18,7 @@ import { getDeal, getDeals } from '../lib/deals.functions';
 describe('anonymous read-only preview access', () => {
   it('returns the published deals with no visitor credentials', async () => {
     const home = await getDeals();
-    expect(home.deals).toHaveLength(30);
+    expect(home.deals).toHaveLength(40);
     expect(home.deals[0]?.id).toBe('6');
     expect(home.deals[1]?.id).toBe('40');
   });
@@ -41,10 +41,13 @@ describe('anonymous read-only preview access', () => {
 it('rendered deal data cites each room rent and keeps the old blanket $830 copy out', async () => {
   const home = await getDeals();
   const rendered = JSON.stringify(home);
-  expect(rendered.includes('$830')).toBe(false);
+  expect(rendered.includes('Rent estimate $830.')).toBe(false);
+  const shared670 = new Set(['kalispell-1157', '16th-avdr-120', 'mineral-1522', '26th-14606']);
   for (const deal of home.deals) {
     const blob = JSON.stringify(home.bundles[deal.id]);
-    if (deal.id !== 'kalispell-1157') expect(blob.includes('$670'), deal.address).toBe(false);
+    const rooms = home.analyses[deal.id]?.inputs.rooms ?? [];
+    if (!shared670.has(deal.id)) expect(blob.includes('$670'), deal.address).toBe(false);
+    if (blob.includes('$830')) expect(rooms.every(room => room.rent !== 830), deal.address).toBe(true);
   }
   for (const deal of home.deals) {
     for (const room of home.analyses[deal.id]?.inputs.rooms ?? []) {

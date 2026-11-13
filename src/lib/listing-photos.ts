@@ -216,5 +216,35 @@ export const listingPhotos: Record<string, string[]> = {
   ],
   "zuni-2807": [
     "/listing-photos/zuni-2807/01.webp"
+  ],
+  "16th-avdr-120": [
+    "/listing-photos/16th-avdr-120/01.webp"
+  ],
+  "mineral-1522": [
+    "/listing-photos/mineral-1522/01.webp"
+  ],
+  "99th-17066": [
+    "/listing-photos/99th-17066/01.webp"
+  ],
+  "green-meadows-5901": [
+    "/listing-photos/green-meadows-5901/01.webp"
+  ],
+  "52nd-6799": [
+    "/listing-photos/52nd-6799/01.webp"
+  ],
+  "52nd-6641": [
+    "/listing-photos/52nd-6641/01.webp"
+  ],
+  "canosa-6896": [
+    "/listing-photos/canosa-6896/01.webp"
+  ],
+  "93rd-20076": [
+    "/listing-photos/93rd-20076/01.webp"
+  ],
+  "26th-14606": [
+    "/listing-photos/26th-14606/01.webp"
+  ],
+  "67th-1652": [
+    "/listing-photos/67th-1652/01.webp"
   ]
 }
