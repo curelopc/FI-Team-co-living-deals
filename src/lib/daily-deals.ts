@@ -8,7 +8,7 @@ import { evidenceWithRent } from './room-rent-text';
 import { researchPitchRow, type ResearchDeal } from './research';
 import { calculateAnalysis, type AnalysisInputs, type AnalysisRoom, type AnalysisSeed } from './underwriting';
 
-type DailyRoom = { level: string; space: string; work: string; bath: string; rent: number | null; rent_basis: string };
+type DailyRoom = { level: string; space: string; work: string; bath: string; rent: number | null; rent_basis: string; window?: boolean };
 type DailyModel = {
   rent: number | null; tenant_utility_income: number | null; gross: number | null;
   cash_flow: number | null; coc_pct: number | null; cap_rate_pct: number | null;
@@ -34,8 +34,9 @@ const siteIdBySlug: Record<string, string> = { 'fraser-1584': '6', 'elmira-911':
 const nov11Slugs = ['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4317','perth-4965','pacific-17004','fillmore-12357','ouray-3404'];
 const nov12Slugs = ['w96th-565','clarkson-7911','kalispell-1157','del-mar-179','zuni-2807','lakeview-6974','waco-3668','ammons-1805','radcliffe-8901'];
 const nov13Slugs = ['16th-avdr-120','mineral-1522','99th-17066','green-meadows-5901','52nd-6799','52nd-6641','canosa-6896','93rd-20076','26th-14606','67th-1652'];
-const newSlugs = new Set([...nov11Slugs, ...nov12Slugs, ...nov13Slugs]);
-const pendingSlugs = new Set(['oregon-12055']);
+const nov14Slugs = ['cherrywood-1288','elmira-15780','zephyr-8238','chaparral-7928','lomand-16065','35th-24376','oak-3119','akron-3413','meade-9801','zang-6015'];
+const newSlugs = new Set([...nov11Slugs, ...nov12Slugs, ...nov13Slugs, ...nov14Slugs]);
+const pendingSlugs = new Set(['oregon-12055', 'ouray-3404']);
 const lowConfidence = new Set(['beth-216','21st-255','rose-825','poppy-892']);
 
 const extraCoords: Record<string, { lat: number; lon: number; note: string }> = {
@@ -67,6 +68,16 @@ const extraCoords: Record<string, { lat: number; lon: number; note: string }> = 
   '93rd-20076': { lat: 39.865509402547, lon: -105.226366658318, note: 'US Census Geocoder Public_AR_Current address match for 20076 W 93rd Avenue, Arvada, CO 80007, Nov 13, 2026' },
   '26th-14606': { lat: 39.755402369909, lon: -104.817892431833, note: 'US Census Geocoder Public_AR_Current address match for 14606 E 26th Place, Aurora, CO 80011, Nov 13, 2026' },
   '67th-1652': { lat: 39.817786467562, lon: -105.007233319488, note: 'Estimated pin on the Census Public_AR_Current address range between 1500 and 1700 W 67th Avenue, Denver, CO 80221, Nov 13, 2026. 1652 itself did not return an address match. Not a surveyed point.' },
+  'cherrywood-1288': { lat: 39.997778451373, lon: -104.806686208575, note: 'US Census Geocoder Public_AR_Current address match for 1288 Cherrywood Drive, Brighton, CO 80601, Nov 14, 2026' },
+  'elmira-15780': { lat: 39.982748804079, lon: -104.872512379834, note: 'US Census Geocoder Public_AR_Current address match for 15780 Elmira Street, Brighton, CO 80602, Nov 14, 2026' },
+  'zephyr-8238': { lat: 39.846844926581, lon: -105.085437870316, note: 'US Census Geocoder Public_AR_Current address match for 8238 Zephyr Street, Arvada, CO 80005, Nov 14, 2026' },
+  'chaparral-7928': { lat: 39.550344127202, lon: -104.896744607434, note: 'US Census Geocoder Public_AR_Current address match for 7928 Chaparral Road, Lone Tree, CO 80124, Nov 14, 2026' },
+  'lomand-16065': { lat: 39.987294677981, lon: -104.878050942882, note: 'US Census Geocoder Public_AR_Current address match for 16065 Lomand Circle, Brighton, CO 80602, Nov 14, 2026' },
+  '35th-24376': { lat: 39.7662543, lon: -104.7039025, note: 'Estimated pin on the OpenStreetMap East 35th Drive residential segment near longitude -104.704, Aurora, Nov 14, 2026. Census Public_AR_Current did not match 24376 E 35th Drive in 80019 or 80249. Not a surveyed point. The listing zip is 80019.' },
+  'oak-3119': { lat: 39.932716102073, lon: -105.104534437537, note: 'US Census Geocoder Public_AR_Current address match for 3119 N Oak Circle, Broomfield, CO 80020, Nov 14, 2026' },
+  'akron-3413': { lat: 39.654545128601, lon: -104.882341193039, note: 'US Census Geocoder Public_AR_Current address match for 3413 S Akron Street, Denver, CO 80231, Nov 14, 2026' },
+  'meade-9801': { lat: 39.875017484479, lon: -105.03522137198, note: 'US Census Geocoder Public_AR_Current address match for 9801 Meade Circle, Westminster, CO 80031, Nov 14, 2026' },
+  'zang-6015': { lat: 39.806119926924, lon: -105.144197871092, note: 'US Census Geocoder Public_AR_Current address match for 6015 Zang Way, Arvada, CO 80004, Nov 14, 2026' },
 };
 
 export function siteIdForSlug(slug: string): string {
@@ -102,6 +113,9 @@ const taxYearBySlug: Record<string, number> = {
   '16th-avdr-120': 2025, 'mineral-1522': 2025, '99th-17066': 2025, 'green-meadows-5901': 2025,
   '52nd-6799': 2025, '52nd-6641': 2025, 'canosa-6896': 2025, '93rd-20076': 2025,
   '26th-14606': 2025, '67th-1652': 2025,
+  'cherrywood-1288': 2025, 'elmira-15780': 2025, 'zephyr-8238': 2025, 'chaparral-7928': 2025,
+  'lomand-16065': 2025, '35th-24376': 2026, 'oak-3119': 2025, 'akron-3413': 2025,
+  'meade-9801': 2025, 'zang-6015': 2025,
 };
 
 function dollars(amount: number | null, digits = 2): string {
@@ -126,7 +140,7 @@ function handoffFlags(deal: DailyDeal): string[] {
   const flags = [
     'Assumptions, labeled as estimates: 20% down, 7.5% 30-year investor rate, 2% closing, and cash invested includes 2 months of holding. Insurance is set equal to property tax. Repairs and the capex reserve are each 5% of gross. Per room: electric $40.23, water $25, gas $15. Management is 16% of gross and vacancy is 5%.',
     'The public portal returns Active listings only, so a listing missing from it is not proof it was withdrawn.',
-    '2026-11-13 upkeep: no deal was removed and no list price on the site changed. 12055 E Oregon Circle is Pending, flagged UNCONFIRMED. 3404 S Ouray Way stays Active and is flagged.',
+    '2026-11-14 upkeep: no deal was removed. 255 S 21st Place is re-underwritten at $455,000. 12055 E Oregon Circle and 3404 S Ouray Way stay on the site as Pending, flagged UNCONFIRMED, Active Under Contract.',
   ];
   if (year != null && year < 2025) flags.push(`Property tax is the portal ${year} figure. That year is older than 2025.`);
   if (year === 2026) flags.push('Property tax is the portal 2026 figure.');
@@ -138,6 +152,9 @@ function handoffFlags(deal: DailyDeal): string[] {
   if (deal.slug === 'elmira-911') {
     flags.push('Finished area in this underwrite is 3,547 sq ft. The earlier site figure was 3,651 sq ft.');
     flags.push('The existing concept drawing marks bedroom 1 as a primary-accessed ensuite. This underwrite counted 0 private-bath rooms, so every room uses the shared furnished rate.');
+  }
+  if (deal.slug === '21st-255') {
+    flags.push('Price reduced from $475,000 to $455,000 (portal, 2026-11-14). This underwrite uses $455,000. CoLivingPro rents were not re-pulled (2026-11-10). Cash flow is $335.22/mo (was $223.34). CoC is 1.9% (was 1.2%). Cash invested is $214,036.55 (was $218,660.30). Cap rate is 7.6% (was 7.28%). DSCR is 1.13 (was 1.08).');
   }
   if (deal.slug === 'topeka-4725') {
     flags.push('Price reduced from $499,900 to $494,900 on 2026-11-11 (official REcolorado alert, MLS 6110384, still Active). This underwrite uses $494,900. CoLivingPro rents were not re-pulled. Cash flow is $656.48/mo (was $628.51). CoC is 4.4% (was 4.2%). Cash invested is $177,931.05 (was $179,086.99). Cap rate is 8.3% (was 8.22%). DSCR is 1.24 (was 1.22). All-in is $565,298 (was $570,398). Price per finished sq ft is $143.60 (was $145.10).');
@@ -152,14 +169,15 @@ function handoffFlags(deal: DailyDeal): string[] {
   if (deal.slug === 'rose-825') {
     flags.push('Price reduced from $724,900 to $699,900 on 2026-11-12 (REcolorado public portal card for MLS 7213931, still Active). No Gmail price-reduced alert was found. This underwrite uses $699,900. CoLivingPro rents were not re-pulled (2026-11-10). Cash flow is -$172.46/mo (was -$312.30). CoC is -0.8% (was -1.4%). Cash invested is $255,861.94 (was $261,641.62). Cap rate is 6.42% (was 6.2%). DSCR is 0.96 (was 0.92). All-in is $804,398 (was $829,898). Price per finished sq ft is $184.20 (was $190.80).');
   }
-  if (nov12Slugs.includes(deal.slug)) {
+  if (nov12Slugs.includes(deal.slug) && deal.slug !== 'clarkson-7911') {
     flags.push('2026-11-12 handoff: the room-add plan is an unverified concept. No floor plan was reviewed. Egress windows are assumed for 1 of every 3 added rooms. Basement finish and baths were not assessed. Every concept room is a shared bath, so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Parking shows the MLS garage count as observed. Driveway and street counts were not found and are not used to remove the deal. The listing photo is the portal cover saved in this repo.');
   }
   if (deal.slug === 'w96th-565') {
     flags.push('Previously kept off the site on 2026-11-11 because there was no verified conversion plan. Published 2026-11-12 as an unverified concept: 5 existing bedrooms plus 5 assumed conversions. CoLivingPro Shared $700 plus $80 was pulled 2026-11-11 (confidence 90%) and was not re-pulled. A same-morning note that the estimator was logged out is not the rent used here, and no default rent was substituted. Estate auction / AS-IS: terms, reserve, and buyer premium were not found, so $736,000 may not be the price paid. The 5-existing-bedroom-only case was Pass at -16.7% CoC. Pass at -2.3% CoC on this 10-room concept, about $427/mo, cash invested $221,278.22, cap 6.02%, DSCR 0.90. About $976/room or a price near $470,000 would be needed for 8% CoC.');
   }
   if (deal.slug === 'clarkson-7911') {
-    flags.push('The listing already has 7 bedrooms, so this concept adds 3 rooms (living, dining, and family). Pass. CoLivingPro Shared $720 plus $80 (confidence 89%). CoC 1.3%, cash flow $198.63/mo, cash invested $180,160.73, cap 7.12%, DSCR 1.06. About $865/room or a price near $450,000 would be needed for 8% CoC.');
+    flags.push('2026-11-13 re-underwrite: the room plan is an unverified concept. No floor plan was reviewed. The listing already has 7 bedrooms. This concept draws 11 rooms (one private ensuite and ten shared rooms), not the earlier 10-room all-shared plan. The private ensuite uses the CoLivingPro private furnished rate. The other rooms use the shared furnished rate plus the $80 utility fee. Parking shows the MLS garage count as observed. Driveway and street counts were not found and are not used to remove the deal. The listing photo is the portal cover saved in this repo.');
+    flags.push('Pass. CoLivingPro Shared $720 plus $80 (confidence 89%) and Private $880 plus $80 (confidence 85%). CoC 4.6%, cash flow $780.80/mo, cash invested $205,321.19, cap 8.3%, DSCR 1.24. About $812/room or a price near $508,000 would be needed for 8% CoC.');
   }
   if (deal.slug === 'kalispell-1157') {
     flags.push('Pass. CoLivingPro Shared $670 plus $80 (confidence 91%). CoC 0.7%, cash flow $99.88/mo, cash invested $178,868.24, cap 6.93%, DSCR 1.03. About $828/room or a price near $398,000 would be needed for 8% CoC.');
@@ -183,10 +201,10 @@ function handoffFlags(deal: DailyDeal): string[] {
     flags.push('Pass. CoLivingPro Shared $710 plus $80 (confidence 87%). CoC 0.4%, cash flow $71.62/mo, cash invested $201,776.75, cap 6.85%, DSCR 1.02. About $895/room or a price near $437,000 would be needed for 8% CoC.');
   }
   if (deal.slug === 'oregon-12055') {
-    flags.push('Missing from the Active portal today; Feaster Realty public syndication of MLS 2645750 shows Status Active Under Contract (list $540,000, open house Sat 11/14 still advertised); other syndication sites still show Active. No Gmail alert. Treat as Pending, flagged UNCONFIRMED.');
+    flags.push('Pending, flagged UNCONFIRMED. Active Under Contract. Missing from the Active portal for a second day. Accession Real Estate, Feaster Realty, and Gellman Homes syndication show Active Under Contract at $540,000. Accession property history shows a status change on 11/12/2026. Coldwell Banker still says Active. No Gmail alert. Open house still advertised Sat 11/14.');
   }
   if (deal.slug === 'ouray-3404') {
-    flags.push('Missing from the Active portal today, but public syndication (Compass, Redfin, Kenna, Jefferson RE) still shows Active at $535,000. No Gmail alert. Kept as Active, flagged. Re-check tomorrow.');
+    flags.push('Pending, flagged UNCONFIRMED. Active Under Contract. Missing from the Active portal for a second day. Kenna Group syndication shows Active Under Contract at $535,000, with a status change dated 11/12/2026. Redfin, Compass, Jefferson RE, and Coldwell Banker still show stale Active. No Gmail alert.');
   }
   if (nov13Slugs.includes(deal.slug)) {
     flags.push('2026-11-13 handoff: the room-add plan is an unverified heuristic concept. No floor plan was reviewed. Egress windows are assumed for 1 of every 3 added rooms. Basement finish and baths were not assessed. Every concept room is a shared bath, so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Parking shows the MLS garage count as observed. Driveway and street counts were not found and are not used to remove the deal. The parking-spots-per-room rule is suspended. Not found: floor plans, satellite parking, Remine land values, calculator copies, and callouts. The listing photo is the portal cover saved in this repo.');
@@ -200,6 +218,19 @@ function handoffFlags(deal: DailyDeal): string[] {
   }
   if (deal.slug === '67th-1652') {
     flags.push('The map pin is estimated along the Census address range between 1500 and 1700 W 67th Avenue. 1652 itself did not return an address match.');
+  }
+  if (nov14Slugs.includes(deal.slug)) {
+    flags.push('2026-11-14 handoff: room counts are an assumption, an unverified heuristic concept (about 10 beds per 3,000 sq ft). No floor plan was reviewed, so the 2026-11-13 floor-plan sizing rule is not applied yet. Egress windows are an assumption for the basement rooms marked with a plain W. Basement finish and baths were not assessed. Every concept room is shared (no ensuite was identified), so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Model confidence was not in the rents file. Parking shows the MLS garage count as observed. Driveway and street counts were not found. The parking-spots-per-room rule is suspended. Not found: floor plans, satellite parking, Remine land values, calculator copies, and callouts. The listing photo is the portal cover saved in this repo.');
+    flags.push(passSummary(deal));
+  }
+  if (deal.slug === 'cherrywood-1288') {
+    flags.push('Finished area is 2,664 sq ft, so this concept is 9 rooms.');
+  }
+  if (deal.slug === 'elmira-15780') {
+    flags.push('This listing is 15780 Elmira Street, deal DEN-20261114-02. An older sheet row DEN-20261104-05 is a separate sheet-only record and is not this listing.');
+  }
+  if (deal.slug === '35th-24376') {
+    flags.push('The map pin is estimated on the East 35th Drive street segment. 24376 itself did not return a Census address match.');
   }
   return flags;
 }
@@ -275,7 +306,7 @@ function inputsFor(deal: DailyDeal, rooms: AnalysisRoom[]): AnalysisInputs {
     rooms,
     capex: deal.model.reno == null ? [] : [{ name: 'Renovation and furnishing', cost: deal.model.reno }],
     expenses: lines.filter((entry): entry is [string, number] => entry[1] != null).map(([name, amount]) => ({
-      name, amount, evidence: `${nov13Slugs.includes(deal.slug) ? '2026-11-13' : nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
+      name, amount, evidence: `${nov14Slugs.includes(deal.slug) ? '2026-11-14' : deal.slug === 'clarkson-7911' ? '2026-11-13' : nov13Slugs.includes(deal.slug) ? '2026-11-13' : nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
     })),
     tenantUtilityFee: deal.clp_status === 'ok' || deal.clp_status === 'ok_flagged' ? 80 : null,
     managementBase: 'gross',

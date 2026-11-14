@@ -246,5 +246,35 @@ export const listingPhotos: Record<string, string[]> = {
   ],
   "67th-1652": [
     "/listing-photos/67th-1652/01.webp"
+  ],
+  "cherrywood-1288": [
+    "/listing-photos/cherrywood-1288/01.webp"
+  ],
+  "elmira-15780": [
+    "/listing-photos/elmira-15780/01.webp"
+  ],
+  "zephyr-8238": [
+    "/listing-photos/zephyr-8238/01.webp"
+  ],
+  "chaparral-7928": [
+    "/listing-photos/chaparral-7928/01.webp"
+  ],
+  "lomand-16065": [
+    "/listing-photos/lomand-16065/01.webp"
+  ],
+  "35th-24376": [
+    "/listing-photos/35th-24376/01.webp"
+  ],
+  "oak-3119": [
+    "/listing-photos/oak-3119/01.webp"
+  ],
+  "akron-3413": [
+    "/listing-photos/akron-3413/01.webp"
+  ],
+  "meade-9801": [
+    "/listing-photos/meade-9801/01.webp"
+  ],
+  "zang-6015": [
+    "/listing-photos/zang-6015/01.webp"
   ]
 }

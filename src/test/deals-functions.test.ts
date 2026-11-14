@@ -18,7 +18,7 @@ import { getDeal, getDeals } from '../lib/deals.functions';
 describe('anonymous read-only preview access', () => {
   it('returns the published deals with no visitor credentials', async () => {
     const home = await getDeals();
-    expect(home.deals).toHaveLength(40);
+    expect(home.deals).toHaveLength(50);
     expect(home.deals[0]?.id).toBe('6');
     expect(home.deals[1]?.id).toBe('40');
   });
@@ -42,7 +42,7 @@ it('rendered deal data cites each room rent and keeps the old blanket $830 copy 
   const home = await getDeals();
   const rendered = JSON.stringify(home);
   expect(rendered.includes('Rent estimate $830.')).toBe(false);
-  const shared670 = new Set(['kalispell-1157', '16th-avdr-120', 'mineral-1522', '26th-14606']);
+  const shared670 = new Set(['kalispell-1157', '16th-avdr-120', 'mineral-1522', '26th-14606', '35th-24376']);
   for (const deal of home.deals) {
     const blob = JSON.stringify(home.bundles[deal.id]);
     const rooms = home.analyses[deal.id]?.inputs.rooms ?? [];
