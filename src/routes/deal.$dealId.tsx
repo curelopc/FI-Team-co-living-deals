@@ -313,7 +313,7 @@ function LoadedPitch({ data, dealId }: { data: Awaited<ReturnType<typeof getDeal
             {cells["Address"] || dealId}
           </h1>
           {(rc?.['listing_status'] ?? '').toUpperCase() === 'PENDING' && (
-            <p className="mt-3 inline-block rounded-md bg-card px-3 py-1 text-sm font-bold text-hc-navy">Pending</p>
+            <p className="mt-3 inline-block rounded-md bg-card px-3 py-1 text-sm font-bold text-hc-navy">Pending · Active Under Contract, unconfirmed</p>
           )}
           <div className="mt-1 text-2xl font-bold text-hc-amber">
             List price {price != null ? fmtMoney(price) : "Unavailable"}
