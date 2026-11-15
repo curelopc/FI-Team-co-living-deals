@@ -276,5 +276,35 @@ export const listingPhotos: Record<string, string[]> = {
   ],
   "zang-6015": [
     "/listing-photos/zang-6015/01.webp"
+  ],
+  "fair-5829": [
+    "/listing-photos/fair-5829/01.webp"
+  ],
+  "geddes-8017": [
+    "/listing-photos/geddes-8017/01.webp"
+  ],
+  "oneida-3293": [
+    "/listing-photos/oneida-3293/01.webp"
+  ],
+  "oakland-336": [
+    "/listing-photos/oakland-336/01.webp"
+  ],
+  "crestline-12206": [
+    "/listing-photos/crestline-12206/01.webp"
+  ],
+  "macon-1460": [
+    "/listing-photos/macon-1460/01.webp"
+  ],
+  "monaco-3117": [
+    "/listing-photos/monaco-3117/01.webp"
+  ],
+  "perry-9784": [
+    "/listing-photos/perry-9784/01.webp"
+  ],
+  "radcliff-8705": [
+    "/listing-photos/radcliff-8705/01.webp"
+  ],
+  "albion-12536": [
+    "/listing-photos/albion-12536/01.webp"
   ]
 }

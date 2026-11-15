@@ -35,9 +35,11 @@ const nov11Slugs = ['beth-216','oregon-12055','york-7751','crown-4860','ceylon-4
 const nov12Slugs = ['w96th-565','clarkson-7911','kalispell-1157','del-mar-179','zuni-2807','lakeview-6974','waco-3668','ammons-1805','radcliffe-8901'];
 const nov13Slugs = ['16th-avdr-120','mineral-1522','99th-17066','green-meadows-5901','52nd-6799','52nd-6641','canosa-6896','93rd-20076','26th-14606','67th-1652'];
 const nov14Slugs = ['cherrywood-1288','elmira-15780','zephyr-8238','chaparral-7928','lomand-16065','35th-24376','oak-3119','akron-3413','meade-9801','zang-6015'];
-const newSlugs = new Set([...nov11Slugs, ...nov12Slugs, ...nov13Slugs, ...nov14Slugs]);
+const nov15Slugs = ['fair-5829','geddes-8017','oneida-3293','oakland-336','crestline-12206','macon-1460','monaco-3117','perry-9784','radcliff-8705','albion-12536'];
+const newSlugs = new Set([...nov11Slugs, ...nov12Slugs, ...nov13Slugs, ...nov14Slugs, ...nov15Slugs]);
 const pendingSlugs = new Set(['oregon-12055', 'ouray-3404']);
 const lowConfidence = new Set(['beth-216','21st-255','rose-825','poppy-892']);
+const lowerAttribution = new Set(['crestline-12206','macon-1460','monaco-3117','perry-9784','radcliff-8705','albion-12536']);
 
 const extraCoords: Record<string, { lat: number; lon: number; note: string }> = {
   'beth-216': { lat: 40.0820119, lon: -104.8017458, note: 'OpenStreetMap Nominatim address lookup, Nov 10, 2026' },
@@ -78,6 +80,16 @@ const extraCoords: Record<string, { lat: number; lon: number; note: string }> = 
   'akron-3413': { lat: 39.654545128601, lon: -104.882341193039, note: 'US Census Geocoder Public_AR_Current address match for 3413 S Akron Street, Denver, CO 80231, Nov 14, 2026' },
   'meade-9801': { lat: 39.875017484479, lon: -105.03522137198, note: 'US Census Geocoder Public_AR_Current address match for 9801 Meade Circle, Westminster, CO 80031, Nov 14, 2026' },
   'zang-6015': { lat: 39.806119926924, lon: -105.144197871092, note: 'US Census Geocoder Public_AR_Current address match for 6015 Zang Way, Arvada, CO 80004, Nov 14, 2026' },
+  'fair-5829': { lat: 39.604312010753, lon: -105.060837991234, note: 'US Census Geocoder Public_AR_Current address match for 5829 W Fair Drive, Littleton, CO 80123, Nov 15, 2026' },
+  'geddes-8017': { lat: 39.583747385869, lon: -104.895327978653, note: 'US Census Geocoder Public_AR_Current address match for 8017 E Geddes Avenue, Centennial, CO 80112, Nov 15, 2026' },
+  'oneida-3293': { lat: 39.656624642514, lon: -104.908587027401, note: 'US Census Geocoder Public_AR_Current address match for 3293 S Oneida Way, Denver, CO 80224, Nov 15, 2026' },
+  'oakland-336': { lat: 39.720772486334, lon: -104.853723459182, note: 'US Census Geocoder Public_AR_Current address match for 336 Oakland Street, Aurora, CO 80010, Nov 15, 2026' },
+  'crestline-12206': { lat: 39.617826389644, lon: -105.136119940642, note: 'US Census Geocoder Public_AR_Current address match for 12206 W Crestline Drive, Littleton, CO 80127, Nov 15, 2026' },
+  'macon-1460': { lat: 39.6905104, lon: -104.855599, note: 'OpenStreetMap Nominatim address lookup for 1460 South Macon Street, Aurora, CO 80012, Nov 15, 2026. Census Public_AR_Current matched 1460 S Macon Court instead, so that Court pin was not used. Nominatim returned two nearby Street matches; this is the first. Not a surveyed point.' },
+  'monaco-3117': { lat: 39.660403843589, lon: -104.91374746283, note: 'US Census Geocoder Public_AR_Current address match for 3117 Monaco Circle, Denver, CO 80222, Nov 15, 2026. The matcher omitted the leading S. The listing address is 3117 S Monaco Circle.' },
+  'perry-9784': { lat: 39.874721518689, lon: -105.038479626752, note: 'US Census Geocoder Public_AR_Current address match for 9784 Perry Way, Westminster, CO 80031, Nov 15, 2026' },
+  'radcliff-8705': { lat: 39.636732579782, lon: -104.888587688826, note: 'US Census Geocoder Public_AR_Current address match for 8705 E Radcliff Avenue, Denver, CO 80237, Nov 15, 2026' },
+  'albion-12536': { lat: 39.923689203357, lon: -104.9390375141, note: 'US Census Geocoder Public_AR_Current address match for 12536 Albion Street, Thornton, CO 80241, Nov 15, 2026' },
 };
 
 export function siteIdForSlug(slug: string): string {
@@ -116,6 +128,9 @@ const taxYearBySlug: Record<string, number> = {
   'cherrywood-1288': 2025, 'elmira-15780': 2025, 'zephyr-8238': 2025, 'chaparral-7928': 2025,
   'lomand-16065': 2025, '35th-24376': 2026, 'oak-3119': 2025, 'akron-3413': 2025,
   'meade-9801': 2025, 'zang-6015': 2025,
+  'fair-5829': 2024, 'geddes-8017': 2024, 'oneida-3293': 2025, 'oakland-336': 2025,
+  'crestline-12206': 2025, 'macon-1460': 2025, 'monaco-3117': 2025, 'perry-9784': 2025,
+  'radcliff-8705': 2025, 'albion-12536': 2025,
 };
 
 function dollars(amount: number | null, digits = 2): string {
@@ -140,7 +155,7 @@ function handoffFlags(deal: DailyDeal): string[] {
   const flags = [
     'Assumptions, labeled as estimates: 20% down, 7.5% 30-year investor rate, 2% closing, and cash invested includes 2 months of holding. Insurance is set equal to property tax. Repairs and the capex reserve are each 5% of gross. Per room: electric $40.23, water $25, gas $15. Management is 16% of gross and vacancy is 5%.',
     'The public portal returns Active listings only, so a listing missing from it is not proof it was withdrawn.',
-    '2026-11-14 upkeep: no deal was removed. 255 S 21st Place is re-underwritten at $455,000. 12055 E Oregon Circle and 3404 S Ouray Way stay on the site as Pending, flagged UNCONFIRMED, Active Under Contract.',
+    '2026-11-15 upkeep: no deal was removed. 179 Del Mar Circle is re-underwritten at $585,000. 12055 E Oregon Circle and 3404 S Ouray Way stay on the site as Pending, flagged UNCONFIRMED, Active Under Contract. 7928 Chaparral Road stays on the site and is flagged because it is missing from the Active portal.',
   ];
   if (year != null && year < 2025) flags.push(`Property tax is the portal ${year} figure. That year is older than 2025.`);
   if (year === 2026) flags.push('Property tax is the portal 2026 figure.');
@@ -183,7 +198,7 @@ function handoffFlags(deal: DailyDeal): string[] {
     flags.push('Pass. CoLivingPro Shared $670 plus $80 (confidence 91%). CoC 0.7%, cash flow $99.88/mo, cash invested $178,868.24, cap 6.93%, DSCR 1.03. About $828/room or a price near $398,000 would be needed for 8% CoC.');
   }
   if (deal.slug === 'del-mar-179') {
-    flags.push('Pass. CoLivingPro Shared $660 plus $80 (confidence 91%). CoC -1.4%, cash flow -$220.09/mo, cash invested $188,192.18, cap 6.26%, DSCR 0.93. About $874/room or a price near $384,000 would be needed for 8% CoC.');
+    flags.push('Price reduced from $590,000 to $585,000 on 2026-11-15 (REcolorado public portal card for MLS 4252205, confirmed by a Gmail price-reduced alert at 2:00 AM PT, still Active). This underwrite uses $585,000. CoLivingPro rents were not re-pulled (2026-11-12). Cash flow is -$192.12/mo (was -$220.09). CoC is -1.2% (was -1.4%). Cash invested is $187,036.25 (was $188,192.18). Cap rate is 6.32% (was 6.26%). DSCR is 0.94 (was 0.93). All-in is $645,200 (was $650,300). Price per finished sq ft is $185.70 (was $187.20). Pass. CoLivingPro Shared $660 plus $80 (confidence 91%). About $869/room or a price near $384,000 would be needed for 8% CoC.');
   }
   if (deal.slug === 'zuni-2807') {
     flags.push('Pass. CoLivingPro Shared $710 plus $80 (confidence 87%). CoC 1.1%, cash flow $178.43/mo, cash invested $190,175.13, cap 7.07%, DSCR 1.05. About $868/room or a price near $448,000 would be needed for 8% CoC.');
@@ -201,10 +216,10 @@ function handoffFlags(deal: DailyDeal): string[] {
     flags.push('Pass. CoLivingPro Shared $710 plus $80 (confidence 87%). CoC 0.4%, cash flow $71.62/mo, cash invested $201,776.75, cap 6.85%, DSCR 1.02. About $895/room or a price near $437,000 would be needed for 8% CoC.');
   }
   if (deal.slug === 'oregon-12055') {
-    flags.push('Pending, flagged UNCONFIRMED. Active Under Contract. Missing from the Active portal for a second day. Accession Real Estate, Feaster Realty, and Gellman Homes syndication show Active Under Contract at $540,000. Accession property history shows a status change on 11/12/2026. Coldwell Banker still says Active. No Gmail alert. Open house still advertised Sat 11/14.');
+    flags.push('Pending, flagged UNCONFIRMED. Active Under Contract. Still missing from the Active portal on 2026-11-15. The status file calls this the second day; the run notes call it the third day. Accession Real Estate, Feaster Realty, and Gellman Homes syndication show Active Under Contract at $540,000. Accession property history shows a status change on 11/12/2026. Coldwell Banker still says Active and looks stale. No Gmail alert. An open house was still advertised for Sat 11/14.');
   }
   if (deal.slug === 'ouray-3404') {
-    flags.push('Pending, flagged UNCONFIRMED. Active Under Contract. Missing from the Active portal for a second day. Kenna Group syndication shows Active Under Contract at $535,000, with a status change dated 11/12/2026. Redfin, Compass, Jefferson RE, and Coldwell Banker still show stale Active. No Gmail alert.');
+    flags.push('Pending, flagged UNCONFIRMED. Active Under Contract. Still missing from the Active portal on 2026-11-15. The status file calls this the second day; the run notes call it the third day. Kenna Group syndication shows Active Under Contract at $535,000, with a status change dated 11/12/2026. This was upgraded from flagged-Active on 11/13 to Pending, still unconfirmed. Redfin, Compass, Jefferson RE, and Coldwell Banker still show stale Active. No Gmail alert.');
   }
   if (nov13Slugs.includes(deal.slug)) {
     flags.push('2026-11-13 handoff: the room-add plan is an unverified heuristic concept. No floor plan was reviewed. Egress windows are assumed for 1 of every 3 added rooms. Basement finish and baths were not assessed. Every concept room is a shared bath, so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Parking shows the MLS garage count as observed. Driveway and street counts were not found and are not used to remove the deal. The parking-spots-per-room rule is suspended. Not found: floor plans, satellite parking, Remine land values, calculator copies, and callouts. The listing photo is the portal cover saved in this repo.');
@@ -232,6 +247,28 @@ function handoffFlags(deal: DailyDeal): string[] {
   if (deal.slug === '35th-24376') {
     flags.push('The map pin is estimated on the East 35th Drive street segment. 24376 itself did not return a Census address match.');
   }
+  if (deal.slug === 'chaparral-7928') {
+    flags.push('2026-11-15: missing from the Active portal for the first day, flagged UNCONFIRMED. Syndication still shows Active at $735,000, but those pages look stale (about 10/30 to 11/2). No Gmail alert. Kept on the site. Recheck on 11/16 and remove it or mark it Pending if it stays off the Active portal.');
+  }
+  if (nov15Slugs.includes(deal.slug)) {
+    flags.push('2026-11-15 handoff: room counts are an assumption, an unverified heuristic concept (about 10 beds per 3,000 sq ft, plus or minus 1 per 250 sq ft). The drawn count is the deals.json count. No floor plan was reviewed, so Craig\'s 11/13 floor-plan sizing rule is not applied yet. Egress windows are an assumption for the basement rooms marked with a plain W. Basement finish and baths were not assessed. Every concept room is shared (no ensuite was identified), so each room uses the CoLivingPro shared furnished rate plus the $80 utility fee. Model confidence was not in the rents file. Parking shows the MLS garage count as observed. Driveway and street counts were not found. The parking-spots-per-room rule is suspended. Not found: floor plans, satellite parking, Remine land values, calculator copies, and callouts. The listing photo is the portal cover saved in this repo.');
+    flags.push(passSummary(deal));
+  }
+  if (lowerAttribution.has(deal.slug)) {
+    flags.push('Lower confidence on this CoLivingPro pull: combo-to-figure attribution was read from a result popup without confirming which combo each figure came from. Monaco, Radcliff, and Albion show unfurnished shared above furnished shared, a possible swap. Underwriting uses the furnished shared and private rates only. Unfurnished figures were not used.');
+  }
+  if (deal.slug === 'fair-5829') flags.push('Finished area is 2,749 sq ft, so this concept is 9 rooms.');
+  if (deal.slug === 'oakland-336') flags.push('Finished area is 2,160 sq ft, so this concept is 8 rooms.');
+  if (deal.slug === 'perry-9784') flags.push('Finished area is 2,735 sq ft, so this concept is 9 rooms.');
+  if (deal.slug === 'macon-1460') {
+    flags.push('Finished area is 2,615 sq ft, so this concept is 8 rooms.');
+    flags.push('The map pin is an OpenStreetMap match for 1460 South Macon Street. Census matched 1460 S Macon Court instead, and that Court pin was not used.');
+  }
+  if (deal.slug === 'monaco-3117') {
+    flags.push('Finished area is 2,611 sq ft, so this concept is 8 rooms.');
+    flags.push('The Census match omitted the leading S and returned 3117 Monaco Circle. The listing address is 3117 S Monaco Circle.');
+  }
+  if (deal.slug === 'albion-12536') flags.push('Finished area is 2,412 sq ft, so this concept is 8 rooms.');
   return flags;
 }
 
@@ -306,7 +343,7 @@ function inputsFor(deal: DailyDeal, rooms: AnalysisRoom[]): AnalysisInputs {
     rooms,
     capex: deal.model.reno == null ? [] : [{ name: 'Renovation and furnishing', cost: deal.model.reno }],
     expenses: lines.filter((entry): entry is [string, number] => entry[1] != null).map(([name, amount]) => ({
-      name, amount, evidence: `${nov14Slugs.includes(deal.slug) ? '2026-11-14' : deal.slug === 'clarkson-7911' ? '2026-11-13' : nov13Slugs.includes(deal.slug) ? '2026-11-13' : nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
+      name, amount, evidence: `${nov15Slugs.includes(deal.slug) ? '2026-11-15' : nov14Slugs.includes(deal.slug) ? '2026-11-14' : deal.slug === 'clarkson-7911' ? '2026-11-13' : nov13Slugs.includes(deal.slug) ? '2026-11-13' : nov12Slugs.includes(deal.slug) ? '2026-11-12' : '2026-11-10'} deal model. Estimate, not a quote.`,
     })),
     tenantUtilityFee: deal.clp_status === 'ok' || deal.clp_status === 'ok_flagged' ? 80 : null,
     managementBase: 'gross',

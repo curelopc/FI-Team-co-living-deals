@@ -4,7 +4,7 @@ import { conceptRoomsFor, dailyFigures, dailyPayload, publishedMetrics, siteIdFo
 import { listingPhotos } from '../lib/listing-photos';
 import { modelSummary } from '../lib/deal-intake';
 import { listingFacts } from '../lib/research';
-import handoff from './handoff-2026-11-14.json';
+import handoff from './handoff-2026-11-15.json';
 
 const expected = [
   ['fraser-1584', '6'], ['elmira-911', '40'], ['topeka-4725', 'topeka-4725'], ['poppy-892', 'poppy-892'],
@@ -24,14 +24,19 @@ const expected = [
   ['chaparral-7928', 'chaparral-7928'], ['lomand-16065', 'lomand-16065'], ['35th-24376', '35th-24376'],
   ['oak-3119', 'oak-3119'], ['akron-3413', 'akron-3413'], ['meade-9801', 'meade-9801'],
   ['zang-6015', 'zang-6015'],
+  ['fair-5829', 'fair-5829'], ['geddes-8017', 'geddes-8017'], ['oneida-3293', 'oneida-3293'],
+  ['oakland-336', 'oakland-336'], ['crestline-12206', 'crestline-12206'], ['macon-1460', 'macon-1460'],
+  ['monaco-3117', 'monaco-3117'], ['perry-9784', 'perry-9784'], ['radcliff-8705', 'radcliff-8705'],
+  ['albion-12536', 'albion-12536'],
 ] as const;
 
-describe('2026-11-14 publish', () => {
-  it('lists 50 deals, keeps Fraser and Elmira URLs, and leaves Grove, Macon, and Runyon Lake off', async () => {
+describe('2026-11-15 publish', () => {
+  it('lists 60 deals, keeps Fraser and Elmira URLs, and leaves Grove, the withdrawn Macon listing, and Runyon Lake off', async () => {
     const home = dailyPayload();
     expect(home.deals.map(deal => deal.id)).toEqual(expected.map(([, id]) => id));
     expect(home.deals.some(deal => deal.id === '8' || /grove/i.test(deal.address))).toBe(false);
-    expect(home.deals.some(deal => /macon/i.test(deal.address) || deal.id === 'macon-2069')).toBe(false);
+    expect(home.deals.some(deal => deal.id === 'macon-2069')).toBe(false);
+    expect(home.deals.some(deal => deal.id === 'macon-1460')).toBe(true);
     expect(home.deals.some(deal => deal.id === 'runyon-lake-4180' || /runyon/i.test(deal.address))).toBe(false);
     expect(dailyFigures('8')).toBeNull();
     expect(dailyFigures('macon-2069')).toBeNull();
@@ -41,7 +46,7 @@ describe('2026-11-14 publish', () => {
     expect(existsSync('public/listing-photos/macon-2069')).toBe(false);
     expect(existsSync('public/listing-photos/runyon-lake-4180')).toBe(false);
     const rendered = JSON.stringify(home);
-    expect(rendered).not.toMatch(/Macon|7393028|Runyon Lake|6260568|matrixmedia|GetMedia\.ashx/i);
+    expect(rendered).not.toMatch(/macon-2069|7393028|Runyon Lake|6260568|matrixmedia|GetMedia\.ashx/i);
     expect(rendered).not.toMatch(/Needs input|rentable rows/i);
   });
 
@@ -290,7 +295,83 @@ describe('2026-11-14 publish', () => {
     expect(dailyPayload().bundles['35th-24376']?.research.cells['flags']).toMatch(/2026 figure/);
   });
 
-  it('matches every displayed deal to the 2026-11-14 deals.json figures to the cent', () => {
+  it('publishes the 2026-11-15 Del Mar re-underwrite to the cent', () => {
+    const figures = dailyFigures('del-mar-179');
+    const metrics = publishedMetrics('del-mar-179');
+    const bundle = dailyPayload().bundles['del-mar-179'];
+    const cents = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    expect(bundle?.research.displayPrice).toBe(585000);
+    expect(bundle?.research.cells['listing_status']).toBe('ACTIVE');
+    expect(figures?.rooms).toBe(10);
+    expect(figures?.result.grossRent).toBe(6600);
+    expect(cents.format(figures?.result.monthlyCashFlow ?? NaN)).toBe('-$192.12');
+    expect(cents.format(figures?.result.cashInvested ?? NaN)).toBe('$187,036.25');
+    expect(figures?.result.cocPercent?.toFixed(1)).toBe('-1.2');
+    expect(bundle?.research.cells['cap_rate']).toBe('6.32');
+    expect(metrics?.dscr).toBe(0.94);
+    expect(bundle?.research.cells['flags']).toContain('Price reduced from $590,000 to $585,000');
+    expect(bundle?.analysis?.inputs.rooms).toHaveLength(10);
+    expect(bundle?.analysis ? modelSummary(bundle.analysis.inputs).roomCount : 0).toBe(10);
+  });
+
+  const nov15 = ['fair-5829', 'geddes-8017', 'oneida-3293', 'oakland-336', 'crestline-12206', 'macon-1460', 'monaco-3117', 'perry-9784', 'radcliff-8705', 'albion-12536'] as const;
+  const nov15Rooms: Record<(typeof nov15)[number], number> = {
+    'fair-5829': 9, 'geddes-8017': 10, 'oneida-3293': 10, 'oakland-336': 8, 'crestline-12206': 10,
+    'macon-1460': 8, 'monaco-3117': 8, 'perry-9784': 9, 'radcliff-8705': 10, 'albion-12536': 8,
+  };
+
+  it('draws the 2026-11-15 deals, keeps Chaparral active with its flag, and keeps Oregon and Ouray pending', () => {
+    for (const slug of nov15) {
+      const rooms = conceptRoomsFor(slug);
+      const figures = dailyFigures(slug);
+      const bundle = dailyPayload().bundles[slug];
+      const expectedRooms = nov15Rooms[slug];
+      expect(rooms, slug).toBeTruthy();
+      expect(rooms?.length, slug).toBe(expectedRooms);
+      expect(figures?.rooms, slug).toBe(expectedRooms);
+      expect(rooms?.filter(room => room.window).every(room => room.level === 'Basement'), slug).toBe(true);
+      expect(rooms?.some(room => room.level === 'Main'), slug).toBe(true);
+      expect(rooms?.some(room => room.level === 'Basement' && room.window), slug).toBe(true);
+      expect(rooms?.filter(room => room.level !== 'Basement').every(room => !room.window), slug).toBe(true);
+      expect(rooms?.filter(room => room.work !== 'existing').every(room => room.closet), slug).toBe(true);
+      expect(figures?.result.grossRent, slug).toBe(rooms?.reduce((sum, room) => sum + (room.rent ?? 0), 0));
+      expect(bundle?.research.cells['photo_url'], slug).toBe(`/listing-photos/${slug}/01.webp`);
+      expect(bundle?.research.cells['photo_gallery'], slug).not.toMatch(/https?:/i);
+      expect(existsSync(`public/listing-photos/${slug}/01.webp`)).toBe(true);
+      expect(bundle?.research.cells['flags'], slug).toMatch(/unverified heuristic concept/i);
+      expect(bundle?.research.cells['listing_status'], slug).toBe('ACTIVE');
+      expect(bundle?.research.cells['current_beds'], slug).toBeTruthy();
+      expect(bundle?.research.cells['current_baths'], slug).toBeTruthy();
+      expect(bundle?.research.cells['converted_beds'], slug).toBe(String(expectedRooms));
+      const summary = bundle?.analysis ? modelSummary(bundle.analysis.inputs) : null;
+      expect(summary?.roomCount, slug).toBe(expectedRooms);
+      expect(summary?.drawnCount, slug).toBe(expectedRooms);
+      expect(summary?.grossRent, slug).toBe(figures?.result.grossRent);
+      const facts = listingFacts(bundle?.research.cells ?? {}, figures?.rooms ?? 0);
+      expect(facts.futureBeds, slug).toBe(expectedRooms);
+      expect(facts.sqft, slug).toBe(Number(bundle?.research.cells['sqft']));
+      expect(facts.currentBeds, slug).toBe(Number(bundle?.research.cells['current_beds']));
+      expect(facts.currentBaths, slug).not.toBeNull();
+      expect(facts.futureBaths, slug).not.toBeNull();
+    }
+    const lower = ['crestline-12206', 'macon-1460', 'monaco-3117', 'perry-9784', 'radcliff-8705', 'albion-12536'];
+    for (const slug of lower) {
+      expect(dailyPayload().bundles[slug]?.research.cells['flags'], slug).toMatch(/Lower confidence/);
+    }
+    const chaparral = dailyPayload().bundles['chaparral-7928'];
+    expect(chaparral?.research.cells['listing_status']).toBe('ACTIVE');
+    expect(chaparral?.research.cells['flags']).toMatch(/missing from the Active portal for the first day/);
+    expect(chaparral?.research.cells['flags']).toMatch(/UNCONFIRMED/);
+    expect(chaparral?.research.displayPrice).toBe(735000);
+    const oregon = dailyPayload().bundles['oregon-12055'];
+    const ouray = dailyPayload().bundles['ouray-3404'];
+    expect(oregon?.research.cells['listing_status']).toBe('PENDING');
+    expect(ouray?.research.cells['listing_status']).toBe('PENDING');
+    expect(dailyPayload().bundles['macon-1460']?.research.cells['flags']).toMatch(/Macon Court/);
+    expect(dailyFigures('runyon-lake-4180')).toBeNull();
+  });
+
+  it('matches every displayed deal to the 2026-11-15 deals.json figures to the cent', () => {
     const payload = dailyPayload();
     const cents = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
     expect(handoff.map(row => row.slug)).toEqual(expected.map(([slug]) => slug));
